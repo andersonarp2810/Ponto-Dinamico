@@ -1,0 +1,17 @@
+(function () {
+    angular
+        .module('pdApp')
+        .constant("$Rotas", {
+            "evento": "cadastrarevento",
+            "login": "login",
+            "user": "cadastrarusuario",
+        })
+        .constant("$Estados", {
+            "evento": "cadastrarEvento",
+            "home": "home",
+            "login": "login",
+            "user": "cadastrarUser"
+        })
+        .constant("$IP", "http://192.168.74.123:3000/")
+        ;
+})();

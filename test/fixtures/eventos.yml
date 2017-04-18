@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nome: MyString
+  tipo: MyString
+  pessoa_evento: MyString
+  data_inicio: 2017-03-14
+  data_fim: 2017-03-14
+  hora_inicio: 2017-03-14 16:27:21
+  hora_fim: 2017-03-14 16:27:21
+  local: MyText
+  descricao: MyText
+  qrcode: MyString
+
+two:
+  nome: MyString
+  tipo: MyString
+  pessoa_evento: MyString
+  data_inicio: 2017-03-14
+  data_fim: 2017-03-14
+  hora_inicio: 2017-03-14 16:27:21
+  hora_fim: 2017-03-14 16:27:21
+  local: MyText
+  descricao: MyText
+  qrcode: MyString

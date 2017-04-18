@@ -1,0 +1,64 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nome:</strong>
+  <%= @evento.nome %>
+</p>
+
+<p>
+  <strong>Tipo:</strong>
+  <%= @evento.tipo %>
+</p>
+
+<p>
+  <strong>Pessoa evento:</strong>
+  <%= @evento.usuario.nome %>
+</p>
+
+<p>
+  <strong>Data inicio:</strong>
+  <%= @evento.data_inicio %>
+</p>
+
+<p>
+  <strong>Data fim:</strong>
+  <%= @evento.data_fim %>
+</p>
+
+<p>
+  <strong>Hora inicio:</strong>
+  <%= @evento.hora_inicio %>
+</p>
+
+<p>
+  <strong>Hora fim:</strong>
+  <%= @evento.hora_fim %>
+</p>
+
+<p>
+  <strong>Local:</strong>
+  <%= @evento.local %>
+</p>
+
+<p>
+  <strong>Descricao:</strong>
+  <%= @evento.descricao %>
+</p>
+
+<p>
+  <strong>Qrcode:</strong>
+  <%= @evento.qrcode %>
+</p>
+
+<p>
+  <strong>Latitude:</strong>
+  <%= @evento.localizacao_lati %>
+</p>
+
+<p>
+  <strong>Longitude:</strong>
+  <%= @evento.localizacao_long %>
+</p>
+
+<%= link_to 'Edit', edit_evento_path(@evento) %> |
+<%= link_to 'Back', eventos_path %>

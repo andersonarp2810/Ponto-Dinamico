@@ -1,0 +1,104 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  getLocation();
+  showPosition();
+});
+</script>
+
+<p id="demo"></p>
+
+<script>
+var x = document.getElementById("demo");
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+    x.innerHTML = "Latitude: " + position.coords.latitude + 
+    "<br>Longitude: " + position.coords.longitude;
+}
+</script>
+
+
+<%= form_for(evento) do |f| %>
+  <% if evento.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(evento.errors.count, "error") %> prohibited this evento from being saved:</h2>
+
+      <ul>
+      <% evento.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :nome %>
+    <%= f.text_field :nome %>
+  </div>
+
+  <div class="field">
+    <%= f.label :tipo %>
+    <%= f.text_field :tipo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :pessoa_evento %>
+    <%= collection_select(:evento, :usuario_id, Usuario.all, :id, :nome) %>
+  </div>
+
+  <div class="field">
+    <%= f.label :data_inicio %>
+    <%= f.date_select :data_inicio %>
+  </div>
+
+  <div class="field">
+    <%= f.label :data_fim %>
+    <%= f.date_select :data_fim %>
+  </div>
+
+  <div class="field">
+    <%= f.label :hora_inicio %>
+    <%= f.time_select :hora_inicio %>
+  </div>
+
+  <div class="field">
+    <%= f.label :hora_fim %>
+    <%= f.time_select :hora_fim %>
+  </div>
+
+  <div class="field">
+    <%= f.label :local %>
+    <%= f.text_area :local %>
+  </div>
+
+  <div class="field">
+    <%= f.label :descricao %>
+    <%= f.text_area :descricao %>
+  </div>
+
+  <div class="field">
+    <%= f.label :qrcode %>
+    <%= f.text_field :qrcode %>
+  </div>
+
+<div class="field">
+    <%= f.label :latitude %>
+    <%= f.text_field :localizacao_lati %>
+  </div>
+
+<div class="field">
+    <%= f.label :longitude %>
+    <%= f.text_field :localizacao_long %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

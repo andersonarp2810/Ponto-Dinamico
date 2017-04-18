@@ -1,0 +1,35 @@
+<meta charset="utf-8">
+<div class="container " style="position:relative;transform: translate(-50%, -0%); width:25%;top:5%; ">
+	<div class="form-group form-group-sm">
+		<form>
+			<div style="text-align: center; font-family: inherit;">
+				<h2>Cadastre-se<small><br>(Preencha os campos abaixo)</small> </h2>
+			</div>
+			<div class="form-group form-group-sm">
+				<label class="col-sm-6 control-label" for="formGroupInputSmall">Digite Nome</label>
+				<input class="form-control" type="text" placeholder="Nome Completo" ng-model="vm.name"><br>
+			</div>
+			<div class="form-group form-group-sm">
+				<label class="col-sm-8 control-label" for="formGroupInputSmall">Escolha uma senha</label>
+				<input class="form-control" type="password" placeholder="Senha" ng-model="vm.password"><br>
+			</div>
+			<div class="form-group form-group-sm">
+				<label class="col-sm-6 control-label" for="formGroupInputSmall">Confirmar senha</label>
+				<input class="form-control" type="password" placeholder="Confirmar Senha" ng-model="vm.confirmaSenha"><br>
+			</div>
+			<div class="form-group form-group-sm">
+				<label class="col-sm-10 control-label" for="formGroupInputSmall">Número da matrícula</label>
+				<input class="form-control" type="text" placeholder="Matricula" ng-model="vm.matricula"><br>
+			</div>
+			<div class="form-group form-group-sm">
+				<label class="col-sm-5 control-label" for="formGroupInputSmall">E-mail</label>
+				<input class="form-control" type="text" placeholder="E-mail" ng-model="vm.email"><br>
+			</div>
+		</form>
+		<div style="text-align-last: right">
+			<button class="btn btn-primary" ng-click="vm.cadastrarUsuario()">Cadastrar-se</button>
+		</div>
+	</div>
+</div>
+
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "appponto",
+  "authors": [
+    "NExTI"
+  ],
+  "description": "Ponto dinânimco web",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/assets/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-ui-router": "^0.4.2",
+    "angular": "^1.6.3",
+    "bootstrap": "^3.3.7"
+  }
+}

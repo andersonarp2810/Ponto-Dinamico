@@ -1,0 +1,36 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+<div class="container " style="position:relative;transform: translate(-50%, -0%); width:30%;top:5%;background-color:#fff ">
+  <form>
+    
+    <label for="usr"> Nome </label>
+    <input class="form-control" type="text" ng-model="vm.nome"><br>
+    <label for="tipo"> Tipo </label>
+    <input class="form-control" type="text" ng-model="vm.tipo"><br>
+    <label for="pessoa"> Pessoa Evento </label>
+    <input class="form-control" type="text"> <br>
+    <label for="date"> Data de inicio </label>
+    <input class="form-control" type="date" ng-model="vm.dataInicio"> <br>
+    <label for="date"> Data de término </label>
+    <input class="form-control" type="date" ng-model="vm.dataFim"> <br>
+    <label for="time"> Hora de Inicio </label>
+    <input class="form-control" type="time" ng-model="vm.horaInicio"> <br>
+    <label for="time"> Hora de Término </label>>
+    <input class="form-control" type="time" ng-model="vm.horaFim"> <br>
+    <label for="local"> Local </label>
+    <textarea class="form-control" ng-model="vm.local"></textarea> <br>
+    <label for="dsç"> Descrição </label>
+    <textarea class="form-control" ng-model="vm.descricao"></textarea> <br>
+    <label for="qr"> Qrcode </label>
+    <input class="form-control" type="text" ng-model="vm.QR"> <br>
+    <label for="lt"> Latitude </label>
+    <input class="form-control" type="text" ng-model="vm.latitude"> <br>
+    <label for="lg"> Longitude</label>
+    <input class="form-control" type="text" ng-model="vm.longitude"> <br>
+    <br>
+    <button class="btn btn-info" ng-click="vm.cadastrarEvento()">OK</button>
+  </form>
+  <br><br>
+</div>
