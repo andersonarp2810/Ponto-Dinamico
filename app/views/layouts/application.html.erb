@@ -8,17 +8,7 @@
     <%= javascript_include_tag 'application' %>
   </head>
 
-  <body ng-app="pdApp" ng-style="{'background-image': 'url(/assets/fundo.jpg)'}" 'no-repeat center center fixed' 'background-size':'10%'>
-    pega diabo
-    <a href="#!/cadastrarEvento">/cadastrarEvento</a>
-    <a href="#!/home">/home</a>
-    <a href="#!/login">/login</a>
-    <a href="#!/cadastrarUser">/cadastrarUser</a>
-    <br>
-    <div style="text-align: center;">
-      <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação">
-    </div>
-    <br>
-    <ui-view></ui-view>
+  <body>
+    <%= yield %>
   </body>
 </html>
