@@ -7,12 +7,13 @@
 
     function EventoService(Requisicoes, $Rotas) {
         this.enviarEvento = enviarEvento;
-        this.testarget = testarget;
 
         function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, QR,
             latitude, longitude) {
+
             url = $Rotas.cadastrarEvento;
             tipo = "evento";
+
             evento = {
                 usuario_id : 23,
                 nome: nome,
@@ -27,11 +28,9 @@
                 localizacao_lati: latitude,
                 localizacao_long: longitude
             }
+
             return Requisicoes.post(url, evento, tipo);
         }
 
-        function testarget(){
-            console.log(Requisicoes.get($Rotas.testeget));
-        }
     };
 })();

@@ -6,14 +6,19 @@
     LoginService.$inject = ['$Rotas'];
 
     function LoginService($Rotas) {
+
         this.enviarLogin = enviarLogin;
-        url = $Rotas.login;
+
         function enviarLogin(login, ciphertext) {
+
+            url = $Rotas.login;
+            tipo = "login";
+
             dados = {
                 login: login,
                 ciphertext: ciphertext
             }
-            return post(url, dados);
+            return post(url, dados, tipo);
         }
 
 

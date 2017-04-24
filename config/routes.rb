@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :usuarios
 
 #rota raiz
-root "application#angular"
+  root "application#angular"
 #rota para logout usuario via post
   match 'logout', to: 'usuarios#logout', via: [:post]
 #rota para cadastrar usuario via post

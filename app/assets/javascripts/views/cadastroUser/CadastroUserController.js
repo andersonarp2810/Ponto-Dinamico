@@ -8,14 +8,15 @@
 	function CadastroUserController(UserService) {
 
 		var userVM = this;
+		
 		userVM.name = "";
-		userVM.password = "";
+		userVM.senha = "";
 		userVM.email = "";
 		userVM.matricula = "";
 		userVM.cadastrarUsuario = cadastrarUsuario;
 
 		function cadastrarUsuario() {
-			enviarUser(name, password, email, matricula)
+			UserService.enviarUser(name, senha, email, matricula)
 				.then(function (data) {
 					console.log(data);
 				});

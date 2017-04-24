@@ -6,6 +6,7 @@
     Requisicoes.$inject = ['$http', '$q', '$IP'];
 
     function Requisicoes($http, $q) {
+        
         var escopo = this;
         escopo.get = get;
         escopo.post = post;
