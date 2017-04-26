@@ -3,11 +3,10 @@
         .module('pdApp')
         .controller('CadastroEventoController', CadastroEventoController);
 
-    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService'];
+    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', '$Respostas', '$window'];
 
-    function CadastroEventoController($scope, $log, EventoService) {
+    function CadastroEventoController($scope, $log, EventoService, $Repostas, $window) {
         var vm = this; //view model
-
         vm.botao = false;
         vm.cadastrarEvento = cadastrarEvento;
         vm.dataInicio;
@@ -15,29 +14,60 @@
         vm.horaInicio;
         vm.horaFim;
         vm.descricao;
-        vm.local = "Local";
+        vm.local;
         vm.latitude;
         vm.longitude;
+        vm.mensagem;
         vm.nome;
         vm.QR;
         vm.tipo;
-        vm.testget = testget;
 
         function cadastrarEvento() {
             EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
                 vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
                 vm.latitude, vm.longitude)
-                
+
                 .then(function (data) {
                     console.log(data);
-                    alert(data.body + " " + data.evento_nome);
+
+                    switch (data.body.id) {
+
+                        case 000:
+                            console.log(data.body + " " + data.evento_nome);
+                            vm.mensagem = "Evento criado";
+                            rl();
+                            break;
+                        default:
+                            vm.mensagem = 'Erro: ' + $Repostas[data.body.id];
+                            rl();
+                            break;
+
+                    }
+
+
+
                 });
         }
 
+        function rl() {
+            vm.botao = false;
+            vm.dataInicio = '';
+            vm.dataFim = '';
+            vm.horaInicio = '';
+            vm.horaFim = '';
+            vm.descricao = '';
+            vm.local = '';
+            vm.latitude = '';
+            vm.longitude = '';
+            vm.nome = '';
+            vm.QR = '';
+            vm.tipo = '';
+        }
+
         //isso é apenas um teste de observador - remover em versão final
-        $scope.$watch('vm.local', function (current, original) {
-            $log.info('vm.local was %s', original);
-            $log.info('vm.local is now %s', current);
+        $scope.$watch('vm.horaFim', function (current, original) {
+            $log.info('vm.horaFim was %s', original);
+            $log.info('vm.horaFim is now %s', current);
         });
 
     }

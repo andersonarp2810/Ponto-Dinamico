@@ -8,6 +8,8 @@
 			<form role="form">
 				<fieldset>
 
+					<div ng-if="vm.mensagem">{{vm.mensagem}}</div>
+
 					<div class="form-group ls-login-user">
 						<label for="userLogin">Usuário</label>
 						<input class="form-control ls-login-bg-user input-lg" id="userLogin" type="text" aria-label="Usuário" placeholder="Usuário"

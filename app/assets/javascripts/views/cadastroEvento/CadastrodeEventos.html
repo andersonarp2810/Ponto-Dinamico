@@ -4,7 +4,7 @@
 
 <div class="container " style="position:relative;transform: translate(-50%, -0%); width:30%;top:5%;background-color:#fff ">
   <form>
-    
+    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>
     <label for="usr"> Nome </label>
     <input class="form-control" type="text" ng-model="vm.nome"><br>
     <label for="tipo"> Tipo </label>
