@@ -7,11 +7,11 @@ enum status: { true: 0, false: 1 }
 	validates :nome, :senha, :email,:matricula, :mac, presence: true #validação de presença
 	validates :senha, length: { minimum: 5} #validação de tamanho de senha
 	validates :matricula, numericality: {only_integer: true} #validação de somente numeros
-	validates :email, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, on: :create}, uniqueness: {case_sensitive: false} #formato e unicidade
+	validates :email, format: {with: /\A[\w\._%-]+@[\w\.-]+\.[a-zA-Z]{2,4}\z/, on: :create}, uniqueness: {case_sensitive: false} #formato e unicidade
 	validates :email, :matricula, :mac, uniqueness: true #unicidade de matricula, mac e email
 
 	#associação
-	has_many :eventos
+	has_many :usuario_eventos
 
 	#valida login Usuario
 	def self.valida(usuario)
