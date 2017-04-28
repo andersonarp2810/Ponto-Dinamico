@@ -2,29 +2,13 @@ class EventosController < ApplicationController
   before_action :set_evento, only: [:show, :edit, :update, :destroy]
   skip_before_action :verify_authenticity_token
 
-# POST /realiarponto
+# POST /realizarponto
 def realizarponto 
-  mensagem = {body: "Ponto não realizado!", evento_id: "", hora: "", data: ""}
-   if params[:evento] != nil
-    evento_request = Evento.new(evento_params)
-    status = params[:evento][:status]
-  else
-    evento_request = Evento.new
-    status = params[:status]
-    evento_request.qrcode = params[:qrcode]
-    evento_request.localizacao_long = params[:localizacao_long]
-    evento_request.localizacao_lati = params[:localizacao_lati]
-  end
-  #verrifica status do usuario
-  if status == "true"
-    @evento = Evento.find_by(qrcode: evento_request.qrcode)
-    #organiza coordenadas para analise
-    coordenada = {LatA: evento_request.localizacao_lati, LngA: evento_request.localizacao_long, LatB: @evento.localizacao_lati, LngB: @evento.localizacao_long }
-      if @evento #verificação se evento existe para o qrcode
-        if Evento.valida_coodernada (coordenada) #validando as coordenada do ponto
-          mensagem = {body: "Ponto realizado!", evento_id: @evento.id, hora: Time.now.to_s(:time), data: Time.now.to_date}#dados do usuario          
-        end
-      end
+  #cria o objeto em memoria
+  evento_request = Evento.new(valid_request?)
+  #verifica status do usuario
+  if @status == "true"
+    mensagem = Evento.confirma_ponto(evento_request)
     end
   render json: mensagem.to_json
 end
@@ -53,10 +37,12 @@ end
   # POST /eventos.json
   def create
     retorno = {body: "evento não cadastrado"}
-    @evento = Evento.new(evento_params)
+    @evento = Evento.new(valid_request?)
+    if @evento.valid?#valida evento antes de salvar
       if @evento.save
         retorno = {body: "evento cadastrado", evento_id: @evento.id, evento_nome: @evento.nome}
       end
+    end
     render json: retorno
   end
 
@@ -64,7 +50,7 @@ end
   # PATCH/PUT /eventos/1.json
   def update
   retorno = {body: "evento não atualizado"}
-      if @evento.update(evento_params)
+      if @evento.update(valid_request?)
         retorno = {body: "evento atualizado", evento_id: @evento.id, evento_nome:@evento.nome}
       end
   render json: retorno
@@ -85,7 +71,18 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def evento_params
-      params.require(:evento).permit(:nome, :tipo, :pessoa_evento, :data_inicio, :data_fim, :hora_inicio, :hora_fim, :local, :descricao, :qrcode, :localizacao_long, :localizacao_lati, :usuario_id)
+      params.require(:evento).permit(:nome, :tipo, :pessoa_evento, :data_inicio, :data_fim, :hora_inicio, :hora_fim, :local, :descricao, :qrcode, :localizacao_long, :localizacao_lati)
+    end
+
+    def valid_request?
+        json = params[:evento]
+        JSON.parse(json.to_json)
+        @status = params[:evento][:status]
+        evento_params
+    rescue JSON::ParserError => e
+        all = JSON.parse(json)
+        @status = all["status"]        
+        return all.except("status")
     end
 
 end

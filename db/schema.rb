@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170322182529) do
+ActiveRecord::Schema.define(version: 20170424182337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,7 +18,6 @@ ActiveRecord::Schema.define(version: 20170322182529) do
   create_table "eventos", force: :cascade do |t|
     t.string   "nome"
     t.string   "tipo"
-    t.string   "pessoa_evento"
     t.date     "data_inicio"
     t.date     "data_fim"
     t.time     "hora_inicio"
@@ -28,10 +27,21 @@ ActiveRecord::Schema.define(version: 20170322182529) do
     t.string   "qrcode"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
-    t.integer  "usuario_id"
     t.float    "localizacao_long"
     t.float    "localizacao_lati"
-    t.index ["usuario_id"], name: "index_eventos_on_usuario_id", using: :btree
+  end
+
+  create_table "usuario_eventos", force: :cascade do |t|
+    t.date     "data"
+    t.string   "mensagem"
+    t.time     "hora_inicio"
+    t.time     "hora_fim"
+    t.integer  "evento_id"
+    t.integer  "usuario_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["evento_id"], name: "index_usuario_eventos_on_evento_id", using: :btree
+    t.index ["usuario_id"], name: "index_usuario_eventos_on_usuario_id", using: :btree
   end
 
   create_table "usuarios", force: :cascade do |t|
@@ -44,7 +54,11 @@ ActiveRecord::Schema.define(version: 20170322182529) do
     t.integer  "nivel",      default: 0
     t.string   "mac"
     t.integer  "status",     default: 0
+    t.index ["email"], name: "index_usuarios_on_email", unique: true, using: :btree
+    t.index ["mac"], name: "index_usuarios_on_mac", unique: true, using: :btree
+    t.index ["matricula"], name: "index_usuarios_on_matricula", unique: true, using: :btree
   end
 
-  add_foreign_key "eventos", "usuarios"
+  add_foreign_key "usuario_eventos", "eventos"
+  add_foreign_key "usuario_eventos", "usuarios"
 end
