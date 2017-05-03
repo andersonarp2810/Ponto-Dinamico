@@ -49,11 +49,6 @@ function showPosition(position) {
   </div>
 
   <div class="field">
-    <%= f.label :pessoa_evento %>
-    <%= collection_select(:evento, :usuario_id, Usuario.all, :id, :nome) %>
-  </div>
-
-  <div class="field">
     <%= f.label :data_inicio %>
     <%= f.date_select :data_inicio %>
   </div>

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  data: 2017-04-19
+  mensagem: MyString
+  hora_inicio: 2017-04-19 12:48:27
+  hora_fim: 2017-04-19 12:48:27
+  evento: one
+  usuario: one
+
+two:
+  data: 2017-04-19
+  mensagem: MyString
+  hora_inicio: 2017-04-19 12:48:27
+  hora_fim: 2017-04-19 12:48:27
+  evento: two
+  usuario: two

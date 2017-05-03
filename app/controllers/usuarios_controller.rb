@@ -5,7 +5,7 @@ class UsuariosController < ApplicationController
 #POST /logout
 def logout
   mensagem = {body: 'erro nos dados'}
-  usuario_request = Usuario.new(usuario_params)
+  usuario_request = Usuario.new(valid_request?)
   @usuario = Usuario.find_by(matricula: usuario_request.matricula)
   if @usuario.update(status: "false")
     mensagem = {body: "Usuario exit", status: @usuario.status}
@@ -15,14 +15,7 @@ end
 
 # POST /login.json
 def login
-  if params[:usuario] != nil
-    usuario_request = Usuario.new(usuario_params)
-  else
-    usuario_request = Usuario.new
-    usuario_request.mac = params[:mac]
-    usuario_request.senha = params[:senha]
-    usuario_request.matricula = params[:matricula]
-  end
+  usuario_request = Usuario.new(valid_request?)
   render json: Usuario.valida(usuario_request: usuario_request).to_json
 end
 
@@ -51,19 +44,12 @@ end
   # POST /usuarios.json
   def create
     retorno = {body: "erro nos dados", status: false}    
-  if params[:usuario] != nil
-    @usuario = Usuario.new(usuario_params)
-  else
-    @usuario = Usuario.new
-    @usuario.nome = params[:nome]
-    @usuario.senha = params[:senha]
-    @usuario.email = params[:email]
-    @usuario.matricula = params[:matricula]
-    @usuario.mac= params[:mac]   
-  end
+    @usuario = Usuario.new(valid_request?)
+    if @usuario.valid
       if @usuario.save
         retorno = {body: "Usuario cadastrado!", usuario_id: @usuario.id, usuario_nome: @usuario.nome, status: @usuario.status}
       end
+    end
     render json: retorno.to_json
   end
 
@@ -71,7 +57,7 @@ end
   # PATCH/PUT /usuarios/1.json
   def update    
     retorno = {body: "Usuario não atualizado!"}
-      if @usuario.update(usuario_params)
+      if @usuario.update(valid_request?)
         retorno = {body: "Usuario atualizado!", evento_id: @usuario.id, usuario_nome: @usuario.nome}
       end
     render json: retorno.to_json
@@ -96,5 +82,13 @@ end
     # Never trust parameters from the scary internet, only allow the white list through.
     def usuario_params
       params.require(:usuario).permit(:nome, :senha, :email, :matricula, :mac, :status)
+    end
+
+    def valid_request?
+      json = params[:usuario]
+        JSON.parse(json.to_json)
+        usuario_params
+    rescue JSON::ParserError => e
+        return JSON.parse(json)
     end
 end

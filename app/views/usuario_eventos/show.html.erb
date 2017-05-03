@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Data:</strong>
+  <%= @usuario_evento.data %>
+</p>
+
+<p>
+  <strong>Mensagem:</strong>
+  <%= @usuario_evento.mensagem %>
+</p>
+
+<p>
+  <strong>Hora inicio:</strong>
+  <%= @usuario_evento.hora_inicio %>
+</p>
+
+<p>
+  <strong>Hora fim:</strong>
+  <%= @usuario_evento.hora_fim %>
+</p>
+
+<p>
+  <strong>Evento:</strong>
+  <%= @usuario_evento.evento.nome %>
+</p>
+
+<p>
+  <strong>Usuario:</strong>
+  <%= @usuario_evento.usuario.nome %>
+</p>
+
+<%= link_to 'Edit', edit_usuario_evento_path(@usuario_evento) %> |
+<%= link_to 'Back', usuario_eventos_path %>
