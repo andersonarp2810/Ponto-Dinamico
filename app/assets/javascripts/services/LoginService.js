@@ -3,22 +3,22 @@
         .module('pdApp')
         .service('LoginService', LoginService);
 
-    LoginService.$inject = ['$Rotas'];
+    LoginService.$inject = ['Requisicoes', '$Rotas'];
 
-    function LoginService($Rotas) {
+    function LoginService(Requisicoes, $Rotas) {
 
         this.enviarLogin = enviarLogin;
 
         function enviarLogin(login, ciphertext) {
 
             url = $Rotas.login;
-            tipo = "login";
+            tipo = "usuario";
 
             dados = {
-                login: login,
-                ciphertext: ciphertext
+                matricula: login,
+                senha: ciphertext
             }
-            return post(url, dados, tipo);
+            return Requisicoes.post(url, dados, tipo);
         }
 
 

@@ -7,39 +7,46 @@
 
     function LoginController(LoginService, $Respostas, $window) {
 
-        loginVM = this;
+        vm = this;
 
-        loginVM.login = "login";
-        loginVM.senha = "senha";
-        loginVM.ciphertext;
-        loginVM.logar = logar;
-        loginVM.mensagem;
+        vm.login = "login";
+        vm.senha = "senha";
+        vm.ciphertext;
+        vm.logar = logar;
+        vm.mensagem;
 
         function logar() {
-            loginVM.ciphertext = SHA2_256(loginVM.senha);
-            LoginService.enviarLogin(loginVM.login, loginVM.ciphertext)
-                .then(function (data) {
+            if (vm.form.$invalid) {
+                alert("Preencha os campos corretamente.");
+            }
+            else {
+                vm.ciphertext = SHA2_256(vm.senha);
+                console.log(vm.ciphertext);
+                LoginService.enviarLogin(vm.login, vm.ciphertext)
+                    .then(function (data) {
+                        console.log(data);
 
-                    switch (data.body.id) {
+                        switch (data.id) {
 
-                        case 000:
-                            console.log("Login feito");
-                            console.log(data.body);
-                            $window.location.assign("#!/home")
-                            break;
-                        default:
-                            loginVM.mensagem = "Erro: " + $Respostas[data.body.id];
-                            rl();
-                            break;
-                    }
+                            case 000:
+                                console.log("Login feito");
+                                console.log(data.body);
+                                $window.location.assign("#!/home")
+                                break;
+                            default:
+                                vm.mensagem = "Erro: " + $Respostas[data.id];
+                                limpar();
+                                break;
+                        }
 
-                });
+                    });//then
+            }
         };
 
-        function rl() {
-            loginVM.login = '';
-            loginVM.senha = '';
-            loginVM.ciphertext = '';
+        function limpar() {
+            vm.login = '';
+            vm.senha = '';
+            vm.ciphertext = '';
         }
     };
 })();

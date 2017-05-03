@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20170424182337) do
   create_table "eventos", force: :cascade do |t|
     t.string   "nome"
     t.string   "tipo"
+    t.string   "pessoa_evento"
     t.date     "data_inicio"
     t.date     "data_fim"
     t.time     "hora_inicio"

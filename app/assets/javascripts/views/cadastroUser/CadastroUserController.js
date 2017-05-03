@@ -7,42 +7,42 @@
 
 	function CadastroUserController(UserService, $Respostas) {
 
-		var userVM = this;
+		var vm = this;
 
-		userVM.name = "";
-		userVM.senha = "";
-		userVM.email = "";
-		userVM.matricula = "";
-		userVM.cadastrarUsuario = cadastrarUsuario;
-		userVM.mensagem;
+		vm.name = "";
+		vm.senha = "";
+		vm.email = "";
+		vm.matricula = "";
+		vm.cadastrarUsuario = cadastrarUsuario;
+		vm.mensagem;
 
 		function cadastrarUsuario() {
-			UserService.enviarUser(name, senha, email, matricula)
-				.then(function (data) {
-
-					switch (data.body.id) {
-
-						case 000:
-							console.log(data.body);
-							userVM.mensagem = "Usuário criado";
-							rl();
-							break;
-						default:
-							userVM.mensagem = "Erro: " + $Respostas[data.body.id];
-							rl();
-							break;
-
-					}
-
-				});
-
+			if (vm.form.$invalid) {
+				alert("Preencha os campos corretamente.");
+			}
+			else {
+				UserService.enviarUser(vm.name, vm.senha, vm.email, vm.matricula)
+					.then(function (data) {
+						switch (data.id) {
+							case 000:
+								console.log(data.body);
+								vm.mensagem = "Usuário criado";
+								limpar();
+								break;
+							default:
+								vm.mensagem = "Erro: " + $Respostas[data.id];
+								limpar();
+								break;
+						}
+					}); // then
+			}
 		};
 
-		function rl() {
-			userVM.name = '';
-			userVM.senha = '';
-			userVM.email = '';
-			userVM.matricula = '';
+		function limpar() {
+			vm.name = '';
+			vm.senha = '';
+			vm.email = '';
+			vm.matricula = '';
 		}
 	};
 })();

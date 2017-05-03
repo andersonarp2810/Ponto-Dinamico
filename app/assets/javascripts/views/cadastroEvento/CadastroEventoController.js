@@ -23,34 +23,32 @@
         vm.tipo;
 
         function cadastrarEvento() {
-            vm.botao = true;
-            EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
-                vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
-                vm.latitude, vm.longitude)
-
-                .then(function (data) {
-                    console.log(data);
-
-                    switch (data.body.id) {
-
-                        case 000:
-                            console.log(data.body + " " + data.evento_nome);
-                            vm.mensagem = "Evento criado";
-                            rl();
-                            break;
-                        default:
-                            vm.mensagem = 'Erro: ' + $Repostas[data.body.id];
-                            rl();
-                            break;
-
-                    }
-
-
-
-                });
+            if (vm.form.$invalid) {
+                alerta("Preencha os campos corretamente.");
+            }
+            else {
+                vm.botao = true;
+                EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
+                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
+                    vm.latitude, vm.longitude)
+                    .then(function (data) {
+                        console.log(data);
+                        switch (data.id) {
+                            case 000:
+                                console.log(data.body + " " + data.evento_nome);
+                                vm.mensagem = "Evento criado";
+                                limpar();
+                                break;
+                            default:
+                                vm.mensagem = 'Erro: ' + $Repostas[data.id];
+                                limpar();
+                                break;
+                        }
+                    }); //then
+            }
         }
 
-        function rl() {
+        function limpar() {
             vm.botao = false;
             vm.dataInicio = '';
             vm.dataFim = '';

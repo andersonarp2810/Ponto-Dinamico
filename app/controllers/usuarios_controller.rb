@@ -45,7 +45,7 @@ end
   def create
     retorno = {body: "erro nos dados", status: false}    
     @usuario = Usuario.new(valid_request?)
-    if @usuario.valid
+    if @usuario.valid?
       if @usuario.save
         retorno = {body: "Usuario cadastrado!", usuario_id: @usuario.id, usuario_nome: @usuario.nome, status: @usuario.status}
       end

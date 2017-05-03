@@ -5,15 +5,15 @@
 
     Requisicoes.$inject = ['$http', '$q', '$IP'];
 
-    function Requisicoes($http, $q) {
-        
+    function Requisicoes($http, $q, $IP) {
+
         var escopo = this;
         escopo.get = get;
         escopo.post = post;
 
         function get(url) {
             resposta = $q.defer();
-            url = $IP+url;
+            url = $IP + url;
             $http({
                 method: "GET",
                 url: `${url}`
@@ -26,7 +26,7 @@
         };
 
         function post(url, dados, tipo) {
-            url = $IP+url;
+            url = $IP + url;
             console.log(`${url}`);
             resposta = $q.defer();
             da = {};
@@ -44,7 +44,7 @@
                     console.log("reject")
                     resposta.reject(response.data);
                 }
-            );
+                );
             console.log('resposta.promise');
             console.log(resposta.promise);
             return resposta.promise;

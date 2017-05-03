@@ -14,6 +14,7 @@
             "login": "login",
             "user": "cadastrarUser"
         })
-        .constant("$IP", "http://192.168.74.123:3000/")
+        //.constant("$IP", "http://192.168.74.123:3000/")
+        .constant("$IP", "http://localhost:3000/")
         ;
 })();

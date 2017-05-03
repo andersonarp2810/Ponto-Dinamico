@@ -3,35 +3,69 @@
 
 
 <div class="container " style="position:relative;transform: translate(-50%, -0%); width:30%;top:5%;background-color:#fff ">
-  <form>
+  <form name="vm.form">
     <div ng-if="vm.mensagem">{{vm.mensagem}}</div>
     <input type="text" ng-model="vm.mensagem"><br>
+
     <label for="usr"> Nome </label>
-    <input class="form-control" type="text" ng-model="vm.nome"><br>
+    <input class="form-control" name="nome" type="text" ng-model="vm.nome" required><br>
+    <div role="alert">
+      <span class="error" ng-show="vm.form.nome.$error.required">
+        Campo obrigatório</span>
+    </div>
+
     <label for="tipo"> Tipo </label>
     <input class="form-control" type="text" ng-model="vm.tipo"><br>
+
     <label for="pessoa"> Pessoa Evento </label>
     <input class="form-control" type="text"> <br>
+
     <label for="date"> Data de inicio </label>
-    <input class="form-control" type="date" ng-model="vm.dataInicio"> <br>
+    <input class="form-control" name="data-inicio" type="date" ng-model="vm.dataInicio" required> <br>
+    <div role="alert">
+      <span class="error" ng-show="vm.form.data-inicio.$error.required">
+        Campo obrigatório</span>
+    </div>
+
     <label for="date"> Data de término </label>
-    <input class="form-control" type="date" ng-model="vm.dataFim"> <br>
+    <input class="form-control" name="data-termino" type="date" ng-model="vm.dataFim" required> <br>
+    <div role="alert">
+      <span class="error" ng-show="vm.form.data-termino.$error.required">
+        Campo obrigatório</span>
+    </div>
+
     <label for="time"> Hora de Inicio </label>
-    <input class="form-control" type="time" ng-model="vm.horaInicio"> <br>
+    <input class="form-control" name="hora-inicio" type="time" ng-model="vm.horaInicio" required> <br>
+    <div role="alert">
+      <span class="error" ng-show="vm.form.hora-inicio.$error.required">
+        Campo obrigatório</span>
+    </div>
+
     <label for="time"> Hora de Término </label>
-    <input class="form-control" type="time" ng-model="vm.horaFim"> <br>
+    <input class="form-control" name="hora-termino" type="time" ng-model="vm.horaFim" required> <br>
+    <div role="alert">
+      <span class="error" ng-show="vm.form.hora-termino.$error.required">
+        Campo obrigatório</span>
+    </div>
+
     <label for="local"> Local </label>
-    <textarea class="form-control" ng-model="vm.local"></textarea> <br>
+    <textarea class="form-control" name="local" ng-model="vm.local"></textarea> <br>
+
     <label for="dsç"> Descrição </label>
     <textarea class="form-control" ng-model="vm.descricao"></textarea> <br>
+
     <label for="qr"> Qrcode </label>
     <input class="form-control" type="text" ng-model="vm.QR"> <br>
+
     <label for="lt"> Latitude </label>
     <input class="form-control" type="text" ng-model="vm.latitude"> <br>
+
     <label for="lg"> Longitude</label>
     <input class="form-control" type="text" ng-model="vm.longitude"> <br>
+
     <br>
     <button class="btn btn-info" ng-click="vm.cadastrarEvento()" ng-disabled="vm.botao">OK</button>
+
   </form>
   <br><br>
 </div>
