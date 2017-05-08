@@ -26,12 +26,12 @@
                     .then(function (data) {
                         console.log(data);
 
-                        switch (data.id) {
+                        switch (data.id) { // definir erro pra cada campo
 
                             case 000:
                                 console.log("Login feito");
                                 console.log(data.body);
-                                $window.location.assign("#!/home")
+                                $window.location.assign("#!/home");
                                 break;
                             default:
                                 vm.mensagem = "Erro: " + $Respostas[data.id];

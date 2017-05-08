@@ -33,18 +33,19 @@
                     vm.latitude, vm.longitude)
                     .then(function (data) {
                         console.log(data);
-                        switch (data.id) {
+                        switch (data.id) { // definir erro pra cada campo
                             case 000:
                                 console.log(data.body + " " + data.evento_nome);
                                 vm.mensagem = "Evento criado";
-                                limpar();
+                                //limpar();
+                                $window.location.assign("#!/home");// deve ser página da lista de eventos depois
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Repostas[data.id];
                                 limpar();
                                 break;
                         }
-                    }); //then
+                    }); //end then
             }
         }
 

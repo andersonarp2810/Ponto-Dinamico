@@ -14,7 +14,8 @@
             //login
             "201": "Usuário não cadastrado",
             "202": "Senha ou usuário inválidos",
-            "203": "",
+            "203": "Campo(s) obrigatório(s) não preenchido",
+            "204": "MAC não cadastrado",
             //logado
             "301": "Relatório indisponível",
             "302": "Relatório inexistente",
