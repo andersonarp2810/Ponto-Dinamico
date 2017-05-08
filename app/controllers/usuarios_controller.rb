@@ -17,6 +17,7 @@ end
 def login
   usuario_request = Usuario.new(valid_request?)
   render json: Usuario.valida(usuario_request: usuario_request).to_json
+
 end
 
   # GET /usuarios
@@ -43,12 +44,16 @@ end
   # POST /usuarios
   # POST /usuarios.json
   def create
-    retorno = {body: "erro nos dados", status: false}    
+    retorno = {erro: "107", body: " "}     
     @usuario = Usuario.new(valid_request?)
-    if @usuario.valid
+    if @usuario.valid?
       if @usuario.save
-        retorno = {body: "Usuario cadastrado!", usuario_id: @usuario.id, usuario_nome: @usuario.nome, status: @usuario.status}
+        retorno = {erro: "000", body: {usuario_id: @usuario.id, usuario_nome: @usuario.nome, status: @usuario.status}}
       end
+    end
+    #verifica erros na inserção no banco
+    if @usuario.errors.any?
+      retorno = Usuario.verifica_erro(@usuario)
     end
     render json: retorno.to_json
   end
@@ -56,9 +61,9 @@ end
   # PATCH/PUT /usuarios/1
   # PATCH/PUT /usuarios/1.json
   def update    
-    retorno = {body: "Usuario não atualizado!"}
+    retorno = {erro: "322" ,body: ""}
       if @usuario.update(valid_request?)
-        retorno = {body: "Usuario atualizado!", evento_id: @usuario.id, usuario_nome: @usuario.nome}
+        retorno = {erro: "000", body: {evento_id: @usuario.id, usuario_nome: @usuario.nome}}
       end
     render json: retorno.to_json
   end
@@ -85,10 +90,11 @@ end
     end
 
     def valid_request?
-      json = params[:usuario]
-        JSON.parse(json.to_json)
-        usuario_params
-    rescue JSON::ParserError => e
-        return JSON.parse(json)
+        json = params[:usuario]
+        json = JSON.parse(json.to_json)
+        rescue JSON::ParserError => e
+          json = JSON.parse(json)
+          @status = json["status"]
+          json.except("status")
     end
 end
