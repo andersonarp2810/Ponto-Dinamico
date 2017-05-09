@@ -26,7 +26,7 @@
                     .then(function (data) {
                         console.log(data);
 
-                        switch (data.id) { // definir erro pra cada campo
+                        switch (data.erro) { // definir erro pra cada campo
 
                             case 000:
                                 console.log("Login feito");
@@ -34,18 +34,12 @@
                                 $window.location.assign("#!/home");
                                 break;
                             case 201:
-                                vm.mensagem = "Usuário não cadastrado";
                                 vm.login = '';
-                                break;
                             case 202:
-                                vm.mensagem = "Senha inválida";
                                 vm.senha = '';
                                 vm.ciphertext = '';
-                                break;
                             default:
-                                vm.mensagem = "Erro: " + $Respostas[data.id];
-                                limpar();
-                                break;
+                                vm.mensagem = "Erro: " + $Respostas[data.erro];
                         }
 
                     });//then

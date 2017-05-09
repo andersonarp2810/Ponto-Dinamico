@@ -23,7 +23,7 @@
 			else {
 				UserService.enviarUser(vm.name, vm.senha, vm.email, vm.matricula)
 					.then(function (data) {
-						switch (data.id) { // definir erro pra cada campo
+						switch (data.erro) { // definir erro pra cada campo
 							case 000:
 								console.log(data.body);
 								vm.mensagem = "Usuário criado";
@@ -31,17 +31,16 @@
 								$window.location.assign("#!/home");//deve redirecionar pra lista de usuários depois
 								break;
 							case 102:
-								break;
+								vm.name = '';
 							case 103:
-								break;
+								vm.senha = '';
+								vm.form.confirma = '';
 							case 104:
-								break;
+								vm.email = '';
 							case 105:
-								break;
+								vm.matricula = '';
 							default:
-								vm.mensagem = "Erro: " + $Respostas[data.id];
-								limpar();
-								break;
+								vm.mensagem = "Erro: " + $Respostas[data.erro];
 						}
 					}); // then
 			}

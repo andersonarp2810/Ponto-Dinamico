@@ -33,25 +33,19 @@
                     vm.latitude, vm.longitude)
                     .then(function (data) {
                         console.log(data);
-                        switch (data.id) { // definir erro pra cada campo
+                        switch (data.erro) { // definir erro pra cada campo
                             case 000:
-                                console.log(data.body + " " + data.evento_nome);
+                                console.log(data.body);
                                 vm.mensagem = "Evento criado";
                                 //limpar();
                                 $window.location.assign("#!/home");// deve ser página da lista de eventos depois
                                 break;
                             case 101:
-                                vm.mensagem = "Nome já cadastrado";
                                 vm.nome = '';
-                                break;
                             case 333:
-                                vm.mensagem = "Usuário logado não tem autorização; faça login com uma conta autorizada";
-                                break;
                             default:
-                                vm.mensagem = 'Erro: ' + $Repostas[data.id]; // talvez não venha se não vier resposta
+                                vm.mensagem = 'Erro: ' + $Repostas[data.erro]; // talvez não venha se não vier resposta
                                 console.log(data.status);
-                                limpar();
-                                break;
                         }
                     }); //end then
             }
