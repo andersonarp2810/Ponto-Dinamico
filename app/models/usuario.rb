@@ -19,20 +19,17 @@ enum status: { true: 0, false: 1 }
 		usuario_request = usuario[:usuario_request]
 		@usuario = Usuario.find_by(matricula: usuario_request.matricula)
 		if @usuario
-			if @usuario.mac == usuario_request.mac
-				erro=202
-				if @usuario.senha == usuario_request.senha
-					@usuario.update(status: 0)
-					#verifica que tipo de usuario(adm ou normal)
-					if @usuario.nivel == "usuario_normal"
-						ponto = ultimo_ponto(@usuario.id)
-						if ponto.nil?
-							return {erro: "000", body: {entrada: " ", saida: " ", data: " ", usuario_nome: @usuario.nome, id: @usuario.id, status: @usuario.status, matricula: @usuario.matricula}} 
-						end
-						return mensagem = {erro: "000", body: {entrada: ponto.hora_inicio.blank? ? " " : ponto.hora_inicio.to_s(:time), saida: ponto.hora_fim.blank? ? " " : ponto.hora_fim.to_s(:time), data: ponto.data.to_date, usuario_nome: @usuario.nome, id: @usuario.id, status: @usuario.status, matricula: @usuario.matricula}} 
-					else
-					#usuario adm
-						return {erro: "000", body: {usuario_id: @usuario.id, nome: @usuario.nome, status: @usuario.status}}
+			if @usuario.nivel == "usuario_adm"
+					if @usuario.senha == usuario_request.senha
+						@usuario.update(status: 0)
+						return mensgem = {erro: "000", body: {usuario_id: @usuario.id, nome: @usuario.nome, status: @usuario.status, matricula: @usuario.matricula}}
+					end
+			else
+				if @usuario.mac == usuario_request.mac
+					erro=202
+					if @usuario.senha == usuario_request.senha
+						@usuario.update(status: 0)
+						return mensgem = {erro: "000", body: {usuario_id: @usuario.id, nome: @usuario.nome, status: @usuario.status, matricula: @usuario.matricula}}
 					end
 				end
 			end
@@ -47,9 +44,9 @@ enum status: { true: 0, false: 1 }
 	end
 
 #realiza a pesquisa do evento do usuario que realizou a pesquisa
-	private
-		def self.ultimo_ponto(usuario_id)
-			retorno = UsuarioEvento.where(usuario_id: usuario_id).last
-		end
+	def self.ultimo_ponto(usuario_id)
+		retorno = UsuarioEvento.where(usuario_id: usuario_id).last
+		return mensagem = {erro: "000", body: {entrada: retorno.hora_inicio.blank? ? " " : retorno.hora_inicio.to_s(:time), saida: retorno.hora_fim.blank? ? " " : retorno.hora_fim.to_s(:time), data: retorno.data.to_date}} 
+	end
 
 end

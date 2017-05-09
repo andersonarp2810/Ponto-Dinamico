@@ -20,6 +20,12 @@ def login
 
 end
 
+  # GET /usuarios/
+  def ponto
+    usuario_request = Usuario.new(valid_request?)
+   Usuario.ultimo_ponto(usuario_request.id)
+  end
+  
   # GET /usuarios
   # GET /usuarios.json
   def index
