@@ -25,19 +25,16 @@
                 LoginService.enviarLogin(vm.login, vm.ciphertext)
                     .then(function (data) {
                         console.log(data);
-
+                        vm.mensagem = '';
                         switch (data.erro) { // definir erro pra cada campo
 
-                            case 000:
+                            case "000":
                                 console.log("Login feito");
                                 console.log(data.body);
-                                $window.location.assign("#!/home");
+                                $window.location.href = "#!/home/";
                                 break;
-                            case 201:
-                                vm.login = '';
-                            case 202:
+                            case "202":
                                 vm.senha = '';
-                                vm.ciphertext = '';
                             default:
                                 vm.mensagem = "Erro: " + $Respostas[data.erro];
                         }

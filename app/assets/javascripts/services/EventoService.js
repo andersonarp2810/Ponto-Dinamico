@@ -11,11 +11,11 @@
         function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, QR,
             latitude, longitude) {
 
-            url = $Rotas.cadastrarEvento;
+            url = $Rotas.evento;
             tipo = "evento";
 
             evento = {
-                usuario_id : 23,
+                usuario_id : 2,
                 nome: nome,
                 tipo: tipo,
                 data_inicio: dataInicio,

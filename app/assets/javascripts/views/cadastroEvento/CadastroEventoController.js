@@ -33,20 +33,22 @@
                     vm.latitude, vm.longitude)
                     .then(function (data) {
                         console.log(data);
+                        vm.mensagem = '';
                         switch (data.erro) { // definir erro pra cada campo
-                            case 000:
+                            case "000":
                                 console.log(data.body);
                                 vm.mensagem = "Evento criado";
                                 //limpar();
-                                $window.location.assign("#!/home");// deve ser página da lista de eventos depois
+                                $window.location.href = "#!/home/";// deve ser página da lista de eventos depois
                                 break;
-                            case 101:
+                            case "101":
                                 vm.nome = '';
-                            case 333:
+                            case "333":
                             default:
                                 vm.mensagem = 'Erro: ' + $Repostas[data.erro]; // talvez não venha se não vier resposta
                                 console.log(data.status);
-                        }
+                        } // end switch
+                        vm.botao = false;
                     }); //end then
             }
         }

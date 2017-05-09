@@ -12,8 +12,8 @@
             "106": "Confirmação de senha errada",
             "107": "Cadastro inválido",
             //login
-            "201": "Usuário não cadastrado",
-            "202": "Senha inválida",
+            "201": "Usuário ou senha inválido",
+            "202": "Usuário ou senha inválido",
             "203": "Campo(s) obrigatório(s) não preenchido",
             "204": "MAC não cadastrado",
             //logado
