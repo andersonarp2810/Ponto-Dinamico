@@ -40,9 +40,10 @@
                 function sucesso(response) {
                     console.log("resolve")
                     resposta.resolve(response.data);
-                }, function falha(response) {
+                }, function falha(erro) {
+                    response = { erro: erro.data, status: erro.status };
                     console.log("reject")
-                    resposta.reject(response.data);
+                    resposta.reject(response);
                 }
                 );
             console.log('resposta.promise');

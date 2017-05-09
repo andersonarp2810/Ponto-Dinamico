@@ -40,8 +40,16 @@
                                 //limpar();
                                 $window.location.assign("#!/home");// deve ser página da lista de eventos depois
                                 break;
+                            case 101:
+                                vm.mensagem = "Nome já cadastrado";
+                                vm.nome = '';
+                                break;
+                            case 333:
+                                vm.mensagem = "Usuário logado não tem autorização; faça login com uma conta autorizada";
+                                break;
                             default:
-                                vm.mensagem = 'Erro: ' + $Repostas[data.id];
+                                vm.mensagem = 'Erro: ' + $Repostas[data.id]; // talvez não venha se não vier resposta
+                                console.log(data.status);
                                 limpar();
                                 break;
                         }

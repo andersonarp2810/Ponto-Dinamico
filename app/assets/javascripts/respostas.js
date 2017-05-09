@@ -13,7 +13,7 @@
             "107": "Cadastro inválido",
             //login
             "201": "Usuário não cadastrado",
-            "202": "Senha ou usuário inválidos",
+            "202": "Senha inválida",
             "203": "Campo(s) obrigatório(s) não preenchido",
             "204": "MAC não cadastrado",
             //logado

@@ -30,6 +30,14 @@
 								//limpar();
 								$window.location.assign("#!/home");//deve redirecionar pra lista de usuários depois
 								break;
+							case 102:
+								break;
+							case 103:
+								break;
+							case 104:
+								break;
+							case 105:
+								break;
 							default:
 								vm.mensagem = "Erro: " + $Respostas[data.id];
 								limpar();

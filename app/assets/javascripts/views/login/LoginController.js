@@ -9,8 +9,8 @@
 
         vm = this;
 
-        vm.login = "login";
-        vm.senha = "senha";
+        vm.login;
+        vm.senha;
         vm.ciphertext;
         vm.logar = logar;
         vm.mensagem;
@@ -32,6 +32,15 @@
                                 console.log("Login feito");
                                 console.log(data.body);
                                 $window.location.assign("#!/home");
+                                break;
+                            case 201:
+                                vm.mensagem = "Usuário não cadastrado";
+                                vm.login = '';
+                                break;
+                            case 202:
+                                vm.mensagem = "Senha inválida";
+                                vm.senha = '';
+                                vm.ciphertext = '';
                                 break;
                             default:
                                 vm.mensagem = "Erro: " + $Respostas[data.id];
