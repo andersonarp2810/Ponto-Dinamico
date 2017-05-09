@@ -5,10 +5,11 @@ class EventosController < ApplicationController
 # POST /realizarponto
 def realizarponto 
   #cria o objeto em memoria
+  mensagem = {erro: "316", body: ""}
   evento_request = Evento.new(valid_request?)
   #verifica status do usuario
   if @status == "true"
-    mensagem = Evento.confirma_ponto(evento_request)
+    mensagem = Evento.confirma_ponto(evento_request,@usuario_id)
     end
   render json: mensagem.to_json
 end
@@ -36,14 +37,19 @@ end
   # POST /eventos
   # POST /eventos.json
   def create
-    retorno = {body: "evento não cadastrado"}
+   retorno = {erro: "333", body:""}
     @evento = Evento.new(valid_request?)
-    if @evento.valid?#valida evento antes de salvar
-      if @evento.save
-        retorno = {body: "evento cadastrado", evento_id: @evento.id, evento_nome: @evento.nome}
+    #verifica se usuario tem privilegio
+    if Evento.autentica_usuario(@usuario_id)
+      if @evento.valid?#valida evento antes de salvar
+        if @evento.save
+          retorno = {erro: "000", body:{evento_id: @evento.id, evento_nome: @evento.nome}}
+        end
+      elsif @evento.errors.any?
+        retorno = Evento.verifica_erro(@evento)
       end
     end
-    render json: retorno
+    render json: retorno.to_json
   end
 
   # PATCH/PUT /eventos/1
@@ -74,15 +80,17 @@ end
       params.require(:evento).permit(:nome, :tipo, :pessoa_evento, :data_inicio, :data_fim, :hora_inicio, :hora_fim, :local, :descricao, :qrcode, :localizacao_long, :localizacao_lati)
     end
 
-    def valid_request?
-        json = params[:evento]
-        JSON.parse(json.to_json)
-        @status = params[:evento][:status]
-        evento_params
-    rescue JSON::ParserError => e
-        all = JSON.parse(json)
-        @status = all["status"]        
-        return all.except("status")
+    def valid_request?     
+      json = params[:evento]
+      json = JSON.parse(json.to_json)
+      @status = json["status"]
+      @usuario_id = json["usuario_id"]
+      json.except("status", "usuario_id")
+      rescue JSON::ParserError => e
+        json = JSON.parse(json)
+        @status = json["status"]
+        @usuario_id = json["usuario_id"]
+        json.except("status","usuario_id")
     end
 
 end

@@ -15,16 +15,41 @@ enum status: { true: 0, false: 1 }
 
 	#valida login Usuario
 	def self.valida(usuario)
+		erro=201
 		usuario_request = usuario[:usuario_request]
 		@usuario = Usuario.find_by(matricula: usuario_request.matricula)
 		if @usuario
 			if @usuario.mac == usuario_request.mac
+				erro=202
 				if @usuario.senha == usuario_request.senha
 					@usuario.update(status: 0)
-					return mensagem = {usuario_nome: @usuario.nome, id: @usuario.id, status: @usuario.status, matricula: @usuario.matricula}#retorna id caso seja encontrado o usuario
+					#verifica que tipo de usuario(adm ou normal)
+					if @usuario.nivel == "usuario_normal"
+						ponto = ultimo_ponto(@usuario.id)
+						if ponto.nil?
+							return {erro: "000", body: {entrada: " ", saida: " ", data: " ", usuario_nome: @usuario.nome, id: @usuario.id, status: @usuario.status, matricula: @usuario.matricula}} 
+						end
+						return mensagem = {erro: "000", body: {entrada: ponto.hora_inicio.blank? ? " " : ponto.hora_inicio.to_s(:time), saida: ponto.hora_fim.blank? ? " " : ponto.hora_fim.to_s(:time), data: ponto.data.to_date, usuario_nome: @usuario.nome, id: @usuario.id, status: @usuario.status, matricula: @usuario.matricula}} 
+					else
+					#usuario adm
+						return {erro: "000", body: {usuario_id: @usuario.id, nome: @usuario.nome, status: @usuario.status}}
+					end
 				end
 			end
 		end
-	  mensagem = {body: "Login não realizado!", status: false}
+		{erro: erro, body: " "}
 	end
+#verifica os erros que aconteceram no banco e organiza
+	def self.verifica_erro(usuario)
+		usuario.errors.full_messages.each do |erro|
+			puts "teste erro#{erro}"
+		end
+	end
+
+#realiza a pesquisa do evento do usuario que realizou a pesquisa
+	private
+		def self.ultimo_ponto(usuario_id)
+			retorno = UsuarioEvento.where(usuario_id: usuario_id).last
+		end
+
 end
