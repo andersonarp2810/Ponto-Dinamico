@@ -1,14 +1,23 @@
 <body ng-app="pdApp" ng-style="{'background-image': 'url(/assets/fundo.jpg)'}" 'no-repeat center center fixed' 'background-size':'10%'>
-  <h1>
-    <a href="#!/cadastrarEvento/">/cadastrarEvento</a>
-    <a href="#!/home/">/home</a>
-    <a href="#!/login/">/login</a>
-    <a href="#!/cadastrarUser/">/cadastrarUser</a>
-  </h1>
-  <br>
-  <div style="text-align: center;">
-    <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação">
+  
+ 
+  
+   <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#!/home/">Ponto Dinâmico</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#!/home/">Home</a></li>
+      <li><a href="#!/cadastrarEvento/">Cadastrar Evento</a></li>
+      <li><a href="#!/cadastrarUser/">Cadastrar Usuário</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      <li><a href="#!/login/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    </ul>
   </div>
-  <br>
+</nav>
+
   <ui-view></ui-view>
 </body>

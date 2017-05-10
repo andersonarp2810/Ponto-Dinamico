@@ -1,4 +1,7 @@
-<div class="container " style="position:relative;transform: translate(0%, 0%); width:25%;top:5%; ">
+
+
+
+<div class="container " style="position:relative;transform: translate(0%, 0%); width:30%;top:5%; background-color:aliceblue">
 	<div class="form-group form-group-sm">
 		<form name="vm.form">
 			<div style="text-align: center; font-family: inherit;">
@@ -10,7 +13,7 @@
 			</div>
 			<div role="alert">
 				<span class="error" ng-show="vm.form.user.$error.required">
-       			Campo obrigatório</span>
+       			(Campo obrigatório)</span>
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-sm-8 control-label" for="formGroupInputSmall">Escolha uma senha</label>
@@ -18,7 +21,7 @@
 			</div>
 			<div role="alert">
 				<span class="error" ng-show="vm.form.senha.$error.required">
-					Campo obrigatório</span>
+					(Campo obrigatório)</span>
 				<span class="error" ng-show="vm.form.senha.$error.minlength">
 					A senha deve conter no mínimo 5 caracteres</span>
 			</div>
@@ -28,7 +31,7 @@
 			</div>
 			<div role="alert">
 				<span class="error" ng-show="vm.form.confirma.$error.required">
-					Campo obrigatório</span>
+					(Campo obrigatório)</span>
 				<span class="error" ng-show="vm.form.confirma.$error.match">
 					As senhas não correspondem</span>
 			</div>
@@ -38,7 +41,7 @@
 			</div>
 			<div role="alert">
 				<span class="error" ng-show="vm.form.matricula.$error.required">
-       			Campo obrigatório</span>
+       			(Campo obrigatório)</span>
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-sm-5 control-label" for="formGroupInputSmall">E-mail</label>
@@ -46,7 +49,7 @@
 			</div>
 			<div role="alert">
 				<span class="error" ng-show="vm.form.imei.$error.required">
-       			Campo obrigatório</span>
+       			(Campo obrigatório)</span>
 			</div>
 		</form>
 		<div style="text-align-last: right">
