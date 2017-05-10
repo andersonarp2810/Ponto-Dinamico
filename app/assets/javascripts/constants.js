@@ -9,6 +9,7 @@
             "user": "cadastrarusuario"
         })
         .constant("$Estados", {
+            "auth": "auth",
             "evento": "cadastrarEvento",
             "home": "home",
             "login": "login",

@@ -1,5 +1,6 @@
 angular.module('pdApp', [
     'ui.router',
-    'templates'
+    'templates',
+    'Devise'
 ]);
 
