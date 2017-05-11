@@ -47,7 +47,12 @@ enum status: { true: 0, false: 1 }
 #realiza a pesquisa do evento do usuario que realizou a pesquisa
 	def self.ultimo_ponto(usuario_id)
 		retorno = UsuarioEvento.where(usuario_id: usuario_id).last
-		return mensagem = {erro: "000", body: {entrada: retorno.hora_inicio.blank? ? " " : retorno.hora_inicio.to_s(:time), saida: retorno.hora_fim.blank? ? " " : retorno.hora_fim.to_s(:time), data: retorno.data.to_date}} 
+		if retorno.blank?
+			return mensagem = {erro: "000", body: {entrada: " ", saida: " ", data: " "}} 	
+		else
+			return mensagem = {erro: "000", body: {entrada: retorno.hora_inicio.blank? ? " " : retorno.hora_inicio.to_s(:time), saida: retorno.hora_fim.blank? ? " " : retorno.hora_fim.to_s(:time), data: retorno.data.to_date}} 
+		end
+
 	end
 
 #realiza logout
