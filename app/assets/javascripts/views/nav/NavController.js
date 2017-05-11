@@ -12,10 +12,7 @@
         navVM.signedIn = Auth.isAuthenticated;
 
         Auth.currentUser().then(function (user) {
-            navVM.user = user;
-        });
-
-        $scope.$on('devise:new-registration', function (e, user) {
+            console.log(user);
             navVM.user = user;
         });
 

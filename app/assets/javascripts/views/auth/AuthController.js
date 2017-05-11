@@ -11,12 +11,14 @@
         authVM.register = register;
 
         function login() {
+            navVM.user.password = SHA_256(navVM.user.password);
             Auth.login(navVM.user).then(function () {
                 $state.go($Estados.home);
             });
         }
 
         function register() {
+            navVM.user.password = SHA_256(navVM.user.password);
             Auth.register(navVM.user).then(function () {
                 $state.go($Estados.home);
             });
