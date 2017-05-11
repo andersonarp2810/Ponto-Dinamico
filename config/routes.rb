@@ -6,13 +6,15 @@ Rails.application.routes.draw do
 #rota raiz
 root "application#angular"
 #rota para logout usuario via post
-  match 'logout', to: 'usuarios#logout', via: [:post]
+  match 'logout/:id', to: 'usuarios#logout', via: [:get]
 #rota para cadastrar usuario via post
   match 'cadastrarusuario', to: 'usuarios#create', via: [:post]
 #rota para login usuario via post
   match 'login', to: 'usuarios#login', via: [:post]
 #rota para realizar o ponto
   match 'realizarponto', to: 'eventos#realizarponto', via: [:post]
+#rota get ultimo ponto
+  match 'getponto/:id', to: 'usuarios#get_ponto', via: [:get]
 #rota cadastrar eventos
   match 'cadastrarevento', to: 'eventos#create', via: [:post]
 

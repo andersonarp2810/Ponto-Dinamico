@@ -4,13 +4,7 @@ class UsuariosController < ApplicationController
 
 #POST /logout
 def logout
-  mensagem = {body: 'erro nos dados'}
-  usuario_request = Usuario.new(valid_request?)
-  @usuario = Usuario.find_by(matricula: usuario_request.matricula)
-  if @usuario.update(status: "false")
-    mensagem = {body: "Usuario exit", status: @usuario.status}
-  end
-  render json: mensagem.to_json
+  render json: Usuario.logout(params[:id]).to_json
 end
 
 # POST /login.json
@@ -20,6 +14,11 @@ def login
 
 end
 
+  # GET /usuarios/1
+  def get_ponto
+   render json: Usuario.ultimo_ponto(params[:id]).to_json
+  end
+  
   # GET /usuarios
   # GET /usuarios.json
   def index

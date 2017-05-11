@@ -19,20 +19,19 @@ enum status: { true: 0, false: 1 }
 		usuario_request = usuario[:usuario_request]
 		@usuario = Usuario.find_by(matricula: usuario_request.matricula)
 		if @usuario
-			if @usuario.mac == usuario_request.mac
-				erro=202
-				if @usuario.senha == usuario_request.senha
-					@usuario.update(status: 0)
-					#verifica que tipo de usuario(adm ou normal)
-					if @usuario.nivel == "usuario_normal"
-						ponto = ultimo_ponto(@usuario.id)
-						if ponto.nil?
-							return {erro: "000", body: {entrada: " ", saida: " ", data: " ", usuario_nome: @usuario.nome, id: @usuario.id, status: @usuario.status, matricula: @usuario.matricula}} 
-						end
-						return mensagem = {erro: "000", body: {entrada: ponto.hora_inicio.blank? ? " " : ponto.hora_inicio.to_s(:time), saida: ponto.hora_fim.blank? ? " " : ponto.hora_fim.to_s(:time), data: ponto.data.to_date, usuario_nome: @usuario.nome, id: @usuario.id, status: @usuario.status, matricula: @usuario.matricula}} 
-					else
-					#usuario adm
-						return {erro: "000", body: {usuario_id: @usuario.id, nome: @usuario.nome, status: @usuario.status}}
+			if @usuario.nivel == "usuario_adm"
+					erro = 202
+					if @usuario.senha == usuario_request.senha
+						@usuario.update(status: 0)
+						return mensgem = {erro: "000", body: {usuario_id: @usuario.id, nome: @usuario.nome, status: @usuario.status, matricula: @usuario.matricula}}
+					end
+			else
+				erro = 204
+				if @usuario.mac == usuario_request.mac
+					erro=202
+					if @usuario.senha == usuario_request.senha
+						@usuario.update(status: 0)
+						return mensgem = {erro: "000", body: {usuario_id: @usuario.id, nome: @usuario.nome, status: @usuario.status, matricula: @usuario.matricula}}
 					end
 				end
 			end
@@ -41,15 +40,34 @@ enum status: { true: 0, false: 1 }
 	end
 #verifica os erros que aconteceram no banco e organiza
 	def self.verifica_erro(usuario)
-		usuario.errors.full_messages.each do |erro|
-			puts "teste erro#{erro}"
-		end
+		usuario.errors
+		return {erro: usuario.errors.first[1], body: " "}
 	end
 
 #realiza a pesquisa do evento do usuario que realizou a pesquisa
-	private
-		def self.ultimo_ponto(usuario_id)
-			retorno = UsuarioEvento.where(usuario_id: usuario_id).last
+	def self.ultimo_ponto(usuario_id)
+		retorno = UsuarioEvento.where(usuario_id: usuario_id).last
+		if retorno.blank?
+			return mensagem = {erro: "000", body: {entrada: " ", saida: " ", data: " "}} 	
+		else
+			return mensagem = {erro: "000", body: {entrada: retorno.hora_inicio.blank? ? " " : retorno.hora_inicio.to_s(:time), saida: retorno.hora_fim.blank? ? " " : retorno.hora_fim.to_s(:time), data: retorno.data.to_date}} 
 		end
 
+	end
+
+#realiza logout
+	def self.logout(usuario_id)
+		usuario = Usuario.find_by(id: usuario_id)
+		if usuario
+			usuario.update(status: "false")
+			return {erro: "000", body:" "}
+		end
+	end
+
+#protocolo de erro pra campos ja em uso
+	private
+		def protocolo_em_uso(nome)
+			protocolo = {"matricula": 105, "nome": 102, "email": 105}.to_json
+			puts protocolo[:nome]
+		end
 end
