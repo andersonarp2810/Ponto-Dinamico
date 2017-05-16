@@ -1,10 +1,10 @@
 <div class="collapse navbar-collapse pull-right" ng-controller="NavController as navVM">
     <ul class="nav navbar-nav">
-        <li><a href="#!/cadastrarEvento/">/cadastrarEvento</a></li>
-        <li><a href="#!/home/">/home</a></li>
-        <li><a href="#!/login/">/login</a></li>
-        <li><a href="#!/cadastrarUser/">/cadastrarUser</a></li>
-        <li><a href="#!/">{{ navVM.token.nome }}</a></li>
-        <li><a ng-click="navVM.teste()">Log Out</a></li>
+        <li ng-show="navVM.token.nome"><a href="#!/cadastrarEvento/">/cadastrarEvento</a></li>
+        <li ng-show="navVM.token.nome"><a href="#!/home/">/home</a></li>
+        <li ng-hide="navVM.token.nome"><a href="#!/login/">/login</a></li>
+        <li ng-show="navVM.token.nome"><a href="#!/cadastrarUser/">/cadastrarUser</a></li>
+        <li ng-show="navVM.token.nome"><a href="#!/">{{ navVM.token.nome }}</a></li>
+        <li ng-show="navVM.token.nome"><a ng-click="navVM.logout()">Log Out</a></li>
     </ul>
 </div>

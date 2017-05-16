@@ -1,5 +1,9 @@
 (function () {
     angular
         .module('pdApp')
-        .value('token', { nome: 'vazio' });
+        .value('token',
+        {
+            nome: '',
+            id: ''
+        });
 })();

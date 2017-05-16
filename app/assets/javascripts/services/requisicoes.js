@@ -32,7 +32,7 @@
             resposta = $q.defer();
             da = {};
             da[tipo] = dados;
-            da[id] = escopo.token;
+            //da[id] = escopo.token;
             $http({
                 method: "POST",
                 url: url,

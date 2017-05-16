@@ -3,16 +3,17 @@
         .module('pdApp')
         .controller('NavController', NavController);
 
-    NavController.$inject = ['token', '$scope'];
+    NavController.$inject = ['token', '$window'];
 
-    function NavController(token, $scope) {
+    function NavController(token, $window) {
         var navVM = this;
-        navVM.user;
+        navVM.logout = logout;
         navVM.token = token;
-        navVM.teste = teste;
 
-        function teste() {
-            console.log(token);
+        function logout() {
+            navVM.token.id = '';
+            navVM.token.nome = '';
+            $window.location.href = "#!/login/";
         }
     }
 })();

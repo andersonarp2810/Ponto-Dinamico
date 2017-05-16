@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('CadastroEventoController', CadastroEventoController);
 
-    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', '$Respostas', '$window'];
+    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'token', '$Respostas', '$window'];
 
-    function CadastroEventoController($scope, $log, EventoService, $Repostas, $window) {
+    function CadastroEventoController($scope, $log, EventoService, token, $Repostas, $window) {
         var vm = this; //view model
         vm.botao = false;
         vm.cadastrarEvento = cadastrarEvento;
@@ -21,6 +21,7 @@
         vm.nome;
         vm.QR;
         vm.tipo;
+        vm.token = token;
 
         function cadastrarEvento() {
             if (vm.form.$invalid) {
@@ -74,5 +75,13 @@
             $log.info('vm.horaFim is now %s', current);
         });
 
+        var init = function () {
+            if (vm.token.nome == '') {
+                console.log("faça login");
+                $window.location.href = "#!/login/";
+            }
+        }
+
+        init();
     }
 })();

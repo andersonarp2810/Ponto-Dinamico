@@ -3,9 +3,9 @@
 		.module('pdApp')
 		.controller("CadastroUserController", CadastroUserController);
 
-	CadastroUserController.$inject = ['UserService', '$Respostas'];
+	CadastroUserController.$inject = ['UserService', 'token', '$Respostas', '$window'];
 
-	function CadastroUserController(UserService, $Respostas) {
+	function CadastroUserController(UserService, token, $Respostas, $window) {
 
 		var vm = this;
 
@@ -15,6 +15,8 @@
 		vm.matricula = "";
 		vm.cadastrarUsuario = cadastrarUsuario;
 		vm.mensagem;
+		vm.token = token;
+
 
 		function cadastrarUsuario() {
 			if (vm.form.$invalid) {
@@ -53,5 +55,14 @@
 			vm.email = '';
 			vm.matricula = '';
 		}
-	};
+
+		var init = function () {
+			if (vm.token.nome == '') {
+				console.log("faça login");
+				$window.location.href = "#!/login/";
+			}
+		}
+
+		init();
+	}
 })();

@@ -20,7 +20,9 @@
         function teste() {
             console.log(vm.token);
             vm.token.nome = 'Jairo';
+            vm.token.id = 1;
             console.log(vm.token);
+            $window.location.href = "#!/home/";
         }
 
         function logar() {
@@ -39,7 +41,8 @@
                             case "000":
                                 console.log("Login feito");
                                 console.log(data.body);
-                                navVM.user = data.user;
+                                navVM.token.id = data.user.id;
+                                navVM.token.nome = data.user.nome;
                                 $window.location.href = "#!/home/";
                                 break;
                             case "202":
