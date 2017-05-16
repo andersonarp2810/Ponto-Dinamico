@@ -3,13 +3,15 @@
         .module('pdApp')
         .controller('HomeController', HomeController);
 
-    function HomeController() {
+    HomeController.$inject = ['token'];
+    function HomeController(token) {
         // por enquanto não faz nada mas a página home é útil e aqui deve ter o logout
-        var vm = this;
-        vm.logout = logout;
+        var homeVM = this;
+        homeVM.logout = logout;
+        homeVM.token = token;
 
-        function logout(){
-            
+        function logout() {
+            homeVM.token = '';
         }
     }
 })()

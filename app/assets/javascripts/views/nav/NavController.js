@@ -3,25 +3,16 @@
         .module('pdApp')
         .controller('NavController', NavController);
 
-    NavController.$inject = ['Auth', '$scope'];
+    NavController.$inject = ['token', '$scope'];
 
-    function NavController(Auth, $scope) {
+    function NavController(token, $scope) {
         var navVM = this;
-        navVM.logout = Auth.logout;
         navVM.user;
-        navVM.signedIn = Auth.isAuthenticated;
+        navVM.token = token;
+        navVM.teste = teste;
 
-        Auth.currentUser().then(function (user) {
-            console.log(user);
-            navVM.user = user;
-        });
-
-        $scope.$on('devise:login', function (e, user) {
-            navVM.user = user;
-        });
-
-        $scope.$on('devise:logout', function (e, user) {
-            navVM.user = {};
-        });
+        function teste() {
+            console.log(token);
+        }
     }
-})()
+})();

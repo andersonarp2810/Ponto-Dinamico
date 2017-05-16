@@ -3,13 +3,14 @@
         .module('pdApp')
         .service('Requisicoes', Requisicoes);
 
-    Requisicoes.$inject = ['$http', '$q', '$IP'];
+    Requisicoes.$inject = ['token', '$http', '$q', '$IP'];
 
-    function Requisicoes($http, $q, $IP) {
+    function Requisicoes(token, $http, $q, $IP) {
 
         var escopo = this;
         escopo.get = get;
         escopo.post = post;
+        escopo.token = token;
 
         function get(url) {
             resposta = $q.defer();
@@ -31,6 +32,7 @@
             resposta = $q.defer();
             da = {};
             da[tipo] = dados;
+            da[id] = escopo.token;
             $http({
                 method: "POST",
                 url: url,

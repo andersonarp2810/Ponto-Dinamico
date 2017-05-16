@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['LoginService', '$Respostas', '$window'];
+    LoginController.$inject = ['LoginService', 'token', '$Respostas', '$window'];
 
-    function LoginController(LoginService, $Respostas, $window) {
+    function LoginController(LoginService, token, $Respostas, $window) {
 
         vm = this;
 
@@ -14,6 +14,14 @@
         vm.ciphertext;
         vm.logar = logar;
         vm.mensagem;
+        vm.token = token;
+        vm.teste = teste;
+
+        function teste() {
+            console.log(vm.token);
+            vm.token.nome = 'Jairo';
+            console.log(vm.token);
+        }
 
         function logar() {
             if (vm.form.$invalid) {
@@ -31,12 +39,16 @@
                             case "000":
                                 console.log("Login feito");
                                 console.log(data.body);
+                                navVM.user = data.user;
                                 $window.location.href = "#!/home/";
                                 break;
                             case "202":
                                 vm.senha = '';
+                                vm.mensagem = "Erro: " + $Respostas[data.erro];
+                                break;
                             default:
                                 vm.mensagem = "Erro: " + $Respostas[data.erro];
+                                break;
                         }
 
                     });//then
