@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 #rota raiz
   root "application#angular"
 #rota para logout usuario via post
-  match 'logout/:id', to: 'user_sessions#destroy', via: [:delete]
+  match 'logout', to: 'user_sessions#destroy', via: [:delete]
 #rota para cadastrar usuario via post
   match 'cadastrarusuario', to: 'usuarios#create', via: [:post]
 #rota para login usuario via post
