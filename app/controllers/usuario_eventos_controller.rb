@@ -1,5 +1,6 @@
 class UsuarioEventosController < ApplicationController
   before_action :set_usuario_evento, only: [:show, :edit, :update, :destroy]
+  before_action :require_authentication, only: [:show, :edit, :update, :destroy]
 
   #metodo retorna ultimo ponto realizado
   def find_by_last
