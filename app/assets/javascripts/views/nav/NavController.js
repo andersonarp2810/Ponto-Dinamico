@@ -3,17 +3,28 @@
         .module('pdApp')
         .controller('NavController', NavController);
 
-    NavController.$inject = ['token', '$window'];
+    NavController.$inject = ['sessao', '$cookies', '$window'];
 
-    function NavController(token, $window) {
+    function NavController(sessao, $cookies, $window) {
         var navVM = this;
-        navVM.logout = logout;
-        navVM.token = token;
+        navVM.sair = sair;
+        navVM.sessao = sessao;
 
-        function logout() {
-            navVM.token.id = '';
-            navVM.token.nome = '';
+        function sair() {
+            navVM.sessao.id = '';
+            navVM.sessao.nome = '';
+            $cookies.remove('sessao_pd_id');
+            $cookies.remove('sessao_pd_nome');
             $window.location.href = "#!/login/";
         }
+
+        var init = function () {
+            navVM.sessao.id = $cookies.get('sessao_pd_id');
+            if ("undefined" != typeof navVM.sessao.id) {
+                navVM.sessao.nome = $cookies.get('sessao_pd_nome');
+            }
+        }
+
+        init();
     }
 })();

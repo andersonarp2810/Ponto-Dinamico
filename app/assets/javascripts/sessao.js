@@ -1,7 +1,7 @@
 (function () {
     angular
         .module('pdApp')
-        .value('token',
+        .value('sessao',
         {
             nome: '',
             id: ''

@@ -4,6 +4,7 @@
         .constant("$Rotas", {
             "evento": "cadastrarevento",
             "login": "login",
+            "logout": "logout",
             "qrs": "",
             "relatorio": "",
             "user": "cadastrarusuario"

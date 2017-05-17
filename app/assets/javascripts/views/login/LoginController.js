@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['LoginService', 'token', '$Respostas', '$window'];
+    LoginController.$inject = ['LoginService', 'sessao', '$cookies', '$Respostas', '$window'];
 
-    function LoginController(LoginService, token, $Respostas, $window) {
+    function LoginController(LoginService, sessao, $cookies, $Respostas, $window) {
 
         vm = this;
 
@@ -14,14 +14,16 @@
         vm.ciphertext;
         vm.logar = logar;
         vm.mensagem;
-        vm.token = token;
+        vm.sessao = sessao;
         vm.teste = teste;
 
         function teste() {
-            console.log(vm.token);
-            vm.token.nome = 'Jairo';
-            vm.token.id = 1;
-            console.log(vm.token);
+            console.log($cookies.get('sessao_pd_id'));
+            console.log($cookies.get('sessao_pd_nome'));
+            $cookies.put('sessao_pd_id', 1);
+            $cookies.put('sessao_pd_nome', "Caba");
+            vm.sessao.id = $cookies.get('sessao_pd_id');
+            vm.sessao.nome = $cookies.get('sessao_pd_nome');
             $window.location.href = "#!/home/";
         }
 
@@ -41,8 +43,11 @@
                             case "000":
                                 console.log("Login feito");
                                 console.log(data.body);
-                                navVM.token.id = data.user.id;
-                                navVM.token.nome = data.user.nome;
+                                //cookiar
+                                vm.sessao.id = data.body.usuario_id;
+                                $cookies.put('sessao_pd_id', vm.sessao.id);
+                                vm.sessao.nome = vm.login;
+                                $cookies.put('sessao_pd_nome', vm.login);
                                 $window.location.href = "#!/home/";
                                 break;
                             case "202":
@@ -63,5 +68,16 @@
             vm.senha = '';
             vm.ciphertext = '';
         }
+
+        var init = function () {
+            vm.sessao.id = $cookies.get('sessao_pd_id');
+            if ("undefined" != typeof vm.sessao.id) {
+                console.log(vm.sessao);
+                $window.location.href = "#!/home/";
+            }
+        }
+
+        init();
+
     };
 })();
