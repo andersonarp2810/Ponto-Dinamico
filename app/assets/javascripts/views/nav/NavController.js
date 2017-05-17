@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('NavController', NavController);
 
-    NavController.$inject = ['sessao', '$cookies', '$window'];
+    NavController.$inject = ['LoginService', 'sessao', '$cookies', '$window'];
 
-    function NavController(sessao, $cookies, $window) {
+    function NavController(LoginService, sessao, $cookies, $window) {
         var navVM = this;
         navVM.sair = sair;
         navVM.sessao = sessao;
@@ -15,6 +15,7 @@
             navVM.sessao.nome = '';
             $cookies.remove('sessao_pd_id');
             $cookies.remove('sessao_pd_nome');
+            LoginService.logout(navVM.sessao.id);
             $window.location.href = "#!/login/";
         }
 

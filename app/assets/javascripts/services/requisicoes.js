@@ -8,7 +8,7 @@
     function Requisicoes(sessao, $http, $q, $IP) {
 
         var escopo = this;
-        escopo.delete = del;
+        escopo.del = del;
         escopo.get = get;
         escopo.post = post;
         escopo.sessao = sessao;
