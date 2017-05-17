@@ -9,6 +9,7 @@
 
         var escopo = this;
         escopo.del = del;
+        escopo.destroy = destroy;
         escopo.get = get;
         escopo.post = post;
         escopo.sessao = sessao;
@@ -32,6 +33,7 @@
             console.log(`${url}`);
             resposta = $q.defer();
             da = {};
+            da['id'] = escopo.sessao.id;
             da[tipo] = dados;
             //da[id] = escopo.sessao;
             $http({
@@ -59,6 +61,34 @@
             console.log(`${url}`);
             resposta = $q.defer();
             da = {};
+            da[tipo] = dados;
+            //da[id] = escopo.sessao;
+            $http({
+                method: "DELETE",
+                url: url,
+                data: da,  // um objeto
+                headers: { 'Content-Type': 'application/json' }
+            }).then(
+                function sucesso(response) {
+                    console.log("resolve")
+                    resposta.resolve(response.data);
+                }, function falha(erro) {
+                    response = { erro: erro.data, status: erro.status };
+                    console.log("reject")
+                    resposta.reject(response);
+                }
+                );
+            console.log('resposta.promise');
+            console.log(resposta.promise);
+            return resposta.promise;
+        }
+
+        function destroy(url, dados, tipo) {
+            rl = $IP + url;
+            console.log(`${url}`);
+            resposta = $q.defer();
+            da = {};
+            da['id'] = escopo.sessao.id;
             da[tipo] = dados;
             //da[id] = escopo.sessao;
             $http({

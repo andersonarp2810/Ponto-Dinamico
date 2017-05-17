@@ -42,12 +42,16 @@
                                 //limpar();
                                 $window.location.href = "#!/home/";// deve ser página da lista de eventos depois
                                 break;
-                            case "101":
-                                vm.nome = '';
-                            case "333":
                             default:
-                                vm.mensagem = 'Erro: ' + $Repostas[data.erro]; // talvez não venha se não vier resposta
+                                vm.mensagem = 'Erro: ' + $Repostas[data.erro];
                                 console.log(data.status);
+                                switch (data.erro) {
+                                    case "102":
+                                        vm.nome = '';
+                                    case "333":
+                                    //deslogar
+                                }
+                                break;
                         } // end switch
                         vm.botao = false;
                     }); //end then
