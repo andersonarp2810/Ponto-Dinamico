@@ -22,6 +22,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
+   def can_change
+      unless user_signed_in? && current_user == user
+        reder json: {err: 501, body:" "}.to_json
+      end
+    end
+
+    def user
+      @usuario ||= Usuario.find(params[:id])
+    end
+
   def angular
     render 'front/index'
   end
