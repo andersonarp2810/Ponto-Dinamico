@@ -1,7 +1,8 @@
 class EventosController < ApplicationController
   before_action :set_evento, only: [:show, :edit, :update, :destroy]
-  before_action :require_authentication, only: [:show, :edit, :update, :destroy, :index, :create, :realizarponto]
+  before_action :require_authentication, only: [:show, :edit, :update, :destroy, :index, :create]
   skip_before_action :verify_authenticity_token
+  before_action :can_change, only: [:create, :update, :destroy, :new, :edit]
 
 # POST /realizarponto
 def realizarponto 
@@ -92,6 +93,16 @@ end
         @status = json["status"]
         @usuario_id = json["usuario_id"]
         json.except("status","usuario_id")
+    end
+
+    def can_change
+      unless user_signed_in? && current_user == user
+        redirect_to eventos_path(params[:id])
+      end
+    end
+
+    def user
+      @usuario ||= Usuario.find(params[:id])
     end
 
 end
