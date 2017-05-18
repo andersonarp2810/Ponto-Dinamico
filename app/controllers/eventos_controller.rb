@@ -95,14 +95,4 @@ end
         json.except("status","usuario_id")
     end
 
-    def can_change
-      unless user_signed_in? && current_user == user
-        redirect_to eventos_path(params[:id])
-      end
-    end
-
-    def user
-      @usuario ||= Usuario.find(params[:id])
-    end
-
 end
