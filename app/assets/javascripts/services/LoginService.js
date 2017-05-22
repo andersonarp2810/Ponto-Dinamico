@@ -29,7 +29,7 @@
             dados = {
                 id: id
             }
-            return Requisicoes.del(url, dados, tipo);
+            return Requisicoes.destroy(url, dados, tipo);
         }
 
     };
