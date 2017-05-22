@@ -8,10 +8,10 @@
     function Requisicoes(sessao, $http, $q, $IP) {
 
         var escopo = this;
-        escopo.del = del;
         escopo.destroy = destroy;
         escopo.get = get;
         escopo.post = post;
+        escopo.put = put;
         escopo.sessao = sessao;
 
         function destroy(url, dados, tipo) {
