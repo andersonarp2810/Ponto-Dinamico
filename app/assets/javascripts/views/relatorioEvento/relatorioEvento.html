@@ -1,52 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <title>Tela de Relatório</title>
-</head>
-<body>
-    
 <div class="container">
-	<div class="row">
-<br /><br />
-<form id="togglingForm" method="post" class="form-horizontal">
-    <div class="form-group">
+  <div class="row">
+    <br /><br />
+    <form id="togglingForm" method="post" class="form-horizontal">
+      <div class="form-group">
         <div class="col-xs-9">
-            <input type="text" class="form-control" name="company"
-                   required data-fv-notempty-message="The company name is required" /> <br />
-                   
-            <label class="radio-inline">Buscar por </label>  
-            <label class="radio-inline">
+          <input type="text" class="form-control" name="company" required data-fv-notempty-message="The company name is required" />          <br />
+
+          <label class="radio-inline">Buscar por </label>
+          <label class="radio-inline">
                 <input type="radio" name="rating" value="terrible" checked='checked' /> Nome do Evento
             </label>
-            <label class="radio-inline">
+          <label class="radio-inline">
                 <input type="radio" name="rating" value="terrible" /> Data
             </label>
-            
-            
-    
-                  
+
+
+
+
         </div>
-     
+
         <div class="col-xs-2">
-            <button type="button" class="btn btn-success" data-toggle="#jobInfo">Buscar</button>
+          <button type="button" class="btn btn-success" data-toggle="#jobInfo">Buscar</button>
         </div>
-    </div>
-</form>
+      </div>
+    </form>
 
 
 
 
-	</div>
+  </div>
 </div>
 <div class="container">
   <h2>Resultado</h2>
-  <p>Informações :</p>                                                            
+  <p>Informações :</p>
   <table class="table">
     <thead>
       <tr>
@@ -59,7 +45,7 @@
         <td>1</td>
         <td>Wally</td>
       </tr>
-     <tr>
+      <tr>
         <td>2</td>
         <td>wally2</td>
       </tr>
@@ -68,7 +54,5 @@
         <td>wally3</td>
       </tr>
     </tbody>
-   </table>
+  </table>
 </div>
-</body>
-</html>
