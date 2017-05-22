@@ -28,6 +28,18 @@
                 templateUrl: "views/cadastroUser/cadastroadm.html",
                 controller: "CadastroUserController",
                 controllerAs: "vm"
+            })
+            .state($Estados.userRelat,{
+                url: '/relatorioUser',
+                templateUrl: "views/relatorioUser/relatorioUser.html",
+                controller: "RelatorioUserController",
+                controllerAs: "vm"
+            })
+            .state($Estados.eventoRelat,{
+                url: '/relatorioEvento',
+                templateUrl: "views/relatorioEvento/relatorioEvento.html",
+                controller: "RelatorioEventoController",
+                controllerAs: "vm"
             });
     };
 
