@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="row">
+    <br>
+    <br>
+    <form name="vm.form" class="form-horizontal">
+      <div class="form-group">
+        <div class="col-xs-9">
+          <input type="text" class="form-control" ng-model="vm.search" placeholder="Nome ou Número de Matrícula">
+          <br>
+          <label class="radio-inline">Buscar por </label>
+          <label class="radio-inline">
+                <input type="radio" ng-model="vm.radio" value="nome" checked='checked'> Nome
+            </label>
+          <label class="radio-inline">
+                <input type="radio" ng-model="vm.radio" value="matricula"> Número da matrícula
+            </label>
+        </div>
+        <div class="col-xs-2">
+          <button type="button" class="btn btn-success" ng-click="vm.buscar()">Buscar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="container">
+  <h2>Resultado</h2>
+  <p>Informações :</p>
+  <table class="table">
+    <thead>
+      <tr class="info">
+        <th>NúmeroM</th>
+        <th>Nome</th>
+      </tr>
+    </thead>
+    <tbody>
+      <div ng-repeat="user in vm.users">
+        <tr>
+          <td>{{user.id}}</td>
+          <td>{{user.nome>></td>
+          <td>{{user.matricula}}</td>
+        </tr>
+      </div>
+    </tbody>
+  </table>
+</div>

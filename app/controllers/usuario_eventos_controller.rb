@@ -1,5 +1,7 @@
 class UsuarioEventosController < ApplicationController
   before_action :set_usuario_evento, only: [:show, :edit, :update, :destroy]
+  #before_action :require_authentication, only: [:show, :edit, :update, :destroy, :create]
+  before_action :can_change, only: [:edit, :update, :destroy, :index]
 
   #metodo retorna ultimo ponto realizado
   def find_by_last
@@ -77,5 +79,15 @@ class UsuarioEventosController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def usuario_evento_params
       params.require(:usuario_evento).permit(:data, :mensagem, :hora_inicio, :hora_fim, :evento_id, :usuario_id)
+    end
+
+    def can_change
+      unless user_signed_in? && current_user == user
+        redirect_to user_path(params[:id])
+      end
+    end
+
+    def user
+      @usuario ||= Usuario.find(params[:id])
     end
 end

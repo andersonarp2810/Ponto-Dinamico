@@ -1,29 +1,12 @@
 class UsuariosController < ApplicationController
   before_action :set_usuario, only: [:show, :edit, :update, :destroy]
   skip_before_action :verify_authenticity_token
+  before_action :require_authentication, only: [:update, :destroy, :edit, :show]
+  before_action :can_change, only: [:update, :destroy, :edit, :index, :show]
 
-#POST /logout
-def logout
-  mensagem = {body: 'erro nos dados'}
-  usuario_request = Usuario.new(valid_request?)
-  @usuario = Usuario.find_by(matricula: usuario_request.matricula)
-  if @usuario.update(status: "false")
-    mensagem = {body: "Usuario exit", status: @usuario.status}
-  end
-  render json: mensagem.to_json
-end
-
-# POST /login.json
-def login
-  usuario_request = Usuario.new(valid_request?)
-  render json: Usuario.valida(usuario_request: usuario_request).to_json
-
-end
-
-  # GET /usuarios/
-  def ponto
-    usuario_request = Usuario.new(valid_request?)
-   Usuario.ultimo_ponto(usuario_request.id)
+  # GET /usuarios/1
+  def get_ponto
+   render json: Usuario.ultimo_ponto(params[:id]).to_json
   end
   
   # GET /usuarios
@@ -54,7 +37,7 @@ end
     @usuario = Usuario.new(valid_request?)
     if @usuario.valid?
       if @usuario.save
-        retorno = {erro: "000", body: {usuario_id: @usuario.id, usuario_nome: @usuario.nome, status: @usuario.status}}
+        retorno = {erro: "000", body: {usuario_id: @usuario.id, usuario_nome: @usuario.nome, status: true}}
       end
     end
     #verifica erros na inserção no banco
@@ -92,7 +75,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def usuario_params
-      params.require(:usuario).permit(:nome, :senha, :email, :matricula, :mac, :status)
+      params.require(:usuario).permit(:nome, :password, :email, :matricula, :mac)
     end
 
     def valid_request?
@@ -100,7 +83,5 @@ end
         json = JSON.parse(json.to_json)
         rescue JSON::ParserError => e
           json = JSON.parse(json)
-          @status = json["status"]
-          json.except("status")
     end
 end

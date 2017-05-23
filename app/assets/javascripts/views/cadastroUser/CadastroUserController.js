@@ -3,9 +3,9 @@
 		.module('pdApp')
 		.controller("CadastroUserController", CadastroUserController);
 
-	CadastroUserController.$inject = ['UserService', '$Respostas'];
+	CadastroUserController.$inject = ['UserService', 'sessao', '$Respostas', '$window'];
 
-	function CadastroUserController(UserService, $Respostas) {
+	function CadastroUserController(UserService, sessao, $Respostas, $window) {
 
 		var vm = this;
 
@@ -15,6 +15,8 @@
 		vm.matricula = "";
 		vm.cadastrarUsuario = cadastrarUsuario;
 		vm.mensagem;
+		vm.sessao = sessao;
+
 
 		function cadastrarUsuario() {
 			if (vm.form.$invalid) {
@@ -31,17 +33,27 @@
 								//limpar();
 								$window.location.href = "#!/home/";//deve redirecionar pra lista de usuários depois
 								break;
-							case "102":
-								vm.name = '';
-							case "103":
-								vm.senha = '';
-								vm.form.confirma = '';
-							case "104":
-								vm.email = '';
-							case "105":
-								vm.matricula = '';
 							default:
 								vm.mensagem = "Erro: " + $Respostas[data.erro];
+								switch (data.erro) {
+									case "102":
+										vm.name = '';
+										break;
+									case "103":
+										vm.senha = '';
+										vm.form.confirma = '';
+										break;
+									case "104":
+										vm.email = '';
+										break;
+									case "105":
+										vm.matricula = '';
+										break;
+									case "303":
+										//deslogar?
+										break;
+								}
+								break;
 						}
 					}); // then
 			}
@@ -53,5 +65,14 @@
 			vm.email = '';
 			vm.matricula = '';
 		}
-	};
+
+		var init = function () {
+			if (vm.sessao.nome == '') {
+				console.log("faça login");
+				$window.location.href = "#!/login/";
+			}
+		}
+
+		init();
+	}
 })();

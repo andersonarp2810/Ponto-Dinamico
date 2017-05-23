@@ -1,52 +1,6 @@
 <body ng-app="pdApp" 'no-repeat center center fixed' 'background-size':'10%'>
-  
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-  
-  
-
-
-<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:#007db7;">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="#!/home/"style="color:yellow" >Ponto Dinâmico</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#!/home/" style="background-color:white;color:blue">Home</a></li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:yellow">Relatório <span class="caret"></span></a>
-          <ul class="dropdown-menu"style="background-color:#007db7">
-            <li><a href="#" style="color:yellow">Usuários</a></li>
-            <li><a href="#"style="color:yellow" >Eventos</a></li>
-         
-          </ul>
-        </li>
-        <li class="dropdown" >
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:yellow">Usuário <span class="caret"></span></a>
-          <ul class="dropdown-menu"style="background-color:#007db7">
-            <li><a href="#!/cadastrarUser/"style="color:yellow">cadastrarUser</a></li>
-            <li><a href="#"style="color:yellow">Edicaouser</a></li>
-         
-          </ul>
-        </li>
-        <li><a href="#!/cadastrarEvento/"style="color:yellow">cadastrarEvento</a></li>
-        
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"style="color:yellow"></span> Sign Up</a></li>
-        <li><a href="#!/login/"><span class="glyphicon glyphicon-log-in"style="color:yellow"></span> Login</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-  
+  <span ng-include="'views/nav/nav.html'"></span>
+  <br>
   <ui-view></ui-view>
 
 <footer class="row">

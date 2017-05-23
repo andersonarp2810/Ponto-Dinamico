@@ -37,36 +37,27 @@ private
         usuario_evento  = UsuarioEvento.find_by(data: data_atual, usuario_id: @usuario_id)
         if usuario_evento.blank?#verifica se o usuario ja fez o primeiro ponto
             #ponto no inicio do evento
-            if (hora_atual.hour - @evento.hora_inicio.hour).abs == 1 or (hora_atual.hour - @evento.hora_inicio.hour).abs == 0
-                if (hora_atual.min - @evento.hora_inicio.min).abs <= 30
-                    usuario_evento = UsuarioEvento.new
-                    usuario_evento.data = data_atual
-                    usuario_evento.hora_inicio = hora_atual.to_s(:time)
-                    usuario_evento.evento_id = @evento.id
-                    usuario_evento.usuario_id = @usuario_id
-                    if usuario_evento.save
-                        return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data, hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
-                    else
-                        #algum erro
-                    end
+            if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_inicio.hour * 60) + @evento.hora_inicio.min)).abs <= 300
+                usuario_evento = UsuarioEvento.new
+                usuario_evento.data = data_atual
+                usuario_evento.hora_inicio = hora_atual.to_s(:time)
+                usuario_evento.evento_id = @evento.id
+                usuario_evento.usuario_id = @usuario_id
+                if usuario_evento.save
+                    return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data, hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
                 else
-                    #escrever mensagem de atraso
-                    erro = 312
+                    #algum erro
                 end
             else
-                #atrasado: fora de hora de entrada
+                #escrever mensagem de atraso
                 erro = 312
             end
         else
             if usuario_evento.hora_fim.nil?
                 #faz o ponto no final do evento
-                if (hora_atual.hour - @evento.hora_fim.hour).abs == 1 or (hora_atual.hour - @evento.hora_fim.hour) == 0 #usuario dentro da hora do ponto
-                    if (hora_atual.min - @evento.hora_fim.min).abs <= 30 #verifica se esta no intervalo permitido para realizar o ponto
-                        usuario_evento.update(hora_fim: hora_atual.to_s(:time))
-                        return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data, hora_fim: usuario_evento.hora_fim.to_s(:time)}}#dados do usuario          }
-                    else
-                        erro = 313
-                    end
+                if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_fim.hour * 60) + @evento.hora_fim.min)).abs <= 300 #verifica se esta no intervalo permitido para realizar o ponto
+                    usuario_evento.update(hora_fim: hora_atual.to_s(:time))
+                    return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data, hora_fim: usuario_evento.hora_fim.to_s(:time)}}#dados do usuario          }
                 else
                     erro = 313
                 end
@@ -80,15 +71,15 @@ private
     #localiza e verifica se usuario tem privilegio ou não
     def self.autentica_usuario(usuario_id)
         usuario = Usuario.find_by(id: usuario_id)
-        usuario.nivel == "usuario_adm"
+        if usuario
+            return usuario.nivel == "usuario_adm"
+        end
+        return {erro: 501, body:" "}
     end
 
     #verifica se ha algum erro e cria uma lista de erros
     def self.verifica_erro(evento)
-        evento.errors.full_messages.each do |erro|
-           #verificar erro de unicidade com uma condição 
-           return erro
-        end
-    end
+        return {erro: evento.errors.first[1], body:""}
+    end        
 
 end

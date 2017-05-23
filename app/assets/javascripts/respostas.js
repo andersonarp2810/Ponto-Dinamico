@@ -3,6 +3,7 @@
         .module('pdApp')
         .constant('$Respostas', {
             "000": "OK",
+            "001": "Somente número",
             //cadastro pessoa
             "101": "Campo obrigatório não preenchido",
             "102": "Nome já existente",
@@ -32,9 +33,8 @@
             //cadastro de evento
             "331": "Horário inválido",
             "332": "Data de evento inválido",
-            "333": "Usuário não tem privilégio",
-            "334": "Campo(s) obrigatório(s) não preenchido",
-            "335": "Horário de início ou termino não informados ou inválidos",
+            "333": "Campo(s) obrigatório(s) não preenchido",
+            "334": "Horário de início ou termino não informados ou inválidos",
             //conexão
             "401": "Erro de conexão (sem internet)",
             "402": "Tempo limite atingido",
@@ -42,5 +42,6 @@
             //autenticação
             "501": "Autenticação falhou",
             "502": "Usuário ou senha inválidos",
+            "503": "Usuário não tem privilégio",
         })
 }());

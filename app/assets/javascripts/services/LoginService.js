@@ -8,19 +8,29 @@
     function LoginService(Requisicoes, $Rotas) {
 
         this.enviarLogin = enviarLogin;
+        this.logout = logout;
 
         function enviarLogin(login, ciphertext) {
 
             url = $Rotas.login;
-            tipo = "usuario";
+            tipo = "user_session";
 
             dados = {
-                matricula: login,
-                senha: ciphertext
+                email: login,
+                password: ciphertext
             }
             return Requisicoes.post(url, dados, tipo);
         }
 
+        function logout(id) {
+            url = $Rotas.logout;
+            tipo = "user_session";
+
+            dados = {
+                id: id
+            }
+            return Requisicoes.destroy(url, dados, tipo);
+        }
 
     };
 })();

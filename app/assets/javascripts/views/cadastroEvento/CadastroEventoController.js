@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('CadastroEventoController', CadastroEventoController);
 
-    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', '$Respostas', '$window'];
+    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'sessao', '$Respostas', '$window'];
 
-    function CadastroEventoController($scope, $log, EventoService, $Repostas, $window) {
+    function CadastroEventoController($scope, $log, EventoService, sessao, $Repostas, $window) {
         var vm = this; //view model
         vm.botao = false;
         vm.cadastrarEvento = cadastrarEvento;
@@ -21,6 +21,7 @@
         vm.nome;
         vm.QR;
         vm.tipo;
+        vm.sessao = sessao;
 
         function cadastrarEvento() {
             if (vm.form.$invalid) {
@@ -41,12 +42,16 @@
                                 //limpar();
                                 $window.location.href = "#!/home/";// deve ser página da lista de eventos depois
                                 break;
-                            case "101":
-                                vm.nome = '';
-                            case "333":
                             default:
-                                vm.mensagem = 'Erro: ' + $Repostas[data.erro]; // talvez não venha se não vier resposta
+                                vm.mensagem = 'Erro: ' + $Repostas[data.erro];
                                 console.log(data.status);
+                                switch (data.erro) {
+                                    case "102":
+                                        vm.nome = '';
+                                    case "333":
+                                    //deslogar
+                                }
+                                break;
                         } // end switch
                         vm.botao = false;
                     }); //end then
@@ -74,5 +79,13 @@
             $log.info('vm.horaFim is now %s', current);
         });
 
+        var init = function () {
+            if (vm.sessao.nome == '') {
+                console.log("faça login");
+                $window.location.href = "#!/login/";
+            }
+        }
+
+        init();
     }
 })();

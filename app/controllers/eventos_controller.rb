@@ -1,6 +1,8 @@
 class EventosController < ApplicationController
   before_action :set_evento, only: [:show, :edit, :update, :destroy]
+  before_action :require_authentication, only: [:show, :edit, :update, :destroy, :index, :create]
   skip_before_action :verify_authenticity_token
+  before_action :can_change, only: [:create, :update, :destroy, :new, :edit]
 
 # POST /realizarponto
 def realizarponto 
