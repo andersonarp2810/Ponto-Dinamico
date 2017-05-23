@@ -23,15 +23,25 @@ class UserSession
     end
 
     def current_user
-        Usuario.find(@session[:user_id])
+        usuario = Usuario.find_by(id: @session[:user_id])
+        usuario.password = nil
+        usuario
     end
 
     def user_signed_in?
         @session[:user_id].present?
     end
 
-    def destroy
-        @session[:user_id] = nil
+    def destroy(id)
+        if user_signed_in?
+            @session[:user_id] = nil
+        else
+            usuario = Usuario.find_by(id: id)
+            if usuario.status = "true"
+                usuario.update(status: 0)
+            end
+        end
+        
     end
 end
 

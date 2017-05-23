@@ -1,7 +1,7 @@
 class UsuariosController < ApplicationController
   before_action :set_usuario, only: [:show, :edit, :update, :destroy]
   skip_before_action :verify_authenticity_token
-  before_action :require_authentication, only: [:update, :destroy, :edit, :show]
+  before_action :require_authentication, only: [:update, :destroy, :edit, :show, :get_ponto]
   before_action :can_change, only: [:update, :destroy, :edit, :index, :show]
 
   # GET /usuarios/1
@@ -42,7 +42,7 @@ class UsuariosController < ApplicationController
     end
     #verifica erros na inserção no banco
     if @usuario.errors.any?
-      retorno = Usuario.verifica_erro(@usuario)
+      retorno = Usuario.verifica_erro(@usuario.errors.messages)
     end
     render json: retorno.to_json
   end

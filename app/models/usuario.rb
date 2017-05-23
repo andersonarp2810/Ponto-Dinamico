@@ -1,6 +1,7 @@
 class Usuario < ApplicationRecord
 #adicionando enum
 enum nivel: { usuario_normal: 0, usuario_adm: 1 }
+enum status: {true: 1, false: 0}
 
 #validações de campos
 	validates :nome, :password, :email,:matricula, :mac, presence: true #validação de presença
@@ -48,6 +49,7 @@ enum nivel: { usuario_normal: 0, usuario_adm: 1 }
 				if @usuario.mac == usuario_request.mac
 					erro=202
 					if @usuario.password == usuario_request.password
+						@usuario.update(status: 1)
 						return @usuario
 					end
 				end
@@ -56,9 +58,12 @@ enum nivel: { usuario_normal: 0, usuario_adm: 1 }
 		{erro: erro, body: " "}
 	end
 #verifica os erros que aconteceram no banco e organiza
-	def self.verifica_erro(usuario)
-		usuario.errors
-		return {erro: usuario.errors.first[1], body: " "}
+	def self.verifica_erro(err)
+		if  err.first[1] = 102 #valor da mensagem de erro
+			return {erro: protocolo_em_uso(err.first[0]), body: " "}#chave da mensagem de erro
+		else
+			return {erro: err.first[1], body: " "}
+		end
 	end
 
 #realiza a pesquisa do evento do usuario que realizou a pesquisa
@@ -72,9 +77,22 @@ enum nivel: { usuario_normal: 0, usuario_adm: 1 }
 
 	end
 
+#mtodo autenticar usuario mobile
+	def self.autentica_usuario_mobile(id)
+		if id.present?
+			usuario = Usuario.find_by(id: id)
+			if usuario.present?
+				usuario.status
+			end
+		end
+		return false
+	end
+
+
 #protocolo de erro pra campos ja em uso
 	private
-		def protocolo_em_uso(nome)
-			protocolo = {"matricula": 105, "nome": 102, "email": 105}.to_json
+		def self.protocolo_em_uso(chave)
+			protocolo = {matricula: -3, mac: -2, email: -1} # falta ajustar protocolo
+			protocolo[chave]
 		end
 end

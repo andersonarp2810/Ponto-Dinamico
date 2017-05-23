@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
- # resources :usuario_eventos
+  resources :usuario_eventos
   resources :eventos
   resources :usuarios
   resource :user_sessions, only: [:create, :new, :destroy]
@@ -18,6 +18,8 @@ root "application#angular"
   match 'getponto/:id', to: 'usuarios#get_ponto', via: [:get]
 #rota cadastrar eventos
   match 'cadastrarevento', to: 'eventos#create', via: [:post]
+  #rota relatorio ponto usuario
+  match 'relatoriousuario/:id', to: 'usuario_eventos#relatoriousuario', via: [:get]
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
