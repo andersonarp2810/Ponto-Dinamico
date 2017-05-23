@@ -15,7 +15,7 @@
                     })
                 }]
             })
-            .state($Estados.evento, {
+            .state($Estados.eventoCadastro, {
                 url: '/cadastrarEvento/',
                 templateUrl: "views/cadastroEvento/CadastrodeEventos.html",
                 controller: "CadastroEventoController",
@@ -51,10 +51,10 @@
                 controller: "RelatorioUserController",
                 controllerAs: "vm"
             })
-            .state($Estados.eventoRelat, {
-                url: '/relatorioEvento',
-                templateUrl: "views/relatorioEvento/relatorioEvento.html",
-                controller: "RelatorioEventoController",
+            .state($Estados.eventoLista, {
+                url: '/listaEvento',
+                templateUrl: "views/listaEvento/listaEvento.html",
+                controller: "ListaEventoController",
                 controllerAs: "vm"
             });
     };

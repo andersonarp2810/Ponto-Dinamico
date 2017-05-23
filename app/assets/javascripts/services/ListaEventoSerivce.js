@@ -1,11 +1,11 @@
 (function () {
     angular
         .module('pdApp')
-        .service('RelatorioEventoService', RelatorioEventoService);
+        .service('ListaEventoService', ListaEventoService);
 
-    RelatorioEventoService.$inject = ["Requisicoes", "$Rotas"];
+    ListaEventoService.$inject = ["Requisicoes", "$Rotas"];
 
-    function RelatorioEventoService(Requisicoes, $Rotas) {
+    function ListaEventoService(Requisicoes, $Rotas) {
     	this.relatEvento = relatEvento; 
 
     	function gerarRelatN(nome) {
