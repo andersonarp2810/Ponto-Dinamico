@@ -14,7 +14,8 @@
             "evento": "cadastrarEvento",
             "home": "home",
             "login": "login",
-            "user": "cadastrarUser",
+            "userCadastro": "cadastrarUser",
+            "userLista": "listaUser",
             "userRelat": "relatorioUser",
             "eventoRelat": "relatorioEvento"
         })

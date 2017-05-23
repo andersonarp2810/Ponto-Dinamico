@@ -27,24 +27,18 @@
   <p>Informações :</p>
   <table class="table">
     <thead>
-      <tr>
+      <tr class="info">
         <th>Data :</th>
         <th>Nome de Evento</th>
       </tr>
     </thead>
     <tbody>
-      <tr class="info">
-        <td>1</td>
-        <td>Wally</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>wally2</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>wally3</td>
-      </tr>
+      <div ng-repeat="evento in vm.eventos">
+        <tr>
+          <td>{{evento.nome}}</td>
+          <td>{{evento.data}}</td>
+        </tr>
+      </div>
     </tbody>
   </table>
 </div>

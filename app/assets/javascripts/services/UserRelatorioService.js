@@ -14,7 +14,7 @@
 			tipo = "relatorioU";
 
 			dados = {
-				matricula: matricula;
+				matricula: matricula
 			}
 			return Requisicoes.post(url, tipo, userRelat);
 		}

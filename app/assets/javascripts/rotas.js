@@ -33,19 +33,25 @@
                 controller: 'LoginController',
                 controllerAs: 'vm'
             })
-            .state($Estados.user, {
+            .state($Estados.userCadastro, {
                 url: '/cadastrarUser/',
                 templateUrl: "views/cadastroUser/cadastroadm.html",
                 controller: "CadastroUserController",
                 controllerAs: "vm"
             })
-            .state($Estados.userRelat,{
+            .state($Estados.userLista, {
+                url: '/listaUser/',
+                templateUrl: "views/listaUser/listaUser.html",
+                controller: "ListaUserController",
+                controllerAs: "vm"
+            })
+            .state($Estados.userRelat, {
                 url: '/relatorioUser',
                 templateUrl: "views/relatorioUser/relatorioUser.html",
                 controller: "RelatorioUserController",
                 controllerAs: "vm"
             })
-            .state($Estados.eventoRelat,{
+            .state($Estados.eventoRelat, {
                 url: '/relatorioEvento',
                 templateUrl: "views/relatorioEvento/relatorioEvento.html",
                 controller: "RelatorioEventoController",

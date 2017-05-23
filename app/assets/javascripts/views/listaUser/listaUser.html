@@ -5,7 +5,7 @@
     <form name="vm.form" class="form-horizontal">
       <div class="form-group">
         <div class="col-xs-9">
-          <input type="text" class="form-control">
+          <input type="text" class="form-control" ng-model="vm.search" placeholder="Nome ou Número de Matrícula">
           <br>
           <label class="radio-inline">Buscar por </label>
           <label class="radio-inline">
@@ -16,7 +16,7 @@
             </label>
         </div>
         <div class="col-xs-2">
-          <button type="button" class="btn btn-success" ng-click="">Buscar</button>
+          <button type="button" class="btn btn-success" ng-click="vm.buscar()">Buscar</button>
         </div>
       </div>
     </form>
@@ -27,24 +27,19 @@
   <p>Informações :</p>
   <table class="table">
     <thead>
-      <tr>
+      <tr class="info">
         <th>NúmeroM</th>
         <th>Nome</th>
       </tr>
     </thead>
     <tbody>
-      <tr class="info">
-        <td>1</td>
-        <td>Wally</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>wally2</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>wally3</td>
-      </tr>
+      <div ng-repeat="user in vm.users">
+        <tr>
+          <td>{{user.id}}</td>
+          <td>{{user.nome>></td>
+          <td>{{user.matricula}}</td>
+        </tr>
+      </div>
     </tbody>
   </table>
 </div>
