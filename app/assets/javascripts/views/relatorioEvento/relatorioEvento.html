@@ -1,33 +1,25 @@
 <div class="container">
   <div class="row">
-    <br /><br />
-    <form id="togglingForm" method="post" class="form-horizontal">
+    <br>
+    <br>
+    <form name="vm.form" class="form-horizontal">
       <div class="form-group">
         <div class="col-xs-9">
-          <input type="text" class="form-control" name="company" required data-fv-notempty-message="The company name is required" />          <br />
-
+          <input type="text" class="form-control" name="busca" ng-model="vm.busca" placeholder="Nome ou Data">
+          <br>
           <label class="radio-inline">Buscar por </label>
           <label class="radio-inline">
-                <input type="radio" name="rating" value="terrible" checked='checked' /> Nome do Evento
+                <input type="radio" name="nome" ng-model="vm.radio" value="nome" checked='checked'> Nome do Evento
             </label>
           <label class="radio-inline">
-                <input type="radio" name="rating" value="terrible" /> Data
+                <input type="radio" name="data" ng-model="vm.radio" value="data"> Data
             </label>
-
-
-
-
         </div>
-
         <div class="col-xs-2">
-          <button type="button" class="btn btn-success" data-toggle="#jobInfo">Buscar</button>
+          <button type="button" class="btn btn-success" ng-click="vm.buscar()">Buscar</button>
         </div>
       </div>
     </form>
-
-
-
-
   </div>
 </div>
 <div class="container">
