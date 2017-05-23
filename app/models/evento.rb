@@ -7,17 +7,29 @@ validates :nome, :tipo, :data_fim, :data_fim, :hora_inicio, :hora_fim, :local, :
 #associação
 has_many :usuario_eventos
 
+def self.search(search)
+   if search.to_time.present?
+       where("data_inicio = :search OR data_fim = :search", search: search)      
+   else
+       where("nome LIKE ?", "%#{search}%")
+    end
+end
 
-def self.confirma_ponto(evento,usuario_id)
+def self.confirma_ponto(evento,usuario_id,mensagem)
+    data_atual = Time.now.to_date
     @usuario_id = usuario_id
     @evento = Evento.find_by(qrcode: evento.qrcode)
+    @mensagem = mensagem
     erro = 311
     if @evento #verificação se evento existe para o qrcode
-        #organiza coordenadas para analise
-        coordenada = {LatA: evento.localizacao_lati, LngA: evento.localizacao_long, LatB: @evento.localizacao_lati, LngB: @evento.localizacao_long }
-        erro = 317
-        if valida_coodernada (coordenada) #validando as coordenada do ponto
-          return registrar_ponto
+        erro = 304                    
+        if data_atual >= @evento.data_inicio and data_atual <= @evento.data_fim 
+            #organiza coordenadas para analise
+            coordenada = {LatA: evento.localizacao_lati, LngA: evento.localizacao_long, LatB: @evento.localizacao_lati, LngB: @evento.localizacao_long }
+            erro = 317
+            if valida_coodernada (coordenada) #validando as coordenada do ponto
+                return registrar_ponto
+            end
         end
     end
     mensagem = {erro: erro, body:" "}
@@ -37,7 +49,7 @@ private
         usuario_evento  = UsuarioEvento.find_by(data: data_atual, usuario_id: @usuario_id)
         if usuario_evento.blank?#verifica se o usuario ja fez o primeiro ponto
             #ponto no inicio do evento
-            if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_inicio.hour * 60) + @evento.hora_inicio.min)).abs <= 300
+            if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_inicio.hour * 60) + @evento.hora_inicio.min)).abs <= 30
                 usuario_evento = UsuarioEvento.new
                 usuario_evento.data = data_atual
                 usuario_evento.hora_inicio = hora_atual.to_s(:time)
@@ -47,10 +59,26 @@ private
                     return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data, hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
                 else
                     #algum erro
+                    erro = 315
                 end
             else
                 #escrever mensagem de atraso
-                erro = 312
+                if @mensagem.blank?
+                    erro = 312
+                else
+                    usuario_evento = UsuarioEvento.new
+                    usuario_evento.data = data_atual
+                    usuario_evento.hora_inicio = hora_atual.to_s(:time)
+                    usuario_evento.evento_id = @evento.id
+                    usuario_evento.usuario_id = @usuario_id
+                    usuario_evento.mensagem = @mensagem
+                    if usuario_evento.save
+                        return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data, hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
+                    else
+                        #algum
+                        erro = 315
+                    end
+                end
             end
         else
             if usuario_evento.hora_fim.nil?

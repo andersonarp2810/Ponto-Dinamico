@@ -1,6 +1,6 @@
 class EventosController < ApplicationController
   before_action :set_evento, only: [:show, :edit, :update, :destroy]
-  before_action :require_authentication, only: [:show, :edit, :update, :destroy, :index, :create]
+  before_action :require_authentication, only: [:show, :edit, :update, :destroy, :index, :create, :realizarponto]
   skip_before_action :verify_authenticity_token
   before_action :can_change, only: [:create, :update, :destroy, :new, :edit]
 
@@ -11,15 +11,28 @@ def realizarponto
   evento_request = Evento.new(valid_request?)
   #verifica status do usuario
   if @status == "true"
-    mensagem = Evento.confirma_ponto(evento_request,@usuario_id)
+    mensagem = Evento.confirma_ponto(evento_request,@usuario_id, @mensagem)
     end
   render json: mensagem.to_json
 end
  
+ #listagem dos eventos
   # GET /eventos
   # GET /eventos.json
   def index
-    @eventos = Evento.all
+     #Verifica se o usuário entrou com keywords
+    if params[:keywords].present?
+      # Diz ao elastickick para pesquisar as keyrwords nos campos name e description
+      @evento = Evento.search(params[:keywords])
+      if @evento.present?
+        render json: {erro: "000", body: @evento}
+      else
+        render json: {erro: "301", body: ""}
+      end
+    else
+      @eventos = Evento.all
+      render json:{erro: "000", body: @eventos}
+    end
   end
 
   # GET /eventos/1
@@ -34,6 +47,7 @@ end
 
   # GET /eventos/1/edit
   def edit
+    render json:{ erro: "000", body: @evento}
   end
 
   # POST /eventos
@@ -57,9 +71,9 @@ end
   # PATCH/PUT /eventos/1
   # PATCH/PUT /eventos/1.json
   def update
-  retorno = {body: "evento não atualizado"}
+    retorno = {erro: "333", body: ""}
       if @evento.update(valid_request?)
-        retorno = {body: "evento atualizado", evento_id: @evento.id, evento_nome:@evento.nome}
+        retorno = {erro: "000", body: ""}
       end
   render json: retorno
   end
@@ -68,13 +82,13 @@ end
   # DELETE /eventos/1.json
   def destroy
     @evento.destroy
-    render json: {body: "evento destruido", evento_id: @evento.id}
+    render json: {erro: "000", body: ""}
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_evento
-      @evento = Evento.find(params[:id])
+      @evento = Evento.find_by("id = ?",params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -87,12 +101,14 @@ end
       json = JSON.parse(json.to_json)
       @status = json["status"]
       @usuario_id = json["usuario_id"]
-      json.except("status", "usuario_id")
+      @mensagem = json["mensagem"]
+      json.except("status", "usuario_id", "mensagem")
       rescue JSON::ParserError => e
         json = JSON.parse(json)
         @status = json["status"]
         @usuario_id = json["usuario_id"]
-        json.except("status","usuario_id")
+        @mensagem = json["mensagem"]
+        json.except("status","usuario_id", "mensagem")
     end
 
 end

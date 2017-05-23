@@ -10,7 +10,9 @@ class ApplicationController < ActionController::Base
 
   def require_authentication
     unless user_signed_in?
-    render json: {erro: "303", body: " "}.to_json
+      if !Usuario.autentica_usuario_mobile(params[:id])
+        render json: {erro: "501", body: " "}.to_json
+      end
     end
   end
 
@@ -24,12 +26,12 @@ class ApplicationController < ActionController::Base
 
    def can_change
       unless user_signed_in? && current_user == user
-        reder json: {err: 501, body:" "}.to_json
+        render json: {erro: 503, body:" "}.to_json
       end
     end
 
     def user
-      @usuario ||= Usuario.find(params[:id])
+      @usuario ||= Usuario.find_by("id = ?",params[:id])
     end
 
   def angular
