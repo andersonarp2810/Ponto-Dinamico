@@ -10,15 +10,17 @@
         vm.busca;
         vm.botao = false;
         vm.data = data;
+        vm.eventos = {};
         vm.nomeEvento = nomeEvento;
         vm.buscar = buscar;
         vm.radio = "nome";
+        vm.RelatEvento = RelatEvento;
         vm.sessao = sessao;
         vm.mensagem;
 
         function RelatEvento() {
             vm.botao = true;
-            ListaEventosService.gerarRelatN(vm.nomeEvento)
+            ListaEventosService.relatEvento(vm.nomeEvento)
                 .then(function (data) {
                     console.log(data);
                     vm.mensagem = '';
@@ -51,6 +53,6 @@
             }
         }
 
-        init();
+        //init();
     }
 })();

@@ -3,6 +3,7 @@
         .module('pdApp')
         .constant("$Rotas", {
             "evento": "cadastrarevento",
+            "listaEventos": "eventos",
             "login": "login",
             "logout": "logout",
             "qrs": "",
@@ -10,7 +11,6 @@
             "user": "cadastrarusuario"
         })
         .constant("$Estados", {
-            "auth": "auth",
             "eventoCadastro": "cadastrarEvento",
             "eventoLista": "listaEvento",
             "eventoRelat": "relatorioEvento",

@@ -5,7 +5,7 @@
 
     ListaUserController.$inject = ['ListaUserService', 'sessao', '$window'];
 
-    function ListaUserController() {
+    function ListaUserController(ListaUserService, sessao, $window) {
         var vm = this;
         vm.buscar = buscar;
         vm.radio = 'nome';

@@ -54,7 +54,6 @@ ActiveRecord::Schema.define(version: 20170522174624) do
     t.datetime "updated_at",             null: false
     t.integer  "nivel",      default: 0
     t.string   "mac"
-    t.string   "password"
     t.integer  "status",     default: 0
     t.index ["email"], name: "index_usuarios_on_email", unique: true, using: :btree
     t.index ["mac"], name: "index_usuarios_on_mac", unique: true, using: :btree

@@ -8,14 +8,14 @@
     function ListaEventoService(Requisicoes, $Rotas) {
     	this.relatEvento = relatEvento; 
 
-    	function gerarRelatN(nome) {
-    		url = $Rotas.relatEvento;
+    	function relatEvento(nome) {
+    		url = $Rotas.listaEventos;
     		tipo = "evento";
 
     		dados = {
     			keywords: keywords
     		}
     	}
-
+		return Requisicoes.get(url);
     }
 })();
