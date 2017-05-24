@@ -8,6 +8,8 @@
     function UserService(Requisicoes, $Rotas) {
 
         this.enviarUser = enviarUser;
+        this.listar = listar;
+        this.relatorio = relatorio;
 
         function enviarUser(name, senha, email, matricula) {
 
@@ -22,6 +24,14 @@
             }
 
             return Requisicoes.post(url, dados, tipo);
+        }
+
+        function listar() {
+
+        }
+
+        function relatorio(id) {
+
         }
 
     };

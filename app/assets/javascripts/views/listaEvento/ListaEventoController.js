@@ -12,16 +12,17 @@
         vm.botao = false;
         vm.data;
         vm.eventos = [];
-        vm.filtro = {
-            nome: '',
-            data_inicio: ''
-        }
+        vm.filtro;
         vm.mensagem;
-        vm.nomeEvento;
         vm.radio = "nome";
         vm.relatorio = relatorio;
         vm.sessao = sessao;
         vm.users = null;
+
+        vm.filtro = {
+            nome: '',
+            data_inicio: ''
+        }
 
         function buscar() {
             if (vm.radio == 'nome') {
