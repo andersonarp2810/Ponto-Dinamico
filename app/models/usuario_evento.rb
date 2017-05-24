@@ -13,7 +13,11 @@ class UsuarioEvento < ApplicationRecord
         user["nome"] = ev.nome
         user["data"] = u.data
         user["hora_inicio"] = u.hora_inicio.to_s(:time)
-        user["hora_fim"] = u.hora_fim.to_s(:time)
+        if user["hora_fim"].blank? 
+            user["hora_fim"] = " "
+        else
+          user["hora_fim"] = u.hora_fim.to_s(:time)
+        end
         arr.push(user)
       end
       return arr

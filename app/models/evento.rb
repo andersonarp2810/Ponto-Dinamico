@@ -7,12 +7,25 @@ validates :nome, :tipo, :data_fim, :data_fim, :hora_inicio, :hora_fim, :local, :
 #associação
 has_many :usuario_eventos
 
-def self.search(search)
-   if search.to_time.present?
-       where("data_inicio = :search OR data_fim = :search", search: search)      
-   else
-       where("nome LIKE ?", "%#{search}%")
+def self.search(id)
+   if id.present?
+       arr = Array.new
+       users = Array.new
+       evento = Evento.find_by(id: id)
+       usuarios = UsuarioEvento.where("evento_id = ? and data >= ? and data<= ?", "#{evento.id}" ,"#{evento.data_inicio}", "#{evento.data_fim}").select(:id, :usuario_id, :data, :mensagem).order(:usuario_id)
+       usuarios.each do |usuario|
+            arr.push(usuario[:usuario_id])
+        end
+    ids = arr.uniq
+    ids.each do |id| 
+        user = Hash.new
+        usu = Usuario.find_by(id: id)
+        user["nome"] = usu.nome
+        user["presenca"] = arr.count(id)
+        users.push(user)
     end
+   end
+   users
 end
 
 def self.confirma_ponto(evento,usuario_id,mensagem)
