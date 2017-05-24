@@ -42,7 +42,7 @@
                 controllerAs: "vm"
             })
             .state($Estados.eventoLista, {
-                url: '/listaEvento',
+                url: '/listaEvento/',
                 templateUrl: "views/listaEvento/listaEvento.html",
                 controller: "ListaEventoController",
                 controllerAs: "vm"
