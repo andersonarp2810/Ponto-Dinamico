@@ -5,27 +5,27 @@
     <form name="vm.form" class="form-horizontal">
       <div class="form-group">
         <div class="col-xs-9">
-          <input type="text" class="form-control" name="busca" ng-model="vm.busca" placeholder="Nome ou Data">
+          <input type="text" class="form-control" name="busca" ng-model="vm.busca" placeholder="Nome ou Data" ng-change="vm.buscar()">
           <br>
           <label class="radio-inline">Buscar por </label>
           <label class="radio-inline">
-                <input type="radio" name="busc" ng-model="vm.radio" value="nome" checked='checked'> Nome do Evento
+                <input type="radio" name="busc" ng-model="vm.radio" value="nome" checked='checked' ng-change="vm.buscar()"> Nome do Evento
             </label>
           <label class="radio-inline">
-                <input type="radio" name="busc" ng-model="vm.radio" value="data"> Data
+                <input type="radio" name="busc" ng-model="vm.radio" value="data" ng-change="vm.buscar()"> Data
             </label>
         </div>
+        <!--
         <div class="col-xs-2">
           <button type="button" class="btn btn-success" ng-click="vm.buscar()">Buscar</button>
         </div>
-        <button ng-click="vm.RelatEvento()">lista</button>
+        -->
       </div>
     </form>
   </div>
 </div>
 <div class="container">
-  <h2>Resultado</h2>
-  <p>Informações :</p>
+  <h2>Informações:</h2>
   <table class="table">
     <thead>
       <tr class="info">
@@ -34,12 +34,28 @@
       </tr>
     </thead>
     <tbody>
-      <div ng-repeat="evento in vm.eventos">
-        <tr>
-          <td>{{evento.nome}}</td>
-          <td>{{evento.data}}</td>
-        </tr>
-      </div>
+      <tr ng-repeat="evento in vm.eventos|filter:vm.filtro:strict">
+        <td>{{evento.nome}}</td>
+        <td>{{evento.data_inicio}}</td>
+        <td><button ng-click="vm.relatorio(evento)">Relatório</button></td>
+      </tr>
     </tbody>
   </table>
+  <div ng-if="vm.users != null">
+    <h2>Relatório</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome:</th>
+          <th>Presenças:</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="user in vm.users">
+          <td>{{user.nome}}</td>
+          <td>{{user.presenca}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

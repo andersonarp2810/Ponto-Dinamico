@@ -3,10 +3,12 @@
         .module('pdApp')
         .service('EventoService', EventoService);
 
-    EventoService.$inject = ["Requisicoes", "$Rotas"];
+    EventoService.$inject = ["Requisicoes", 'sessao', "$Rotas"];
 
-    function EventoService(Requisicoes, $Rotas) {
+    function EventoService(Requisicoes, sessao, $Rotas) {
         this.enviarEvento = enviarEvento;
+        this.listaEventos = listaEventos;
+        this.relatorioEventos = relatorioEventos;
 
         function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, QR,
             latitude, longitude) {
@@ -15,7 +17,7 @@
             tipo = "evento";
 
             evento = {
-                usuario_id : 2,
+                usuario_id: sessao.id,
                 nome: nome,
                 tipo: tipo,
                 data_inicio: dataInicio,
@@ -30,6 +32,16 @@
             }
 
             return Requisicoes.post(url, evento, tipo);
+        }
+
+        function listaEventos() {
+            url = $Rotas.listaEventos;
+            return Requisicoes.get(url);
+        }
+
+        function relatorioEventos(id) {
+            url = $Rotas.listaEventos + '?keywords=' + id;
+            return Requisicoes.get(url);
         }
 
     };
