@@ -20,7 +20,7 @@ class UsuarioEvento < ApplicationRecord
         end
         arr.push(user)
       end
-      return arr
+      return arr.reverse
     end
     return usuarios
   end

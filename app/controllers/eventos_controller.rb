@@ -30,7 +30,7 @@ end
         render json: {erro: "301", body: ""}
       end
     else
-      @eventos = Evento.all
+      @eventos = Evento.formate!
       render json:{erro: "000", body: @eventos}
     end
   end
