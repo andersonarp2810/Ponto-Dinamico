@@ -1,0 +1,54 @@
+web:
+
+Ajustar tela relatorio de usuario
+	colocar botões editar, ver informações,relatorio
+	relatorio: nome
+	data, hora entrada, hora saida e mensagem de atraso
+
+Ajustar tela relatorio de eventos....
+	adicionar botões de editar, visualizar(ex. sobre), relatorio
+
+ajustar rodapé
+
+criar a tela de editar evento
+
+angular:
+confirmar se o id da sessão e de uma sessão valida
+refatorar codigo
+terminar navegabilidade
+
+mobile:
+filtro do relatorio do ponto (nome e data)
+
+rails:
+refatorar codigo
+usar ferramenta de Rubycritic
+verificar metodo para salvar imagem no servidor
+
+tarefas:
+mobile:
+	criar metodo de filtro de pesquisa de relatório de ponto
+	Fazer funcões de click no relatório de eventos
+	atulizar a tela do ponto de acordo com o evento selecionado
+
+html:
+	inserir botões faltantes
+	ajustar rodapé
+	mudar cor das letras do navbar
+	ajustar tela de relatorio de usuario
+	ajustar tela de relatorio de eventos
+	criar tela de editar eventos
+
+rails:
+	refatorar codigo
+	usar ferramenta Ruycritic
+	verificar e inserir metodo para salvar imagem no servidor
+	criar metodo home
+	verificar expiração de sessão
+	
+angular:
+	criar service da tela editar eventos
+	criar controle da tela editar eventos
+	refatorar codigo
+	finalizar navegabilidade
+	verificar expiração de sessão

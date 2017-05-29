@@ -30,7 +30,11 @@ end
         render json: {erro: "301", body: ""}
       end
     else
-      @eventos = Evento.formate!
+      if params[:keynome].present?
+        @eventos = Evento.formate(Evento.where("nome LIKE ?", "%#{params[:keynome]}%"))
+      else
+        @eventos = Evento.formate(Evento.all)
+      end
       render json:{erro: "000", body: @eventos}
     end
   end

@@ -7,16 +7,15 @@ validates :nome, :tipo, :data_fim, :data_fim, :hora_inicio, :hora_fim, :local, :
 #associação
 has_many :usuario_eventos
 
-
-def self.formate!
+def self.formate(eventos)
     arr = Array.new
-    eventos = Evento.all
     eventos.each do |evento|
         ev = Hash.new
+        ev["id"] = evento.id
         ev["nome"] = evento.nome
         ev["tipo"] = evento.tipo
-        ev["data_inicio"] = evento.data_inicio
-        ev["data_fim"] = evento.data_fim
+        ev["data_inicio"] = evento.data_inicio.strftime("%d/%m/%Y")
+        ev["data_fim"] = evento.data_fim.strftime("%d/%m/%Y")
         ev["hora_inicio"] = evento.hora_inicio.to_s(:time)
         ev["hora_fim"] = evento.hora_fim.to_s(:time)
         ev["local"] = evento.local
@@ -92,7 +91,7 @@ private
                 usuario_evento.evento_id = @evento.id
                 usuario_evento.usuario_id = @usuario_id
                 if usuario_evento.save
-                    return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data, hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
+                    return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data.strftime("%d/%m/%Y"), hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
                 else
                     #algum erro
                     erro = 315
@@ -109,7 +108,7 @@ private
                     usuario_evento.usuario_id = @usuario_id
                     usuario_evento.mensagem = @mensagem
                     if usuario_evento.save
-                        return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data, hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
+                        return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data.strftime("%d/%m/%Y"), hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
                     else
                         #algum
                         erro = 315
@@ -121,7 +120,7 @@ private
                 #faz o ponto no final do evento
                 if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_fim.hour * 60) + @evento.hora_fim.min)).abs <= 30 #verifica se esta no intervalo permitido para realizar o ponto
                     usuario_evento.update(hora_fim: hora_atual.to_s(:time))
-                    return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data, hora_fim: usuario_evento.hora_fim.to_s(:time)}}#dados do usuario          }
+                    return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data.strftime("%d/%m/%Y"), hora_fim: usuario_evento.hora_fim.to_s(:time)}}#dados do usuario          }
                 else
                     erro = 313
                 end
