@@ -1,57 +1,69 @@
 (function () {
     angular
         .module('pdApp')
-        .controller('ListaUserController', ListaUserController);
+        .controller('ListaEventoController', ListaEventoController);
 
-    ListaUserController.$inject = ['UserService', 'sessao', '$window'];
+    ListaEventoController.$inject = ['EventoService', 'sessao', '$Respostas', '$window'];
 
-    function ListaUserController(UserService, sessao, $window) {
+    function ListaEventoController(EventoService, sessao, $Respostas, $window) {
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
+        vm.botao = false;
+        vm.data;
+        vm.eventos = [];
         vm.filtro;
-        vm.radio = 'nome';
+        vm.mensagem;
+        vm.radio = "nome";
         vm.relatorio = relatorio;
         vm.sessao = sessao;
+        vm.users = null;
 
         vm.filtro = {
             nome: '',
-            matricula: ''
+            data_inicio: ''
         }
 
         function buscar() {
             if (vm.radio == 'nome') {
                 vm.filtro.nome = vm.busca;
-                vm.filtro.matricula = '';
-            } else if (vm.radio == 'matricula') {
+                vm.filtro.data_inicio = '';
+            } else if (vm.radio == 'data') {
                 vm.filtro.nome = '';
-                vm.filtro.matricula = vm.busca;
+                vm.filtro.data_inicio = vm.busca;
             }
         }
 
-        function relatorio(usuario) {
-            UserService.relatorio(usuario.id)
+
+        function relatorio(evento) {
+            EventoService.relatorioEventos(evento.id)
                 .then(function (data) {
                     console.log(data);
                     switch (data.erro) {
                         case '000':
                             console.log(data.body);
+                            vm.users = data.body;
                             break;
                         default:
+                            vm.users = null;
                             break;
                     }
                 });
         }
 
-        var listar = function () {
-            UserService.listar()
+        var listarEventos = function () {
+            EventoService.listaEventos()
                 .then(function (data) {
                     console.log(data);
+                    vm.mensagem = '';
                     switch (data.erro) {
                         case '000':
                             console.log(data.body);
+                            vm.mensagem = "Lista Gerado";
+                            vm.eventos = data.body;
                             break;
                         default:
+                            vm.mensagem = 'Erro: ' + $Respostas[data.erro];
                             break;
                     }
                 });
@@ -62,7 +74,7 @@
                 console.log("faça login");
                 $window.location.href = "#!/login/";
             } else {
-                listar();
+                listarEventos();
             }
         }
 

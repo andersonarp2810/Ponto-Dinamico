@@ -5,17 +5,7 @@
     function config($stateProvider, $urlRouterProvider, $Estados) {
 
         $stateProvider
-            .state($Estados.auth, {
-                url: '/auth/',
-                templateUrl: "views/auth/login.html",
-                controller: "AuthController",
-                onEnter: ['$state', 'Auth', function ($state, Auth) {
-                    Auth.currentUser().then(function () {
-                        $state.go($Estate.home);
-                    })
-                }]
-            })
-            .state($Estados.evento, {
+            .state($Estados.eventoCadastro, {
                 url: '/cadastrarEvento/',
                 templateUrl: "views/cadastroEvento/CadastrodeEventos.html",
                 controller: "CadastroEventoController",
@@ -39,6 +29,12 @@
                 controller: "CadastroUserController",
                 controllerAs: "vm"
             })
+            .state($Estados.userEdit, {
+                url: '/editUser/',
+                templateUrl: "views/editUser/editUser.html",
+                controller: "EditUserController",
+                controllerAs: "vm"
+            })
             .state($Estados.userLista, {
                 url: '/listaUser/',
                 templateUrl: "views/listaUser/listaUser.html",
@@ -51,10 +47,10 @@
                 controller: "RelatorioUserController",
                 controllerAs: "vm"
             })
-            .state($Estados.eventoRelat, {
-                url: '/relatorioEvento',
-                templateUrl: "views/relatorioEvento/relatorioEvento.html",
-                controller: "RelatorioEventoController",
+            .state($Estados.eventoLista, {
+                url: '/listaEvento/',
+                templateUrl: "views/listaEvento/listaEvento.html",
+                controller: "ListaEventoController",
                 controllerAs: "vm"
             });
     };

@@ -10,6 +10,7 @@
 		vm.botao = false;
 		vm.matricula;
 		vm.mensagem;
+		vm.sessao = sessao;
 
 		function UserRelatorio() {
 			if (vm.matricula.$invalid) {
@@ -42,6 +43,12 @@
 		function limpar() {
 			vm.botao = false;
 			vm.matricula = '';
+		}
+		var init = function(){			
+			if (vm.sessao.nome == '') {
+				console.log("faça login");
+				$window.location.href = "#!/login/";
+			}
 		}
 	}
 })();

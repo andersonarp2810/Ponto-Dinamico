@@ -42,7 +42,7 @@ class UsuariosController < ApplicationController
     end
     #verifica erros na inserção no banco
     if @usuario.errors.any?
-      retorno = Usuario.verifica_erro(@usuario)
+      retorno = Usuario.verifica_erro(@usuario.errors.messages)
     end
     render json: retorno.to_json
   end

@@ -3,6 +3,7 @@
         .module('pdApp')
         .constant("$Rotas", {
             "evento": "cadastrarevento",
+            "listaEventos": "eventos",
             "login": "login",
             "logout": "logout",
             "qrs": "",
@@ -10,14 +11,15 @@
             "user": "cadastrarusuario"
         })
         .constant("$Estados", {
-            "auth": "auth",
-            "evento": "cadastrarEvento",
+            "eventoCadastro": "cadastrarEvento",
+            "eventoLista": "listaEvento",
+            "eventoRelat": "relatorioEvento",
             "home": "home",
             "login": "login",
             "userCadastro": "cadastrarUser",
+            "userEdit": "editUser",
             "userLista": "listaUser",
             "userRelat": "relatorioUser",
-            "eventoRelat": "relatorioEvento"
         })
         //.constant("$IP", "http://192.168.74.123:3000/") //felix
         .constant("$IP", "http://localhost:3000/")
