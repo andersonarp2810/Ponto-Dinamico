@@ -35,7 +35,8 @@ class UserSession
 
     def user_expiration?
         time_now = Time.now
-        if time_now - @session[:created_at].to_i > 2
+        if time_now - @session[:created_at].to_i > 0.30
+            puts "user expiration #{@session[:user_id]}"
             destroy(@session[:user_id])
             return false
         else
@@ -50,7 +51,7 @@ class UserSession
             @session[:user_id] = nil
         else
             usuario = Usuario.find_by(id: id)
-            if usuario.status = "true"
+            if usuario.present? and usuario.status = "true"
                 usuario.update(status: 0)
             end
         end

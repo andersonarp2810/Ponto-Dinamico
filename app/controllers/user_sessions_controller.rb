@@ -17,8 +17,8 @@ class UserSessionsController < ApplicationController
     end
 
     def destroy
-        puts params[:user_session][:id]
-        user_session.destroy(params[:id])
+        puts "destroy #{params[:user_session][:id]}"
+        user_session.destroy(params[:user_session][:id])
         if user_signed_in?
             render json:{erro: "000", body:{status: false}}
         end
