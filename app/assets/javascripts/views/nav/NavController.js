@@ -9,6 +9,11 @@
         var navVM = this;
         navVM.sair = sair;
         navVM.sessao = sessao;
+        navVM.logzin = logzin;
+
+        function logzin(){
+            console.log(navVM.sessao);
+        }
 
         function sair() {
             navVM.sessao.id = '';

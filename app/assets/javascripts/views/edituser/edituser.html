@@ -1,39 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <title>Editar User</title>
-</head>
-<body>
 <div class="container " style="position:relative;transform: translate(0%, 10%); width:50%;top:5%; background-color:	#fafafa">
 	<div class="form-group form-group-sm">
 		<form name="vm.form">
 			<div style="text-align: center; font-family: inherit;">
 				<h2 style="color:black">Editar<small><br><div style="color:black">(Edite os campos abaixo)</div></small> </h2>
 			</div>
-			
+
+
+
 			<div class="form-group form-group-sm">
 				<label class="col-sm-8 control-label" for="formGroupInputSmall">Escolha uma senha</label>
 				<input class="form-control" type="password" name="senha" placeholder="Senha" ng-model="vm.senha" ng-minlength="5" required><br>
 			</div>
 			<div role="alert">
-				<span class="error" ng-show="vm.form.senha.$error.required">
+				<span class="error" ng-show="vm.form.senha.$dirty && vm.form.senha.$error.required">
 					(Campo obrigatório)</span>
-				<span class="error" ng-show="vm.form.senha.$error.minlength">
+				<span class="error" ng-show="vm.form.senha.$dirty && vm.form.senha.$error.minlength">
 					A senha deve conter no mínimo 5 caracteres</span>
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-sm-6 control-label" for="formGroupInputSmall">Confirmar senha</label>
-				<input class="form-control" type="password" name="confirma" placeholder="Confirmar Senha" ng-model="vm.confirmaSenha" ng-minlength="6"
-				 password-confirm match-target="senha" required><br>
+				<input class="form-control" type="password" name="confirmaSenha" placeholder="Confirmar Senha" ng-model="vm.confirmaSenha"
+				 ng-minlength="6" required ng-pattern="{{vm.senha}}"><br>
 			</div>
 			<div role="alert">
-				<span class="error" ng-show="vm.form.confirma.$error.required">
+				<span class="error" ng-show="vm.form.confirmaSenha.$dirty && vm.form.confirmaSenha.$error.required">
 					(Campo obrigatório)</span>
-				<span class="error" ng-show="vm.form.confirma.$error.match">
+				<span class="error" ng-show="vm.form.confirmaSenha.$dirty && vm.form.confirmaSenha.$error.pattern">
 					As senhas não correspondem</span>
 			</div>
 			<div class="form-group form-group-sm">
@@ -58,5 +50,3 @@
 		</div>
 	</div>
 </div>
-</body>
-</html>

@@ -31,11 +31,13 @@
                     <li><a href="#!/cadastrarEvento/" style="color:yellow">cadastrarEvento</a></li>
                     <li><a href="#!/listaUser/">Listar Users</a></li>
                     <li><a href="#!/listaEvento/">Listar Eventos</a></li>
+                    <li><a href="#!/editUser/">Edit User</a></li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-user"style="color:yellow"></span> Sign Up</a></li>
-                    <li><a href="#!/login/"><span class="glyphicon glyphicon-log-in"style="color:yellow"></span> Login</a></li>
+                    <li ng-hide="navVM.sessao.nome=''"><a ng-click="navVM.logzin()"><span class="glyphicon glyphicon-user" style="color:yellow"></span>{{navVM.sessao.nome}}</a></li>
+                    <li ng-show="navVM.sessao.nome=''"><a href="#!/login/"><span class="glyphicon glyphicon-log-in"style="color:yellow"></span> Entrar</a></li>
+                    <li ng-hide="navVM.sessao.nome=''"><a ng-click="navVM.sair()"><span class="glyphicon glyphicon-log-out"style="color:yellow"></span> Sair </a></li>
                 </ul>
             </div>
         </div>
