@@ -15,8 +15,8 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white">Relatório <span class="caret"></span></a>
                         <ul class="dropdown-menu" style="background-color:#007db7">
-                            <li><a href="#!/relatorioUser" >Usuários</a></li>
-                            <li><a href="#!/relatorioEvento" >Eventos</a></li>
+                            <li><a href="#!/listaUser/" >Usuários</a></li>
+                            <li><a href="#!/listaEvento/" >Eventos</a></li>
 
                         </ul>
                     </li>
@@ -37,15 +37,14 @@
                         </ul>
                     </li>
                    
-                    <li><a href="#!/listaUser/">Listar</a></li>
-                    <li><a href="#!/listaEvento/">Listar Eventos</a></li>
+                    
                    
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-hide="navVM.sessao.nome=''"><a ng-click="navVM.logzin()"><span class="glyphicon glyphicon-user" style="color:white"></span>{{navVM.sessao.nome}}</a></li>
-                    <li ng-show="navVM.sessao.nome=''"><a href="#!/login/"><span class="glyphicon glyphicon-log-in"style="color:white"></span> Entrar</a></li>
-                    <li ng-hide="navVM.sessao.nome=''"><a ng-click="navVM.sair()"><span class="glyphicon glyphicon-log-out"style="<color:white></color:white>"></span> Sair </a></li>
+                    <li ng-hide="navVM.sessao.nome==''"><a ng-click="navVM.logzin()"><span class="glyphicon glyphicon-user" style="color:white"></span>{{navVM.sessao.nome}}</a></li>
+                    <li ng-show="navVM.sessao.nome==''"><a href="#!/login/"><span class="glyphicon glyphicon-log-in"style="color:white"></span> Entrar</a></li>
+                    <li ng-hide="navVM.sessao.nome==''"><a ng-click="navVM.sair()"><span class="glyphicon glyphicon-log-out"style="<color:white></color:white>"></span> Sair </a></li>
                 </ul>
             </div>
         </div>
