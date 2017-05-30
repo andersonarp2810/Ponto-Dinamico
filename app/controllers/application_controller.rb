@@ -13,9 +13,9 @@ class ApplicationController < ActionController::Base
       if !Usuario.autentica_usuario_mobile(params[:id])
         render json: {erro: "501", body: " "}.to_json
       end
-      if !user_expiration?
-        render json: {erro: "501", body: " "}.to_json
-      end
+    end
+    if user_expiration?
+      render json: {erro: "501", body: " "}.to_json
     end
   end
 

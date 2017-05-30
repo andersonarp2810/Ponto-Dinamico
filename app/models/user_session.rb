@@ -35,7 +35,7 @@ class UserSession
 
     def user_expiration?
         time_now = Time.now
-        if time_now - @session[:created_at] > 2
+        if time_now - @session[:created_at].to_i > 2
             destroy(@session[:user_id])
             return false
         else
