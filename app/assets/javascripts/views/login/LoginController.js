@@ -46,8 +46,8 @@
                                 //cookiar
                                 vm.sessao.id = data.body.usuario_id;
                                 $cookies.put('sessao_pd_id', vm.sessao.id);
-                                vm.sessao.nome = vm.login;
-                                $cookies.put('sessao_pd_nome', vm.login);
+                                vm.sessao.nome = data.body.nome;
+                                $cookies.put('sessao_pd_nome', vm.sessao.nome);
                                 $window.location.href = "#!/home/";
                                 break;
                             case "202":
