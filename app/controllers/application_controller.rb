@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  delegate :current_user, :user_signed_in?, to: :user_session
+  delegate :current_user, :user_signed_in?, :user_expiration?, to: :user_session
   helper_method :current_user, :user_signed_in?
 
   #instancia da classe UserSession
@@ -11,6 +11,9 @@ class ApplicationController < ActionController::Base
   def require_authentication
     unless user_signed_in?
       if !Usuario.autentica_usuario_mobile(params[:id])
+        render json: {erro: "501", body: " "}.to_json
+      end
+      if !user_expiration?
         render json: {erro: "501", body: " "}.to_json
       end
     end
