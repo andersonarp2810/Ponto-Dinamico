@@ -1,22 +1,23 @@
 (function () {
 	angular
 		.module('pdApp')
-		.controller('EditarUserController', EditarUserController);
+		.controller('EditUserController', EditUserController);
 
-	EditarUserController.$inject = ['EditarUserService', 'sessao', '$Respostas', '$window'];
+	EditUserController.$inject = ['UserService', 'sessao', '$Respostas', '$window'];
 
-	function EditarUserController(EditarUserService, sessao, $Respostas, $window) {
+	function EditUserController(UserService, sessao, $Respostas, $window) {
 		var vm = this;
-		vm.senha = "";
+		vm.confirmaSenha;
+		vm.senha;
 		vm.mensagem;
 		vm.mac = "";
 
-		function editarUser() {
+		function editarMAC() {
 			if (vm.form.$invalid) {
 				alert("Preencha os campos corretamente");
 			}
 			else {
-				EditarUserService.editarUser(vm.mac, vm.senha)
+				UserService.editarUser(vm.mac)
 					.then(function (data) {
 						vm.mensagem = '';
 						switch (data.erro) {

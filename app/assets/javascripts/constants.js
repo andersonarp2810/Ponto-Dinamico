@@ -17,6 +17,7 @@
             "home": "home",
             "login": "login",
             "userCadastro": "cadastrarUser",
+            "userEdit": "editUser",
             "userLista": "listaUser",
             "userRelat": "relatorioUser",
         })

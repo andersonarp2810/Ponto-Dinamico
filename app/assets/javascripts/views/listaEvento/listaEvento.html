@@ -15,47 +15,40 @@
                 <input type="radio" name="busc" ng-model="vm.radio" value="data" ng-change="vm.buscar()"> Data
             </label>
         </div>
-        <!--
-        <div class="col-xs-2">
-          <button type="button" class="btn btn-success" ng-click="vm.buscar()">Buscar</button>
-        </div>
-        -->
       </div>
     </form>
   </div>
 </div>
 <div class="container">
   <h2>Informações:</h2>
-  <table class="table">
+  <table class="table" fixed-header table-height="50px">
     <thead>
       <tr class="info">
-        <th>Data :</th>
         <th>Nome de Evento</th>
+        <th>Data :</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="evento in vm.eventos|filter:vm.filtro:strict">
         <td>{{evento.nome}}</td>
         <td>{{evento.data_inicio}}</td>
-        <td><button ng-click="vm.relatorio(evento)">Relatório</button></td>
+        <td><button ng-click="vm.relatorio(evento)">Detalhes</button></td>
       </tr>
     </tbody>
   </table>
-  <div ng-if="vm.users != null">
-    <h2>Relatório</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Nome:</th>
-          <th>Presenças:</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="user in vm.users">
-          <td>{{user.nome}}</td>
-          <td>{{user.presenca}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>Detalhes</h2>
+  <table class="table">
+    <thead>
+      <tr class="info">
+        <th>Nome:</th>
+        <th>Presenças:</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in vm.users">
+        <td>{{user.nome}}</td>
+        <td>{{user.presenca}}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

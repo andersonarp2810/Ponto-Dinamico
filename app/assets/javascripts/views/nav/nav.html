@@ -7,35 +7,37 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-                <a class="navbar-brand" href="#!/home/" style="color:yellow">Ponto Dinâmico</a>
+                <a class="navbar-brand" href="#!/home/" style="color:white">Ponto Dinâmico</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#!/home/" style="background-color:white;color:blue">Home</a></li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:yellow">Relatório <span class="caret"></span></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white">Relatório <span class="caret"></span></a>
                         <ul class="dropdown-menu" style="background-color:#007db7">
-                            <li><a href="#!/relatorioUser" style="color:yellow">Usuários</a></li>
-                            <li><a href="#!/relatorioEvento" style="color:yellow">Eventos</a></li>
+                            <li><a href="#!/relatorioUser" >Usuários</a></li>
+                            <li><a href="#!/relatorioEvento" >Eventos</a></li>
 
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:yellow">Usuário <span class="caret"></span></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white">Usuário <span class="caret"></span></a>
                         <ul class="dropdown-menu" style="background-color:#007db7">
-                            <li><a href="#!/cadastrarUser/" style="color:yellow">cadastrarUser</a></li>
-                            <li><a href="#" style="color:yellow">Edicaouser</a></li>
+                            <li><a href="#!/cadastrarUser/" >cadastrarUser</a></li>
+                            <li><a href="#" >Edicaouser</a></li>
 
                         </ul>
                     </li>
-                    <li><a href="#!/cadastrarEvento/" style="color:yellow">cadastrarEvento</a></li>
-                    <li><a href="#!/listaUser/">Listar Users</a></li>
+                    <li><a href="#!/cadastrarEvento/" style="color:white">cadastrarEvento</a></li>
+                    <li><a href="#!/listaUser/">Listar</a></li>
                     <li><a href="#!/listaEvento/">Listar Eventos</a></li>
+                    <li><a href="#!/editUser/">Edit User</a></li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-user"style="color:yellow"></span> Sign Up</a></li>
-                    <li><a href="#!/login/"><span class="glyphicon glyphicon-log-in"style="color:yellow"></span> Login</a></li>
+                    <li ng-hide="navVM.sessao.nome==''"><a><span class="glyphicon glyphicon-user" style="color:yellow"></span> {{navVM.sessao.nome}}</a></li>
+                    <li ng-show="navVM.sessao.nome==''"><a href="#!/login/"><span class="glyphicon glyphicon-log-in"style="color:yellow"></span> Entrar</a></li>
+                    <li ng-hide="navVM.sessao.nome==''"><a ng-click="navVM.sair()"><span class="glyphicon glyphicon-log-out"style="color:yellow"></span> Sair </a></li>
                 </ul>
             </div>
         </div>

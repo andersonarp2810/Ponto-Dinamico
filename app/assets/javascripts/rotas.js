@@ -29,6 +29,12 @@
                 controller: "CadastroUserController",
                 controllerAs: "vm"
             })
+            .state($Estados.userEdit, {
+                url: '/editUser/',
+                templateUrl: "views/editUser/editUser.html",
+                controller: "EditUserController",
+                controllerAs: "vm"
+            })
             .state($Estados.userLista, {
                 url: '/listaUser/',
                 templateUrl: "views/listaUser/listaUser.html",
