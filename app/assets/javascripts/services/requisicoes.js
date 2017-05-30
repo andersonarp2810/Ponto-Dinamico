@@ -16,10 +16,11 @@
 
         function destroy(url, dados, tipo) {
             rl = $IP + url;
-            console.log(`${url}`);
+            //console.log(`${rl}`);
             resposta = $q.defer();
             da = {};
             da[tipo] = dados;
+            //console.log(da);
             //da[id] = escopo.sessao;
             $http({
                 method: "DELETE",
