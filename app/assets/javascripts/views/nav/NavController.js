@@ -11,11 +11,11 @@
         navVM.sessao = sessao;
 
         function sair() {
+            LoginService.logout(navVM.sessao.id);
             navVM.sessao.id = '';
             navVM.sessao.nome = '';
             $cookies.remove('sessao_pd_id');
             $cookies.remove('sessao_pd_nome');
-            LoginService.logout(navVM.sessao.id);
             $window.location.href = "#!/login/";
         }
 
