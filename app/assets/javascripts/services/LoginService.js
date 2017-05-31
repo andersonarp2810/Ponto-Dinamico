@@ -22,7 +22,11 @@
         function checar() {
             url = $Rotas.checar;
             Requisicoes.get(url).then(function (data) {
-
+                console.log(data);
+                if (data.erro == '501') {
+                    apagar();
+                    $window.location.href = "#!/login/";
+                }
             });
         }
 

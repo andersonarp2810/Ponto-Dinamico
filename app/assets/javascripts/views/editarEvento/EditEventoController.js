@@ -70,8 +70,8 @@
                 GeoService.getPosicao()
                     .then(function (data) {
                         console.log(data);
-                        vm.latitude = data.latitude;
-                        vm.longitude = data.longitude;
+                        //vm.latitude = data.latitude;
+                        //vm.longitude = data.longitude;
                     });
             }
         }
