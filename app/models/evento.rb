@@ -7,23 +7,45 @@ validates :nome, :tipo, :data_fim, :data_fim, :hora_inicio, :hora_fim, :local, :
 #associação
 has_many :usuario_eventos
 
+def self.formate(eventos)
+    arr = Array.new
+    eventos.each do |evento|
+        ev = Hash.new
+        ev["id"] = evento.id
+        ev["nome"] = evento.nome
+        ev["tipo"] = evento.tipo
+        ev["data_inicio"] = evento.data_inicio.strftime("%d/%m/%Y")
+        ev["data_fim"] = evento.data_fim.strftime("%d/%m/%Y")
+        ev["hora_inicio"] = evento.hora_inicio.to_s(:time)
+        ev["hora_fim"] = evento.hora_fim.to_s(:time)
+        ev["local"] = evento.local
+        ev["descricao"] = evento.descricao
+        arr.push(ev)
+    end
+    arr.reverse
+end
+
 def self.search(id)
    if id.present?
        arr = Array.new
        users = Array.new
        evento = Evento.find_by(id: id)
-       usuarios = UsuarioEvento.where("evento_id = ? and data >= ? and data<= ?", "#{evento.id}" ,"#{evento.data_inicio}", "#{evento.data_fim}").select(:id, :usuario_id, :data, :mensagem).order(:usuario_id)
-       usuarios.each do |usuario|
-            arr.push(usuario[:usuario_id])
+       usuarios = UsuarioEvento.where("evento_id = ? and data >= ? and data<= ?", "#{evento.id}" ,"#{evento.data_inicio}", "#{evento.data_fim}").select(:id, :usuario_id, :data, :mensagem)
+       if usuarios.present?
+        usuarios.each do |usuario|
+                arr.push(usuario[:usuario_id])
+            end
+            ids = arr.uniq
+            ids.each do |id| 
+                user = Hash.new
+                usu = Usuario.find_by(id: id)
+                user["nome"] = usu.nome
+                user["presenca"] = arr.count(id)
+                users.push(user)
+            end
+        else
+            return nil
         end
-    ids = arr.uniq
-    ids.each do |id| 
-        user = Hash.new
-        usu = Usuario.find_by(id: id)
-        user["nome"] = usu.nome
-        user["presenca"] = arr.count(id)
-        users.push(user)
-    end
    end
    users
 end
@@ -69,7 +91,7 @@ private
                 usuario_evento.evento_id = @evento.id
                 usuario_evento.usuario_id = @usuario_id
                 if usuario_evento.save
-                    return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data, hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
+                    return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data.strftime("%d/%m/%Y"), hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
                 else
                     #algum erro
                     erro = 315
@@ -86,7 +108,7 @@ private
                     usuario_evento.usuario_id = @usuario_id
                     usuario_evento.mensagem = @mensagem
                     if usuario_evento.save
-                        return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data, hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
+                        return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data.strftime("%d/%m/%Y"), hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
                     else
                         #algum
                         erro = 315
@@ -96,9 +118,9 @@ private
         else
             if usuario_evento.hora_fim.nil?
                 #faz o ponto no final do evento
-                if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_fim.hour * 60) + @evento.hora_fim.min)).abs <= 300 #verifica se esta no intervalo permitido para realizar o ponto
+                if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_fim.hour * 60) + @evento.hora_fim.min)).abs <= 30 #verifica se esta no intervalo permitido para realizar o ponto
                     usuario_evento.update(hora_fim: hora_atual.to_s(:time))
-                    return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data, hora_fim: usuario_evento.hora_fim.to_s(:time)}}#dados do usuario          }
+                    return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data.strftime("%d/%m/%Y"), hora_fim: usuario_evento.hora_fim.to_s(:time)}}#dados do usuario          }
                 else
                     erro = 313
                 end
