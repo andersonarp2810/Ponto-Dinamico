@@ -1,5 +1,10 @@
 class UserSessionsController < ApplicationController
     skip_before_action :verify_authenticity_token
+    before_action :require_authentication, only: [:permit]
+
+    def permit
+        render json:{erro: "000", body:" "}        
+    end
 
     def new
         @user_session = UserSession.new(session)
@@ -17,7 +22,6 @@ class UserSessionsController < ApplicationController
     end
 
     def destroy
-        puts "destroy #{params[:user_session][:id]}"
         user_session.destroy(params[:user_session][:id])
         if user_signed_in?
             render json:{erro: "000", body:{status: false}}

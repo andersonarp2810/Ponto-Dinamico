@@ -72,7 +72,7 @@ enum status: {true: 1, false: 0}
 		if retorno.blank?
 			return mensagem = {erro: "000", body: {entrada: " ", saida: " ", data: " "}} 	
 		else
-			return mensagem = {erro: "000", body: {entrada: retorno.hora_inicio.blank? ? " " : retorno.hora_inicio.to_s(:time), saida: retorno.hora_fim.blank? ? " " : retorno.hora_fim.to_s(:time), data: retorno.data.to_date}} 
+			return mensagem = {erro: "000", body: {entrada: retorno.hora_inicio.blank? ? " " : retorno.hora_inicio.to_s(:time), saida: retorno.hora_fim.blank? ? " " : retorno.hora_fim.to_s(:time), data: retorno.data.strftime("%d/%m/%Y")}} 
 		end
 
 	end
@@ -87,8 +87,20 @@ enum status: {true: 1, false: 0}
 		end
 		return false
 	end
-
-
+#pesquisa de relatorio do usuario
+def self.search(id)
+   if id.present?
+		   usuarios = UsuarioEvento.where("usuario_id = ?" ,"#{id}").distinct.pluck(:evento_id)
+			if usuarios.present?
+				arr_evento = Array.new				
+				usuarios.each do |usu|
+					arr_evento.push(Evento.select("id,nome").where(id: usu))
+				end
+				return arr_evento
+			end 
+		end
+   return nil
+end
 #protocolo de erro pra campos ja em uso
 	private
 		def self.protocolo_em_uso(chave)

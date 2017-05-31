@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
 #rota raiz
   root "application#angular"
+#verificar autenticação
+  match 'autentica', to: "user_sessions#permit", via: [:get]
 #rota para logout usuario via post
   match 'logout', to: 'user_sessions#destroy', via: [:delete]
 #rota para cadastrar usuario via post

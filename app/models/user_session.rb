@@ -20,7 +20,7 @@ class UserSession
 
     def store(usuario)
         @session[:user_id] = usuario.id
-        @session[:created_at] = Time.now  
+        @session[:created_at] = Time.now.to_formatted_s(:number)  
     end
 
     def current_user
@@ -34,14 +34,13 @@ class UserSession
     end
 
     def user_expiration?
-        time_now = Time.now
-        if time_now - @session[:created_at].to_i > 0.30
-            puts "user expiration #{@session[:user_id]}"
+        time_now = Time.now.to_formatted_s(:number)
+        if ((time_now.to_i - @session[:created_at].to_i) > 60)
             destroy(@session[:user_id])
-            return false
+            return true
         else
             @session[:created_at] = time_now
-            return true
+            return false
         end
         
     end
