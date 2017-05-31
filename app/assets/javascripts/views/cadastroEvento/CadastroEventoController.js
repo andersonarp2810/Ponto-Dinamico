@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('CadastroEventoController', CadastroEventoController);
 
-    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'sessao', '$Respostas', '$window'];
+    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$window'];
 
-    function CadastroEventoController($scope, $log, EventoService, sessao, $Repostas, $window) {
+    function CadastroEventoController($scope, $log, EventoService, LoginService, GeoService, sessao, $Repostas, $window) {
         var vm = this; //view model
         vm.botao = false;
         vm.cadastrarEvento = cadastrarEvento;
@@ -48,7 +48,9 @@
                                 switch (data.erro) {
                                     case "102":
                                         vm.nome = '';
-                                    case "333":
+                                    case "501":
+                                        console.log("faça login");
+                                        $window.location.href = "#!/login";
                                     //deslogar
                                 }
                                 break;
@@ -83,6 +85,17 @@
             if (vm.sessao.nome == '') {
                 console.log("faça login");
                 $window.location.href = "#!/login/";
+            } else {
+                LoginService.checar();
+
+                console.log("geo");
+                GeoService.getPosicao()
+                    .then(function (data) {
+                        console.log("pegou geo");
+                        console.log(data);
+                        vm.latitude = data.latitude;
+                        vm.longitude = data.longitude;
+                    });
             }
         }
 

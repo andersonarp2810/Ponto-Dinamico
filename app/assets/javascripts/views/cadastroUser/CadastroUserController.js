@@ -3,9 +3,9 @@
 		.module('pdApp')
 		.controller("CadastroUserController", CadastroUserController);
 
-	CadastroUserController.$inject = ['UserService', 'sessao', '$Respostas', '$window'];
+	CadastroUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$window'];
 
-	function CadastroUserController(UserService, sessao, $Respostas, $window) {
+	function CadastroUserController(LoginService, UserService, sessao, $Respostas, $window) {
 
 		var vm = this;
 
@@ -70,6 +70,9 @@
 			if (vm.sessao.nome == '') {
 				console.log("faça login");
 				$window.location.href = "#!/login/";
+			}
+			else {
+				LoginService.checar();
 			}
 		}
 

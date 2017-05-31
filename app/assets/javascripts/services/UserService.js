@@ -46,11 +46,13 @@
         }
 
         function listar() {
-
+            url = $Rotas.listaUsers;
+            return Requisicoes.get(url);
         }
 
         function relatorio(id) {
-
+            url = $Rotas.listaUsers + "?keywords=" + id;
+            return Requisicoes.get(url);
         }
 
     };

@@ -5,8 +5,6 @@
 				<h2 style="color:black">Editar<small><br><div style="color:black">(Edite os campos abaixo)</div></small> </h2>
 			</div>
 
-
-
 			<div class="form-group form-group-sm">
 				<label class="col-sm-8 control-label" for="formGroupInputSmall">Escolha uma senha</label>
 				<input class="form-control" type="password" name="senha" placeholder="Senha" ng-model="vm.senha" ng-minlength="5" required><br>
@@ -33,7 +31,7 @@
 				<input class="form-control" name="MAC" type="text" placeholder="Matricula" ng-model="vm.matricula" required><br>
 			</div>
 			<div role="alert">
-				<span class="error" ng-show="vm.form.matricula.$error.required">
+				<span class="error" ng-show="vm.form.matricula.$dirty && vm.form.matricula.$error.required">
        			(Campo obrigatório)</span>
 			</div>
 			<div class="form-group form-group-sm">
@@ -41,7 +39,7 @@
 				<input class="form-control" name="imei" type="email" placeholder="E-mail" ng-model="vm.email" required><br>
 			</div>
 			<div role="alert">
-				<span class="error" ng-show="vm.form.imei.$error.required">
+				<span class="error" ng-show="vm.form.imei.$dirty && vm.form.imei.$error.required">
        			(Campo obrigatório)</span>
 			</div>
 		</form>

@@ -3,12 +3,20 @@
         .module('pdApp')
         .service('LoginService', LoginService);
 
-    LoginService.$inject = ['Requisicoes', '$Rotas'];
+    LoginService.$inject = ['Requisicoes', 'sessao', '$cookies', '$Rotas', '$window'];
 
-    function LoginService(Requisicoes, $Rotas) {
+    function LoginService(Requisicoes, sessao, $cookies, $Rotas, $window) {
 
+        this.checar = checar;
         this.enviarLogin = enviarLogin;
         this.logout = logout;
+
+        function checar() {
+            url = $Rotas.checar;
+            Requisicoes.get(url).then(function (data) {
+
+            });
+        }
 
         function enviarLogin(login, ciphertext) {
 
@@ -22,13 +30,17 @@
             return Requisicoes.post(url, dados, tipo);
         }
 
-        function logout(id) {
+        function logout() {
             url = $Rotas.logout;
             tipo = "user_session";
-
+            $cookies.remove('sessao_pd_id');
+            $cookies.remove('sessao_pd_nome');
             dados = {
-                id: id
+                id: sessao.id
             }
+            sessao.id = '';
+            sessao.nome = '';
+            console.log(sessao);
             return Requisicoes.destroy(url, dados, tipo);
         }
 

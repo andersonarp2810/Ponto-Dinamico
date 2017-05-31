@@ -3,9 +3,9 @@
 		.module('pdApp')
 		.controller('EditUserController', EditUserController);
 
-	EditUserController.$inject = ['UserService', 'sessao', '$Respostas', '$window'];
+	EditUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$window'];
 
-	function EditUserController(UserService, sessao, $Respostas, $window) {
+	function EditUserController(LoginService, UserService, sessao, $Respostas, $window) {
 		var vm = this;
 		vm.confirmaSenha;
 		vm.senha;
@@ -24,7 +24,7 @@
 							case "000":
 								console.log(data.body);
 								vm.mensagem = "Alteração concluída com sucesso!";
-								$window.location.href = "#";
+								$window.location.href = "#!/listaUser";
 								break;
 							default:
 								vm.mensagem = "Erro: " + $Respostas[data.erro];
@@ -42,7 +42,12 @@
 		}
 
 		var init = function () {
-
+			if (vm.sessao.nome == '') {
+				console.log("faça login");
+				$window.location.href = "#!/login/";
+			} else {
+				LoginService.checar();
+			}
 		}
 
 		init();

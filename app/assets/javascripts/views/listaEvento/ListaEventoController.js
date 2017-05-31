@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('ListaEventoController', ListaEventoController);
 
-    ListaEventoController.$inject = ['EventoService', 'sessao', '$Respostas', '$window'];
+    ListaEventoController.$inject = ['LoginService', 'EventoService', 'sessao', '$Respostas', '$window'];
 
-    function ListaEventoController(EventoService, sessao, $Respostas, $window) {
+    function ListaEventoController(LoginService, EventoService, sessao, $Respostas, $window) {
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
@@ -45,6 +45,7 @@
                             vm.users = data.body;
                             break;
                         default:
+                            vm.mensagem = 'Erro: ' + $Respostas[data.erro];
                             vm.users = null;
                             break;
                     }
@@ -63,7 +64,7 @@
                             vm.eventos = data.body;
                             break;
                         default:
-                            vm.mensagem = 'Erro: ' + $Respostas[data.erro];
+                            console.log('Erro: ' + $Respostas[data.erro]);
                             break;
                     }
                 });
@@ -74,6 +75,7 @@
                 console.log("faça login");
                 $window.location.href = "#!/login/";
             } else {
+                LoginService.checar();
                 listarEventos();
             }
         }
