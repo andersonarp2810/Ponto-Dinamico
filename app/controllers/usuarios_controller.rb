@@ -6,7 +6,7 @@ class UsuariosController < ApplicationController
 
   # GET /usuarios/1
   def get_ponto
-   render json: Usuario.ultimo_ponto(params[:id]).to_json
+   render json: Usuario.ultimo_ponto(params[:user_id], params[:evento_id]).to_json
   end
   
   # GET /usuarios

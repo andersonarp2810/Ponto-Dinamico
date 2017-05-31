@@ -6,12 +6,12 @@ class UsuarioEventosController < ApplicationController
   #relatorio mobile ponto do usuario
   # GET / relatoriousuario/1
   def relatoriousuario
-      usuario_evento = UsuarioEvento.search(params[:id])
-      if usuario_evento.present?
-        render json: {erro: "000", body: usuario_evento}
-      else
-        render json: {erro: "301", body: ""}
-      end
+        usuario_evento = UsuarioEvento.search(params[:usu_id], params[:eve_id])
+        if usuario_evento.present?
+          render json: {erro: "000", body: usuario_evento}
+        else
+          render json: {erro: "301", body: ""}
+        end
   end
   
 

@@ -67,8 +67,8 @@ enum status: {true: 1, false: 0}
 	end
 
 #realiza a pesquisa do evento do usuario que realizou a pesquisa
-	def self.ultimo_ponto(usuario_id)
-		retorno = UsuarioEvento.where(usuario_id: usuario_id).last
+	def self.ultimo_ponto(usuario_id, evento_id)
+		retorno = UsuarioEvento.order(:data).where("usuario_id = ? and evento_id = ?",usuario_id, evento_id).last
 		if retorno.blank?
 			return mensagem = {erro: "000", body: {entrada: " ", saida: " ", data: " "}} 	
 		else
