@@ -6,14 +6,25 @@
     EventoService.$inject = ["Requisicoes", 'sessao', "$Rotas"];
 
     function EventoService(Requisicoes, sessao, $Rotas) {
+
+        this.editEvento = editEvento;
         this.enviarEvento = enviarEvento;
         this.listaEventos = listaEventos;
         this.relatorioEventos = relatorioEventos;
 
+        function editEvento(evento) {
+
+            url = $Rotas.editEvento + '/' + evento.id;
+
+            tipo = "evento";
+
+            return Requisicoes.put(url, evento, tipo);
+        }
+
         function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, QR,
             latitude, longitude) {
 
-            url = $Rotas.evento;
+            url = $Rotas.sendEvento;
             tipo = "evento";
 
             evento = {

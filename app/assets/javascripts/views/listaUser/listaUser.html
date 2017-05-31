@@ -25,12 +25,12 @@
 <div class="container">
   <h2>Resultado</h2>
   <p>Informações :</p>
-  <table class="table">
+  <table class="table" fixed-header table-height="50px">
     <thead>
       <tr class="info">
         <th>NúmeroM</th>
         <th>Nome</th>
-        <th>        </th>
+        <th> </th>
         <th></th>
         <th></th>
       </tr>
@@ -40,52 +40,52 @@
         <tr>
           <td>{{user.id}}</td>
           <td>{{user.nome}}</td>
-          <td><a href=""type="button" class="btn btn-primary" style="color:white">editar</a> </td>
-          <td><a href=""type="button" class="btn btn-primary" style="color:white">informações</a></td>
-          <td><a href=""type="button" class="btn btn-primary" style="color:white">relatório</a></td>
+          <td><a ui-sref="#!/editUser({user: user})/" type="button" class="btn btn-primary" style="color:white">editar</a> </td>
+          <td><a href="" type="button" class="btn btn-primary" style="color:white">informações</a></td>
+          <td><a href="" type="button" class="btn btn-primary" style="color:white">relatório</a></td>
         </tr>
       </div>
     </tbody>
   </table>
   <div class="container" style="position:relative;transform: translate(-7%, 15%);width:90%">
-  <h2>Relatório:</h2>
-                                                           
-  <table class="table">
-    <thead>
-      <tr class="info">
-        <th>nome</th>
-        <th>data</th>
-        <th>hora entrada</th>
-        <th>hora saída</th>
-        <th>mensagem de atraso</th>
-      </tr>
-    </thead>
-    <tbody>
-   
-      <tr>
-        <td>1</td>
-        <td>Wally</td>
-        <td>--</td>
-        <td>--</td>
-        <td>--</td>
-        
-      </tr>
-     <tr>
-        <td>2</td>
-        <td>wally2</td>
-        <td>--</td>
-        <td>--</td>
-        <td>--</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>wally3</td>
-        <td>--</td>
-        <td>--</td>
-        <td>--</td>
-      </tr>
-      
-    </tbody>
-   </table>
-</div>
+    <h2>Relatório:</h2>
+
+    <table class="table">
+      <thead>
+        <tr class="info">
+          <th>nome</th>
+          <th>data</th>
+          <th>hora entrada</th>
+          <th>hora saída</th>
+          <th>mensagem de atraso</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td>1</td>
+          <td>Wally</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>wally2</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>wally3</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
 </div>

@@ -1,37 +1,24 @@
 (function () {
     angular
         .module('pdApp')
-        .controller('CadastroEventoController', CadastroEventoController);
+        .controller('EditEventoController', EditEventoController);
 
-    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$window'];
+    EditEventoController.$inject = ['EventoService', 'LoginService', 'sessao', '$Respostas', '$stateParams', '$window'];
 
-    function CadastroEventoController($scope, $log, EventoService, LoginService, GeoService, sessao, $Repostas, $window) {
-        var vm = this; //view model
+    function EditEventoController(EventoService, LoginService, sessao, $Respostas, $stateParams, $window) {
+        var vm = this;
         vm.botao = false;
-        vm.cadastrarEvento = cadastrarEvento;
-        vm.dataInicio;
-        vm.dataFim;
-        vm.horaInicio;
-        vm.horaFim;
-        vm.descricao;
-        vm.local;
-        vm.latitude;
-        vm.longitude;
+        vm.evento = $stateParams.evento;
         vm.mensagem;
-        vm.nome;
-        vm.QR;
-        vm.tipo;
         vm.sessao = sessao;
 
-        function cadastrarEvento() {
+        function editEvento() {
             if (vm.form.$invalid) {
                 alerta("Preencha os campos corretamente.");
             }
             else {
                 vm.botao = true;
-                EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
-                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
-                    vm.latitude, vm.longitude)
+                EventoService.editEvento(evento)
                     .then(function (data) {
                         console.log(data);
                         vm.mensagem = '';
@@ -49,9 +36,9 @@
                                     case "102":
                                         vm.nome = '';
                                     case "501":
-                                        console.log("faça login");
-                                        $window.location.href = "#!/login";
+                                        console.log("sessão expirada");
                                         LoginService.apagar();
+                                        $window.location.href = "#!/login";
                                     //deslogar
                                 }
                                 break;
@@ -70,15 +57,8 @@
             vm.descricao = '';
             vm.local = '';
             vm.nome = '';
-            vm.QR = '';
             vm.tipo = '';
         }
-
-        //isso é apenas um teste de observador - remover em versão final
-        $scope.$watch('vm.horaFim', function (current, original) {
-            $log.info('vm.horaFim was %s', original);
-            $log.info('vm.horaFim is now %s', current);
-        });
 
         var init = function () {
             if (vm.sessao.nome == '') {
@@ -87,10 +67,8 @@
             } else {
                 LoginService.checar();
 
-                console.log("geo");
                 GeoService.getPosicao()
                     .then(function (data) {
-                        console.log("pegou geo");
                         console.log(data);
                         vm.latitude = data.latitude;
                         vm.longitude = data.longitude;

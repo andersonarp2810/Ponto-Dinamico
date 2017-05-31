@@ -44,6 +44,11 @@
                             console.log(data.body);
                             vm.users = data.body;
                             break;
+                        case '501':
+                            console.log("sessão expirada");
+                            LoginService.apagar();
+                            $window.location.href = "#!/login";
+                            break;
                         default:
                             vm.mensagem = 'Erro: ' + $Respostas[data.erro];
                             vm.users = null;

@@ -7,32 +7,27 @@
 
     function UserService(Requisicoes, $Rotas) {
 
+        this.editUser = editUser;
         this.enviarUser = enviarUser;
         this.listar = listar;
         this.relatorio = relatorio;
 
-        function editMac(mac) {
+        function editUser(user) {
 
-            url = $Rotas.editarUser;
+            url = $Rotas.sendUser + '/' + user.id;
             tipo = "usuario";
 
-            dados = {
-                mac: mac
-            }
+            return Requisicoes.put(url, user, tipo);
         }
 
-        function editSenha(senha) {
-            url = $Rotas.editarUser;
-            tipo = "usuario";
-
-            dados = {
-                senha: senha
-            }
+        function listar() {
+            url = $Rotas.listaUsers;
+            return Requisicoes.get(url);
         }
 
         function enviarUser(name, senha, email, matricula) {
 
-            url = $Rotas.cadastrarUser;
+            url = $Rotas.sendUser;
             tipo = "usuario";
 
             dados = {

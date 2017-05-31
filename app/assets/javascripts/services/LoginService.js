@@ -7,9 +7,17 @@
 
     function LoginService(Requisicoes, sessao, $cookies, $Rotas, $window) {
 
+        this.apagar = apagar;
         this.checar = checar;
         this.enviarLogin = enviarLogin;
         this.logout = logout;
+
+        function apagar() {
+            $cookies.remove('sessao_pd_id');
+            $cookies.remove('sessao_pd_nome');
+            sessao.id = '';
+            sessao.nome = '';
+        }
 
         function checar() {
             url = $Rotas.checar;
@@ -33,13 +41,10 @@
         function logout() {
             url = $Rotas.logout;
             tipo = "user_session";
-            $cookies.remove('sessao_pd_id');
-            $cookies.remove('sessao_pd_nome');
             dados = {
                 id: sessao.id
             }
-            sessao.id = '';
-            sessao.nome = '';
+            apagar();
             console.log(sessao);
             return Requisicoes.destroy(url, dados, tipo);
         }

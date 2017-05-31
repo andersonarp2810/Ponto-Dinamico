@@ -21,6 +21,10 @@
             navVM.sessao.id = $cookies.get('sessao_pd_id');
             if ("undefined" != typeof navVM.sessao.id) {
                 navVM.sessao.nome = $cookies.get('sessao_pd_nome');
+                $window.location.href = "#!/home/";
+            }
+            else {
+                $window.location.href = "#!/login/";
             }
         }
 

@@ -3,21 +3,23 @@
 		.module('pdApp')
 		.controller('EditUserController', EditUserController);
 
-	EditUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$window'];
+	EditUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$stateParams', '$window'];
 
-	function EditUserController(LoginService, UserService, sessao, $Respostas, $window) {
+	function EditUserController(LoginService, UserService, sessao, $Respostas, $stateParams, $window) {
 		var vm = this;
+		vm.cadastrarUsuario = cadastrarUsuario;
 		vm.confirmaSenha;
-		vm.senha;
+		vm.editarUser = editarUser;
+		vm.sessao = sessao;
 		vm.mensagem;
-		vm.mac = "";
+		vm.user = $stateParams.user;
 
-		function editarMAC() {
+		function editarUser() {
 			if (vm.form.$invalid) {
 				alert("Preencha os campos corretamente");
 			}
 			else {
-				UserService.editarUser(vm.mac)
+				UserService.editUser(user)
 					.then(function (data) {
 						vm.mensagem = '';
 						switch (data.erro) {
@@ -32,8 +34,10 @@
 									case "321":
 										vm.mensagem = "";
 										break;
-									case "322":
-										vm.mensagem = "";
+									case "501":
+										console.log("sessão expirada");
+										$window.location.href = "#!/login";
+										LoginService.apagar();
 										break;
 								}
 						}

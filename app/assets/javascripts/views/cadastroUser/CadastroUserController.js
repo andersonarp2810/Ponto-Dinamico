@@ -31,7 +31,7 @@
 								console.log(data.body);
 								vm.mensagem = "Usuário criado";
 								//limpar();
-								$window.location.href = "#!/home/";//deve redirecionar pra lista de usuários depois
+								$window.location.href = "#!/listaUser/";
 								break;
 							default:
 								vm.mensagem = "Erro: " + $Respostas[data.erro];
@@ -51,6 +51,11 @@
 										break;
 									case "303":
 										//deslogar?
+										break;
+									case "501":
+										console.log("Sessão expirada.");
+										$window.location.href = "#!/login/";
+										LoginService.apagar();
 										break;
 								}
 								break;

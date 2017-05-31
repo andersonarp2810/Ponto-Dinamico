@@ -25,24 +25,24 @@
 <div class="container">
   <h2>Resultado</h2>
   <p>Informações :</p>
-  <table class="table">
+  <table class="table" fixed-header table-height="50px">
     <thead>
       <tr class="info">
         <th type="date">Data</th>
         <th>Nome do evento</th>
-        <th>        </th>
+        <th> </th>
         <th></th>
         <th></th>
       </tr>
     </thead>
     <tbody>
-      <div ng-repeat="user in vm.users">
+      <div ng-repeat="evento in vm.eventos">
         <tr>
           <td>25/05/2017</td>
           <td>Algum nome aleatório</td>
-          <td><a href="" type="button" class="btn btn-primary" style="color:white">editar</a> </td>
-          <td><a href=""type="button" class="btn btn-primary" style="color:white">informações</a></td>
-          <td><a href=""type="button" class="btn btn-primary" style="color:white">relatório</a></td>
+          <td><a href="#!/editEvento({evento: evento})/" type="button" class="btn btn-primary" style="color:white">editar</a> </td>
+          <td><a href="" type="button" class="btn btn-primary" style="color:white">informações</a></td>
+          <td><a href="" type="button" class="btn btn-primary" style="color:white">relatório</a></td>
         </tr>
       </div>
     </tbody>
