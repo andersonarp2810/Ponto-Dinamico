@@ -1,5 +1,30 @@
+<style type="text/css">
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: #fff;
+    background-color:#007db7;
+    
+}
+.dropdown-menu > li > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: white;
+    white-space: nowrap;
+    
+}
+p, ol, ul, td {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 15px;
+    line-height: 18px;
+    margin: 33px;
+}
+    }
+
+</style>
 <div ng-controller="NavController as navVM">
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:#007db7;">
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:#007db7;border-color:white">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -11,20 +36,20 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#!/home/" style="background-color:white;color:blue">Home</a></li>
+                    <li class="active"><a href="#!/home/" style="background-color:white;color:blue">Inicio</a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white">Relatório <span class="caret"></span></a>
                         <ul class="dropdown-menu" style="background-color:#007db7">
-                            <li><a href="#!/listaUser/" >Usuários</a></li>
+                            <li><a  href="#!/listaUser/" >Usuários</a></li>
                             <li><a href="#!/listaEvento/" >Eventos</a></li>
 
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white">Usuário <span class="caret"></span></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white">Usuário<span class="caret"></span></a>
                         <ul class="dropdown-menu" style="background-color:#007db7">
-                            <li><a href="#!/cadastrarUser/" >cadastrarUser</a></li>
-                            <li><a href="#!/editUser/" >Edicaouser</a></li>
+                            <li><a href="#!/cadastrarUser/" >Cadastrar Usuário</a></li>
+                            <li><a href="#!/editUser/" >Editar Usuário</a></li>
 
                         </ul>
                     </li>
