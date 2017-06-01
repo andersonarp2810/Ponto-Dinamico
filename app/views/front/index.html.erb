@@ -1,24 +1,25 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Ponto</title>
-    <%= csrf_meta_tags %>
+<body ng-app="pdApp" 'no-repeat center center fixed' 'background-size':'10%'>
+  <span ng-include="'views/nav/nav.html'"></span>
+  <br>
+  <ui-view></ui-view>
+<div style="position:relative;transform: translate(0%, 30%); background-color:#eee" >
+<footer class="row">
+<div class="col-md-6">
+<img src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação">
+</div>
+<div class="col-md-6">
+<h2>Contato</h2>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag 'application' %>
-  </head>
+      <p><span class="glyphicon glyphicon-map-marker"></span> Rua da Conceição, 1228 - S. Miguel
+Juazeiro do Norte, CE
+CEP.: 63010-465</p>
+      <p><span class="glyphicon glyphicon-phone"></span> (88) 3512-3299</p>
+      <p><span class="glyphicon glyphicon-envelope"></span> fap@fapce.edu.br</p> 
 
-  <body ng-app="pdApp" ng-style="{'background-image': 'url(/assets/fundo.jpg)'}" 'no-repeat center center fixed' 'background-size':'10%'>
-    pega diabo
-    <a href="#!/cadastrarEvento">/cadastrarEvento</a>
-    <a href="#!/home">/home</a>
-    <a href="#!/login">/login</a>
-    <a href="#!/cadastrarUser">/cadastrarUser</a>
-    <br>
-    <div style="text-align: center;">
-      <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação">
-    </div>
-    <br>
-    <ui-view></ui-view>
-  </body>
-</html>
+</div>
+<small><h6> © 2017 | NExTI - Nucleo de Extensão em Tecnologia da Informação</h6></small>
+</footer>
+
+
+</div>
+</body>

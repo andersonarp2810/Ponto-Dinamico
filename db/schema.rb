@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170424182337) do
+ActiveRecord::Schema.define(version: 20170522174624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20170424182337) do
   create_table "eventos", force: :cascade do |t|
     t.string   "nome"
     t.string   "tipo"
+    t.string   "pessoa_evento"
     t.date     "data_inicio"
     t.date     "data_fim"
     t.time     "hora_inicio"
@@ -46,7 +47,7 @@ ActiveRecord::Schema.define(version: 20170424182337) do
 
   create_table "usuarios", force: :cascade do |t|
     t.string   "nome"
-    t.string   "senha"
+    t.string   "password"
     t.string   "email"
     t.string   "matricula"
     t.datetime "created_at",             null: false

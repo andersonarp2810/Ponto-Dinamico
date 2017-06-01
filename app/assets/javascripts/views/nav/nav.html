@@ -1,0 +1,52 @@
+<div ng-controller="NavController as navVM">
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:#007db7;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+                <a class="navbar-brand" href="#!/home/" style="color:white">Ponto Dinâmico</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#!/home/" style="background-color:white;color:blue">Home</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" style="color:white">Relatório <span class="caret"></span></a>
+                        <ul class="dropdown-menu" style="background-color:#007db7">
+                            <li><a href="#!/listaUser/" >Usuários</a></li>
+                            <li><a href="#!/listaEvento/" >Eventos</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" style="color:white">Usuário <span class="caret"></span></a>
+                        <ul class="dropdown-menu" style="background-color:#007db7">
+                            <li><a href="#!/cadastrarUser/" >cadastrarUser</a></li>
+                            <li><a href="#!/editUser/" >Edicaouser</a></li>
+
+                        </ul>
+                    </li>
+                     <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" style="color:white">Evento <span class="caret"></span></a>
+                        <ul class="dropdown-menu" style="background-color:#007db7">
+                            <li><a href="#!/cadastrarEvento/" >Cadastrar Evento</a></li>
+                            <li><a href="#!/editEvento/" >Editar Evento</a></li>
+
+                        </ul>
+                    </li>
+                   
+                    
+                   
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-hide="navVM.sessao.nome==''"><a ng-click="navVM.logzin()"><span class="glyphicon glyphicon-user" style="color:white"></span> {{navVM.sessao.nome}}</a></li>
+                    <li ng-show="navVM.sessao.nome==''"><a href="#!/login/"><span class="glyphicon glyphicon-log-in"style="color:white"></span> Entrar</a></li>
+                    <li ng-hide="navVM.sessao.nome==''"><a ng-click="navVM.sair()"><span class="glyphicon glyphicon-log-out"style="<color:white></color:white>"></span> Sair </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>

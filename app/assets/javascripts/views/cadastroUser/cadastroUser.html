@@ -1,0 +1,60 @@
+<div class="container " style="position:relative;transform: translate(0%, 10%); width:50%;top:5%; background-color:	#fafafa">
+	<img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(40%, 0%)">
+	<div class="form-group form-group-sm">
+		<form name="vm.form">
+			<div style="text-align: center; font-family: inherit;">
+				<h2 style="color:black">Cadastre-se<small><br><div style="color:black">(Preencha os campos abaixo)</div></small> </h2>
+			</div>
+			<div class="form-group form-group-sm">
+				<label class="col-sm-6 control-label" for="formGroupInputSmall">Digite Nome</label>
+				<input class="form-control" type="text" name="user" placeholder="Nome Completo" ng-model="vm.name" required><br>
+			</div>
+			<div role="alert">
+				<span class="error" ng-show="vm.form.user.$dirty && vm.form.user.$error.required">
+       			(Campo obrigatório)</span>
+			</div>
+			<div class="form-group form-group-sm">
+				<label class="col-sm-8 control-label" for="formGroupInputSmall">Escolha uma senha</label>
+				<input class="form-control" type="password" name="senha" placeholder="Senha" ng-model="vm.senha" ng-minlength="5" required><br>
+			</div>
+			<div role="alert">
+				<span class="error" ng-show="vm.form.senha.$dirty && vm.form.senha.$error.required">
+					(Campo obrigatório)</span>
+				<span class="error" ng-show="vm.form.senha.$dirty && vm.form.senha.$error.minlength">
+					A senha deve conter no mínimo 5 caracteres</span>
+			</div>
+			<div class="form-group form-group-sm">
+				<label class="col-sm-6 control-label" for="formGroupInputSmall">Confirmar senha</label>
+				<input class="form-control" type="password" name="confirma" placeholder="Confirmar Senha" ng-model="vm.confirmaSenha" ng-minlength="6"
+				 required ng-pattern="{{vm.senha}}"><br>
+			</div>
+			<div role="alert">
+				<span class="error" ng-show="vm.form.confirma.$senha && vm.form.confirma.$error.required">
+					(Campo obrigatório)</span>
+				<span class="error" ng-show="vm.form.confirma.$dirty && vm.form.senha.$dirty && vm.form.confirma.$error.pattern">
+					As senhas não correspondem</span>
+			</div>
+			<div class="form-group form-group-sm">
+				<label class="col-sm-10 control-label" for="formGroupInputSmall">Número da matrícula</label>
+				<input class="form-control" name="matricula" type="text" placeholder="Matricula" ng-model="vm.matricula" required><br>
+			</div>
+			<div role="alert">
+				<span class="error" ng-show="vm.form.matricula.$dirty && vm.form.matricula.$error.required">
+       			(Campo obrigatório)</span>
+			</div>
+			<div class="form-group form-group-sm">
+				<label class="col-sm-5 control-label" for="formGroupInputSmall">E-mail</label>
+				<input class="form-control" name="imei" type="email" placeholder="E-mail" ng-model="vm.email" required><br>
+			</div>
+			<div role="alert">
+				<span class="error" ng-show="vm.form.imei.$dirty && vm.form.imei.$error.required">
+       			(Campo obrigatório)</span>
+				<span class="error" ng-show="vm.form.imei.$invalid">
+				    Insira um e-mail válido.</span>
+			</div>
+		</form>
+		<div style="text-align-last: right">
+			<button class="btn btn-primary" ng-click="vm.cadastrarUsuario()">Cadastrar-se</button>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="row">
+    <br>
+    <br>
+    <form name="vm.form" class="form-horizontal">
+      <div class="form-group">
+        <div class="col-xs-9">
+          <input type="text" class="form-control" ng-model="vm.search" placeholder="Nome ou Data">
+          <br>
+          <label class="radio-inline">Buscar por </label>
+          <label class="radio-inline">
+                <input type="radio" name="busc" ng-model="vm.radio" value="nome" checked='checked'> Nome do evento
+            </label>
+          <label class="radio-inline">
+                <input type="radio" name ="busc" ng-model="vm.radio" value="matricula"> Data
+            </label>
+        </div>
+        <div class="col-xs-2">
+          <button type="button" class="btn btn-primary" ng-click="vm.buscar()">Buscar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="container">
+  <h2>Resultado</h2>
+  <p>Informações :</p>
+  <table class="table" fixed-header table-height="50px">
+    <thead>
+      <tr class="info">
+        <th type="date">Data</th>
+        <th>Nome do evento</th>
+        <th> </th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <div ng-repeat="evento in vm.eventos">
+        <tr>
+          <td><a href="#!/editEvento({evento: evento})/" type="button" class="btn btn-primary" style="color:white">editar</a> </td>
+          <td><a href="" type="button" class="btn btn-primary" style="color:white">informações</a></td>
+          <td><a href="" type="button" class="btn btn-primary" style="color:white">relatório</a></td>
+        </tr>
+      </div>
+    </tbody>
+  </table>
+
+</div>
