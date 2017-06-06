@@ -17,11 +17,13 @@ Rails.application.routes.draw do
 #rota para realizar o ponto
   match 'realizarponto', to: 'eventos#realizarponto', via: [:post]
 #rota get ultimo ponto
-  match 'getponto/:id', to: 'usuarios#get_ponto', via: [:get]
+  match 'getponto/:user_id/:evento_id', to: 'usuarios#get_ponto', via: [:get]
 #rota cadastrar eventos
   match 'cadastrarevento', to: 'eventos#create', via: [:post]
   #rota relatorio ponto usuario
-  match 'relatoriousuario/:id', to: 'usuario_eventos#relatoriousuario', via: [:get]
+  match 'relatoriousuario/:usu_id/:eve_id', to: 'usuario_eventos#relatoriousuario', via: [:get]
+  #rota eventos mobile
+  match 'eventosmobile', to: 'eventos#eventos_mobile', via: [:get]
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

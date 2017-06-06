@@ -1,8 +1,8 @@
 class EventosController < ApplicationController
   before_action :set_evento, only: [:show, :edit, :update, :destroy]
- before_action :require_authentication, only: [:show, :edit, :update, :destroy, :index, :create]
+  before_action :require_authentication, only: [:show, :edit, :update, :destroy, :index, :create]
   skip_before_action :verify_authenticity_token
-  # before_action :can_change, only: [:create, :update, :destroy, :new, :edit]
+ # before_action :can_change, only: [:create, :update, :destroy, :new, :edit]
 
 # POST /realizarponto
 def realizarponto 
@@ -16,6 +16,15 @@ def realizarponto
   render json: mensagem.to_json
 end
  
+ def eventos_mobile
+   if params[:keynome].present?
+        @eventos = Evento.formate(Evento.where("nome LIKE ?", "%#{params[:keynome]}%"))
+    else
+        @eventos = Evento.formate(Evento.all)
+    end
+      render json:{erro: "000", body: @eventos}
+ end
+
  #listagem dos eventos
   # GET /eventos
   # GET /eventos.json
@@ -29,14 +38,11 @@ end
       else
         render json: {erro: "301", body: ""}
       end
-    else
-      if params[:keynome].present?
-        @eventos = Evento.formate(Evento.where("nome LIKE ?", "%#{params[:keynome]}%"))
-      else
-        @eventos = Evento.formate(Evento.all)
-      end
+   else
+      @eventos = Evento.formate(Evento.order(:data_fim).all)
       render json:{erro: "000", body: @eventos}
     end
+
   end
 
   # GET /eventos/1
