@@ -2,7 +2,7 @@ class UsuariosController < ApplicationController
   before_action :set_usuario, only: [:show, :edit, :update, :destroy]
   skip_before_action :verify_authenticity_token
   before_action :require_authentication, only: [:update, :destroy, :edit, :show, :index]
-  before_action :can_change, only: [:update, :destroy, :edit, :index, :show]
+  #before_action :can_change, only: [:update, :destroy, :edit, :show]
 
   # GET /usuarios/1
   def get_ponto

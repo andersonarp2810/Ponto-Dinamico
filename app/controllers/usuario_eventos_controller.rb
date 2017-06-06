@@ -1,7 +1,7 @@
 class UsuarioEventosController < ApplicationController
   before_action :set_usuario_evento, only: [:show, :edit, :update, :destroy]
   before_action :require_authentication, only: [:show, :edit, :update, :destroy, :create, :index]
-  before_action :can_change, only: [:edit, :update, :destroy, :index]
+  #before_action :can_change, only: [:edit, :update, :destroy, :index]
 
   #relatorio mobile ponto do usuario
   # GET / relatoriousuario/1
