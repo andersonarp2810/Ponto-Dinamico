@@ -31,7 +31,7 @@ def self.search(id)
        arr = Array.new
        users = Array.new
        evento = Evento.find_by(id: id)
-       usuarios = UsuarioEvento.order(:data).where("evento_id = ? and data >= ? and data<= ?", "#{evento.id}" ,"#{evento.data_inicio}", "#{evento.data_fim}").select(:id, :usuario_id, :data, :mensagem)
+       usuarios = UsuarioEvento.order(data: :desc).where("evento_id = ? and data >= ? and data<= ?", "#{evento.id}" ,"#{evento.data_inicio}", "#{evento.data_fim}").select(:id, :usuario_id, :data, :mensagem)
        if usuarios.present?
         usuarios.each do |usuario|
                 arr.push(usuario[:usuario_id])
@@ -48,7 +48,7 @@ def self.search(id)
             return nil
         end
    end
-   users.reverse
+   users
 end
 
 def self.confirma_ponto(evento,usuario_id,mensagem)

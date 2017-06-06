@@ -4,7 +4,7 @@ class UsuarioEvento < ApplicationRecord
 
 #relatorio de ponto pelo id
   def self.search(usuario,evento)
-      usuarios = order(:data).where("usuario_id = ? and evento_id = ?",usuario,evento).take(5)
+      usuarios = order(data: :desc).where("usuario_id = ? and evento_id = ?",usuario,evento).take(5)
     if usuarios.present?
       arr = Array.new      
       usuarios.each do |u|
@@ -20,7 +20,7 @@ class UsuarioEvento < ApplicationRecord
         end
         arr.push(user)
       end
-      return arr.reverse
+      return arr
     end
     return usuarios
   end
