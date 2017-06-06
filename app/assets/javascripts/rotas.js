@@ -45,11 +45,8 @@
                 controllerAs: "vm"
             })
             .state($Estados.eventoEdit, {
-                url: '/editEvento/',
-                params: {
-                    evento: null
-                },
-                templateUrl: "views/editEvento/editEvento.html",
+                url: '/editEvento/{evento: json}/',
+                templateUrl: "views/editarEvento/editEvento.html",
                 controller: "EditEventoController",
                 controllerAs: "vm"
             })

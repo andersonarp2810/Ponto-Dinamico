@@ -3,9 +3,9 @@
         .module('pdApp')
         .service('LoginService', LoginService);
 
-    LoginService.$inject = ['Requisicoes', 'sessao', '$cookies', '$Rotas', '$window'];
+    LoginService.$inject = ['Requisicoes', 'sessao', '$cookies', '$q', '$Rotas', '$window'];
 
-    function LoginService(Requisicoes, sessao, $cookies, $Rotas, $window) {
+    function LoginService(Requisicoes, sessao, $cookies, $q, $Rotas, $window) {
 
         this.apagar = apagar;
         this.checar = checar;
@@ -20,14 +20,19 @@
         }
 
         function checar() {
+            res = $q.defer();
             url = $Rotas.checar;
             Requisicoes.get(url).then(function (data) {
                 console.log(data);
                 if (data.erro == '501') {
                     apagar();
                     $window.location.href = "#!/login/";
+                    res.reject(0);
+                } else {
+                    res.resolve(1);
                 }
             });
+            return res.promise;
         }
 
         function enviarLogin(login, ciphertext) {

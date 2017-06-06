@@ -7,7 +7,6 @@
 
 	function EditUserController(LoginService, UserService, sessao, $Respostas, $stateParams, $window) {
 		var vm = this;
-		vm.cadastrarUsuario = cadastrarUsuario;
 		vm.confirmaSenha;
 		vm.editarUser = editarUser;
 		vm.sessao = sessao;
