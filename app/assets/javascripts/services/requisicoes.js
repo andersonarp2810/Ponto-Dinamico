@@ -16,12 +16,9 @@
 
         function destroy(url, dados, tipo) {
             rl = $IP + url;
-            //console.log(`${rl}`);
             resposta = $q.defer();
             da = {};
             da[tipo] = dados;
-            //console.log(da);
-            //da[id] = escopo.sessao;
             $http({
                 method: "DELETE",
                 url: url,
@@ -90,7 +87,6 @@
             resposta = $q.defer();
             da = {};
             da[tipo] = dados;
-            //da[id] = escopo.sessao;
             $http({
                 method: "PUT",
                 url: url + "/" + da[tipo].id,

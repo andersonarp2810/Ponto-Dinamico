@@ -14,7 +14,7 @@
 
         function editUser(user) {
 
-            url = $Rotas.sendUser + '/' + user.id;
+            url = $Rotas.sendUser;
             tipo = "usuario";
 
             return Requisicoes.put(url, user, tipo);
