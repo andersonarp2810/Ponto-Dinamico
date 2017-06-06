@@ -11,18 +11,20 @@
         navVM.sessao = sessao;
 
         function sair() {
-            LoginService.logout(navVM.sessao.id);
-            navVM.sessao.id = '';
-            navVM.sessao.nome = '';
-            $cookies.remove('sessao_pd_id');
-            $cookies.remove('sessao_pd_nome');
-            $window.location.href = "#!/login/";
+            LoginService.logout()
+                .then(function (data) {
+                    $window.location.href = "#!/login/";
+                });
         }
 
         var init = function () {
             navVM.sessao.id = $cookies.get('sessao_pd_id');
             if ("undefined" != typeof navVM.sessao.id) {
                 navVM.sessao.nome = $cookies.get('sessao_pd_nome');
+                $window.location.href = "#!/home/";
+            }
+            else {
+                $window.location.href = "#!/login/";
             }
         }
 

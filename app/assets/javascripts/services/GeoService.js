@@ -10,21 +10,20 @@
         this.getPosicao = getPosicao;
 
         function getPosicao() {
-            var deferred = $q.defer();
+            deferred = $q.defer();
 
             if (!$window.navigator.geolocation) {
                 deferred.reject('Geolocalização não suportada.');
             } else {
                 $window.navigator.geolocation.getCurrentPosition(
                     function (position) {
-                        deferred.resolve(position);
+                        deferred.resolve(position.coords);
                     },
                     function (erro) {
                         deferred.reject(erro);
                     }
                 );
             }
-
             return deferred.promise;
         }
     }

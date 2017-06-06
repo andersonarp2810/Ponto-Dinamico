@@ -3,9 +3,8 @@
         .module('pdApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['sessao', '$cookies', '$window'];
-    function HomeController(sessao, $cookies, $window) {
-        // por enquanto não faz nada mas a página home é útil e aqui deve ter o logout
+    HomeController.$inject = ['LoginService', 'sessao', '$cookies', '$window'];
+    function HomeController(LoginService, sessao, $cookies, $window) {
         var homeVM = this;
         homeVM.sessao = sessao;
 
@@ -13,6 +12,9 @@
             if (homeVM.sessao.id == undefined) {
                 console.log("faça login");
                 $window.location.href = "#!/login/";
+            }
+            else {
+                LoginService.checar();
             }
         }
 

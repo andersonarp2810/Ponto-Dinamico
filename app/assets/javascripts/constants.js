@@ -2,16 +2,21 @@
     angular
         .module('pdApp')
         .constant("$Rotas", {
-            "evento": "cadastrarevento",
+            "checar": "autentica",
+            "editEvento": "eventos",
+            "editUsers": "usuarios",
+            "sendEvento": "cadastrarevento",
             "listaEventos": "eventos",
+            "listaUsers": "usuarios",
             "login": "login",
             "logout": "logout",
             "qrs": "",
             "relatorio": "",
-            "user": "cadastrarusuario"
+            "sendUser": "cadastrarusuario"
         })
         .constant("$Estados", {
             "eventoCadastro": "cadastrarEvento",
+            "eventoEdit": "editEvento",
             "eventoLista": "listaEvento",
             "eventoRelat": "relatorioEvento",
             "home": "home",

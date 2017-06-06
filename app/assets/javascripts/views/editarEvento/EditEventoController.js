@@ -1,37 +1,30 @@
 (function () {
     angular
         .module('pdApp')
-        .controller('CadastroEventoController', CadastroEventoController);
+        .controller('EditEventoController', EditEventoController);
 
-    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$window'];
+    EditEventoController.$inject = ['EventoService', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$stateParams', '$window'];
 
-    function CadastroEventoController($scope, $log, EventoService, LoginService, GeoService, sessao, $Repostas, $window) {
-        var vm = this; //view model
+    function EditEventoController(EventoService, GeoService, LoginService, sessao, $Respostas, $stateParams, $window) {
+        var vm = this;
         vm.botao = false;
-        vm.cadastrarEvento = cadastrarEvento;
-        vm.dataInicio;
-        vm.dataFim;
-        vm.horaInicio;
-        vm.horaFim;
-        vm.descricao;
-        vm.local;
-        vm.latitude;
-        vm.longitude;
+        x = $stateParams.evento;
+        x.data_fim = new Date(x.data_fim);
+        x.data_inicio = new Date(x.data_inicio);
+        x.hora_fim = new Date(x.hora_fim);
+        x.hora_inicio = new Date(x.hora_inicio);
+        vm.editEvento = editEvento;
+        vm.evento = x;
         vm.mensagem;
-        vm.nome;
-        vm.QR;
-        vm.tipo;
         vm.sessao = sessao;
 
-        function cadastrarEvento() {
+        function editEvento() {
             if (vm.form.$invalid) {
-                alerta("Preencha os campos corretamente.");
+                alert("Preencha os campos corretamente.");
             }
             else {
                 vm.botao = true;
-                EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
-                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
-                    vm.latitude, vm.longitude)
+                EventoService.editEvento(vm.evento)
                     .then(function (data) {
                         console.log(data);
                         vm.mensagem = '';
@@ -43,15 +36,15 @@
                                 $window.location.href = "#!/listaEvento/";
                                 break;
                             default:
-                                vm.mensagem = 'Erro: ' + $Repostas[data.erro];
+                                vm.mensagem = 'Erro: ' + $Respostas[data.erro];
                                 console.log(data.status);
                                 switch (data.erro) {
                                     case "102":
                                         vm.nome = '';
                                     case "501":
-                                        console.log("faça login");
-                                        $window.location.href = "#!/login";
+                                        console.log("sessão expirada");
                                         LoginService.apagar();
+                                        $window.location.href = "#!/login";
                                     //deslogar
                                 }
                                 break;
@@ -70,15 +63,8 @@
             vm.descricao = '';
             vm.local = '';
             vm.nome = '';
-            vm.QR = '';
             vm.tipo = '';
         }
-
-        //isso é apenas um teste de observador - remover em versão final
-        $scope.$watch('vm.horaFim', function (current, original) {
-            $log.info('vm.horaFim was %s', original);
-            $log.info('vm.horaFim is now %s', current);
-        });
 
         var init = function () {
             if (vm.sessao.nome == '') {
@@ -86,15 +72,13 @@
                 $window.location.href = "#!/login/";
             } else {
                 LoginService.checar();
-
-                console.log("geo");
                 GeoService.getPosicao()
                     .then(function (data) {
-                        console.log("pegou geo");
                         console.log(data);
-                        vm.latitude = data.latitude;
-                        vm.longitude = data.longitude;
+                        //vm.latitude = data.latitude;
+                        //vm.longitude = data.longitude;
                     });
+                console.log(vm.evento);
             }
         }
 

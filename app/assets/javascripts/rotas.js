@@ -5,12 +5,6 @@
     function config($stateProvider, $urlRouterProvider, $Estados) {
 
         $stateProvider
-            .state($Estados.eventoCadastro, {
-                url: '/cadastrarEvento/',
-                templateUrl: "views/cadastroEvento/CadastrodeEventos.html",
-                controller: "CadastroEventoController",
-                controllerAs: "vm"
-            })
             .state($Estados.home, {
                 url: '/home/',
                 templateUrl: 'views/home/home.html',
@@ -25,12 +19,15 @@
             })
             .state($Estados.userCadastro, {
                 url: '/cadastrarUser/',
-                templateUrl: "views/cadastroUser/cadastroadm.html",
+                templateUrl: "views/cadastroUser/cadastroUser.html",
                 controller: "CadastroUserController",
                 controllerAs: "vm"
             })
             .state($Estados.userEdit, {
                 url: '/editUser/',
+                params: {
+                    user: null
+                },
                 templateUrl: "views/editUser/editUser.html",
                 controller: "EditUserController",
                 controllerAs: "vm"
@@ -41,10 +38,16 @@
                 controller: "ListaUserController",
                 controllerAs: "vm"
             })
-            .state($Estados.userRelat, {
-                url: '/relatorioUser',
-                templateUrl: "views/relatorioUser/relatorioUser.html",
-                controller: "RelatorioUserController",
+            .state($Estados.eventoCadastro, {
+                url: '/cadastrarEvento/',
+                templateUrl: "views/cadastroEvento/CadastrodeEventos.html",
+                controller: "CadastroEventoController",
+                controllerAs: "vm"
+            })
+            .state($Estados.eventoEdit, {
+                url: '/editEvento/{evento: json}/',
+                templateUrl: "views/editarEvento/editEvento.html",
+                controller: "EditEventoController",
                 controllerAs: "vm"
             })
             .state($Estados.eventoLista, {
