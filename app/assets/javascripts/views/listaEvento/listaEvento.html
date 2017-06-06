@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" style="background-color:#e3f2fd">
   <div class="row">
     <br>
     <br>
@@ -36,9 +36,10 @@
       </tr>
     </thead>
     <tbody>
-      <div ng-repeat="evento in vm.eventos">
-        <tr>
-          <td><a href="#!/editEvento({evento: evento})/" type="button" class="btn btn-primary" style="color:white">editar</a> </td>
+      <div>
+        <tr ng-repeat="evento in vm.eventos">
+          <td>{{evento.nome}}</td>
+          <td><a ui-sref="editEvento({evento: evento})" type="button" class="btn btn-primary" style="color:white">editar</a>            </td>
           <td><a href="" type="button" class="btn btn-primary" style="color:white">informações</a></td>
           <td><a href="" type="button" class="btn btn-primary" style="color:white">relatório</a></td>
         </tr>

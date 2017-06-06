@@ -14,7 +14,7 @@
 
         function editEvento(evento) {
 
-            url = $Rotas.editEvento + '/' + evento.id;
+            url = $Rotas.editEvento;
 
             tipo = "evento";
 

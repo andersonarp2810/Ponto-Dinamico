@@ -25,12 +25,13 @@ def self.formate(eventos)
     arr.reverse
 end
 
+#pesquisa pelo nome
 def self.search(id)
    if id.present?
        arr = Array.new
        users = Array.new
        evento = Evento.find_by(id: id)
-       usuarios = UsuarioEvento.where("evento_id = ? and data >= ? and data<= ?", "#{evento.id}" ,"#{evento.data_inicio}", "#{evento.data_fim}").select(:id, :usuario_id, :data, :mensagem)
+       usuarios = UsuarioEvento.order(data: :desc).where("evento_id = ? and data >= ? and data<= ?", "#{evento.id}" ,"#{evento.data_inicio}", "#{evento.data_fim}").select(:id, :usuario_id, :data, :mensagem)
        if usuarios.present?
         usuarios.each do |usuario|
                 arr.push(usuario[:usuario_id])
@@ -38,8 +39,8 @@ def self.search(id)
             ids = arr.uniq
             ids.each do |id| 
                 user = Hash.new
-                usu = Usuario.find_by(id: id)
-                user["nome"] = usu.nome
+                usuario = Usuario.find_by(id: id)
+                user["nome"] = usuario.nome
                 user["presenca"] = arr.count(id)
                 users.push(user)
             end

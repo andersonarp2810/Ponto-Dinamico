@@ -47,7 +47,7 @@
             url = $IP + url;
             $http({
                 method: "GET",
-                url: `${url}`
+                url: url
             }).then(function sucesso(response) {
                 resposta.resolve(response.data);
             }, function falha(response) {
@@ -93,7 +93,7 @@
             //da[id] = escopo.sessao;
             $http({
                 method: "PUT",
-                url: url + "/" + dados[tipo].id,
+                url: url + "/" + da[tipo].id,
                 data: da,  // um objeto
                 headers: { 'Content-Type': 'application/json' }
             }).then(

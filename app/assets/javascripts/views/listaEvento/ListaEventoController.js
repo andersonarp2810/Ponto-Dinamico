@@ -11,6 +11,7 @@
         vm.buscar = buscar;
         vm.botao = false;
         vm.data;
+        vm.formatar = formatar;
         vm.eventos = [];
         vm.filtro;
         vm.mensagem;
@@ -32,6 +33,20 @@
                 vm.filtro.nome = '';
                 vm.filtro.data_inicio = vm.busca;
             }
+        }
+
+
+        function formatar(para) {
+            hf = para.hora_fim.split(":");
+            para.hora_fim = new Date(1970, 0, 1, parseInt(hf[0], 10), parseInt(hf[1], 10));
+            hi = para.hora_inicio.split(":");
+            para.hora_inicio = new Date(1970, 0, 1, parseInt(hi[0], 10), parseInt(hi[1], 10));
+            df = para.data_fim.split("/");
+            para.data_fim = new Date(parseInt(df[2]), + parseInt(df[1], 10) - 1, parseInt(df[0], 10));
+            di = para.data_inicio.split("/");
+            para.data_inicio = new Date(parseInt(di[2]), parseInt(di[1], 10) - 1, parseInt(di[0], 10));
+
+            return para;
         }
 
 
@@ -64,9 +79,15 @@
                     vm.mensagem = '';
                     switch (data.erro) {
                         case '000':
+                            console.log('Lista');
                             console.log(data.body);
                             vm.mensagem = "Lista Gerado";
-                            vm.eventos = data.body;
+                            //evs = JSON.parse(JSON.stringify(data.body));
+                            evs = data.body;
+                            for (i = 0; i < evs.length; i++) {
+                                evs[i] = formatar(evs[i]);
+                            }
+                            vm.eventos = evs;
                             break;
                         default:
                             console.log('Erro: ' + $Respostas[data.erro]);
@@ -80,8 +101,10 @@
                 console.log("faça login");
                 $window.location.href = "#!/login/";
             } else {
-                LoginService.checar();
-                listarEventos();
+                LoginService.checar()
+                    .then(function (data) {
+                        listarEventos();
+                    });
             }
         }
 

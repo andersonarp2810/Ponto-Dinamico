@@ -3,22 +3,28 @@
         .module('pdApp')
         .controller('EditEventoController', EditEventoController);
 
-    EditEventoController.$inject = ['EventoService', 'LoginService', 'sessao', '$Respostas', '$stateParams', '$window'];
+    EditEventoController.$inject = ['EventoService', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$stateParams', '$window'];
 
-    function EditEventoController(EventoService, LoginService, sessao, $Respostas, $stateParams, $window) {
+    function EditEventoController(EventoService, GeoService, LoginService, sessao, $Respostas, $stateParams, $window) {
         var vm = this;
         vm.botao = false;
-        vm.evento = $stateParams.evento;
+        x = $stateParams.evento;
+        x.data_fim = new Date(x.data_fim);
+        x.data_inicio = new Date(x.data_inicio);
+        x.hora_fim = new Date(x.hora_fim);
+        x.hora_inicio = new Date(x.hora_inicio);
+        vm.editEvento = editEvento;
+        vm.evento = x;
         vm.mensagem;
         vm.sessao = sessao;
 
         function editEvento() {
             if (vm.form.$invalid) {
-                alerta("Preencha os campos corretamente.");
+                alert("Preencha os campos corretamente.");
             }
             else {
                 vm.botao = true;
-                EventoService.editEvento(evento)
+                EventoService.editEvento(vm.evento)
                     .then(function (data) {
                         console.log(data);
                         vm.mensagem = '';
@@ -30,7 +36,7 @@
                                 $window.location.href = "#!/listaEvento/";
                                 break;
                             default:
-                                vm.mensagem = 'Erro: ' + $Repostas[data.erro];
+                                vm.mensagem = 'Erro: ' + $Respostas[data.erro];
                                 console.log(data.status);
                                 switch (data.erro) {
                                     case "102":
@@ -66,13 +72,13 @@
                 $window.location.href = "#!/login/";
             } else {
                 LoginService.checar();
-
                 GeoService.getPosicao()
                     .then(function (data) {
                         console.log(data);
                         //vm.latitude = data.latitude;
                         //vm.longitude = data.longitude;
                     });
+                console.log(vm.evento);
             }
         }
 

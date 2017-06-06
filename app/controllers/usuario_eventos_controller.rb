@@ -1,17 +1,17 @@
 class UsuarioEventosController < ApplicationController
   before_action :set_usuario_evento, only: [:show, :edit, :update, :destroy]
   before_action :require_authentication, only: [:show, :edit, :update, :destroy, :create, :index]
-  before_action :can_change, only: [:edit, :update, :destroy, :index]
+  #before_action :can_change, only: [:edit, :update, :destroy, :index]
 
   #relatorio mobile ponto do usuario
   # GET / relatoriousuario/1
   def relatoriousuario
-      usuario_evento = UsuarioEvento.search(params[:id])
-      if usuario_evento.present?
-        render json: {erro: "000", body: usuario_evento}
-      else
-        render json: {erro: "301", body: ""}
-      end
+        usuario_evento = UsuarioEvento.search(params[:usu_id], params[:eve_id])
+        if usuario_evento.present?
+          render json: {erro: "000", body: usuario_evento}
+        else
+          render json: {erro: "301", body: ""}
+        end
   end
   
 
