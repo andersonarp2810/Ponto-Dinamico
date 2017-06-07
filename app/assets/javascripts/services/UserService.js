@@ -10,11 +10,14 @@
         this.editUser = editUser;
         this.enviarUser = enviarUser;
         this.listar = listar;
+        this.pontos = pontos;
         this.relatorio = relatorio;
 
         function editUser(user) {
-
-            url = $Rotas.sendUser;
+            if (user.password != undefined) {
+                user.password = SHA2_256(user.password);
+            }
+            url = $Rotas.editUser;
             tipo = "usuario";
 
             return Requisicoes.put(url, user, tipo);
@@ -42,6 +45,11 @@
 
         function listar() {
             url = $Rotas.listaUsers;
+            return Requisicoes.get(url);
+        }
+
+        function pontos(usu_id, eve_id) {
+            url = $Rotas.pontos + '/' + usu_id + '/' + eve_id;
             return Requisicoes.get(url);
         }
 

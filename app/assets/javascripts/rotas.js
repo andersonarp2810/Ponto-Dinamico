@@ -24,10 +24,7 @@
                 controllerAs: "vm"
             })
             .state($Estados.userEdit, {
-                url: '/editUser/',
-                params: {
-                    user: null
-                },
+                url: '/editUser/{user: json}/',
                 templateUrl: "views/editUser/editUser.html",
                 controller: "EditUserController",
                 controllerAs: "vm"

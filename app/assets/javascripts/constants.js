@@ -4,12 +4,13 @@
         .constant("$Rotas", {
             "checar": "autentica",
             "editEvento": "eventos",
-            "editUsers": "usuarios",
+            "editUser": "usuarios",
             "sendEvento": "cadastrarevento",
             "listaEventos": "eventos",
             "listaUsers": "usuarios",
             "login": "login",
             "logout": "logout",
+            "pontos": "relatoriousuario",
             "qrs": "",
             "relatorio": "",
             "sendUser": "cadastrarusuario"

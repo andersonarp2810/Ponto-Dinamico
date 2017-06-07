@@ -18,7 +18,7 @@
 				alert("Preencha os campos corretamente");
 			}
 			else {
-				UserService.editUser(user)
+				UserService.editUser(vm.user)
 					.then(function (data) {
 						vm.mensagem = '';
 						switch (data.erro) {
