@@ -1,18 +1,31 @@
 class UsuariosController < ApplicationController
   before_action :set_usuario, only: [:show, :edit, :update, :destroy]
   skip_before_action :verify_authenticity_token
-  before_action :require_authentication, only: [:update, :destroy, :edit, :show]
-  before_action :can_change, only: [:update, :destroy, :edit, :index, :show]
+  before_action :require_authentication, only: [:update, :destroy, :edit, :show, :index]
+  #before_action :can_change, only: [:update, :destroy, :edit, :show]
 
   # GET /usuarios/1
   def get_ponto
-   render json: Usuario.ultimo_ponto(params[:id]).to_json
+   render json: Usuario.ultimo_ponto(params[:user_id], params[:evento_id]).to_json
   end
   
   # GET /usuarios
   # GET /usuarios.json
+  # relatorio de pesquisa do usuario
   def index
-    @usuarios = Usuario.all
+     if params[:keywords].present?
+      # Diz ao elastickick para pesquisar as keyrwords nos campos name e description
+      usuario = Usuario.search(params[:keywords])
+      if usuario.present?
+        mensagem = {erro: "000", body: usuario}
+      else
+        mensagem = {erro: "301", body: ""}
+      end
+    else
+      usuario = Usuario.select("id, nome, email, matricula")
+      mensagem = {erro: "000", body:usuario}
+    end
+    render json: mensagem
   end
 
   # GET /usuarios/1
@@ -42,7 +55,7 @@ class UsuariosController < ApplicationController
     end
     #verifica erros na inserção no banco
     if @usuario.errors.any?
-      retorno = Usuario.verifica_erro(@usuario)
+      retorno = Usuario.verifica_erro(@usuario.errors.messages)
     end
     render json: retorno.to_json
   end

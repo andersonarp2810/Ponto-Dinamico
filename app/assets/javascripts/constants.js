@@ -2,22 +2,30 @@
     angular
         .module('pdApp')
         .constant("$Rotas", {
-            "evento": "cadastrarevento",
+            "checar": "autentica",
+            "editEvento": "eventos",
+            "editUser": "usuarios",
+            "sendEvento": "cadastrarevento",
+            "listaEventos": "eventos",
+            "listaUsers": "usuarios",
             "login": "login",
             "logout": "logout",
+            "pontos": "relatoriousuario",
             "qrs": "",
             "relatorio": "",
-            "user": "cadastrarusuario"
+            "sendUser": "cadastrarusuario"
         })
         .constant("$Estados", {
-            "auth": "auth",
-            "evento": "cadastrarEvento",
+            "eventoCadastro": "cadastrarEvento",
+            "eventoEdit": "editEvento",
+            "eventoLista": "listaEvento",
+            "eventoRelat": "relatorioEvento",
             "home": "home",
             "login": "login",
             "userCadastro": "cadastrarUser",
+            "userEdit": "editUser",
             "userLista": "listaUser",
             "userRelat": "relatorioUser",
-            "eventoRelat": "relatorioEvento"
         })
         //.constant("$IP", "http://192.168.74.123:3000/") //felix
         .constant("$IP", "http://localhost:3000/")

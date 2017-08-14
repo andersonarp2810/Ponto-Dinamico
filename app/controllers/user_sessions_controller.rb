@@ -1,5 +1,10 @@
 class UserSessionsController < ApplicationController
     skip_before_action :verify_authenticity_token
+    before_action :require_authentication, only: [:permit]
+
+    def permit
+        render json:{erro: "000", body:" "}        
+    end
 
     def new
         @user_session = UserSession.new(session)
@@ -9,7 +14,7 @@ class UserSessionsController < ApplicationController
         @user_session = UserSession.new(session, valid_request?)
         if @user_session.authenticate!
             if user_signed_in?.present?
-                render json:{erro: "000", body: {usuario_id:current_user.id, nome:current_user.nome, matricula:current_user.matricula, status: true}}.to_json
+                render json:{erro: "000", body: {usuario_id:current_user.id, nome:current_user.nome, matricula:current_user.matricula, status: current_user.status}}.to_json
             else
                 render json: {erro: @user_session.authenticate![:erro], body:{status: false}}
             end
@@ -17,8 +22,11 @@ class UserSessionsController < ApplicationController
     end
 
     def destroy
-        user_session.destroy
-        render json:{erro: "000", body:{status: false}}
+        user_session.destroy(params[:user_session][:id])
+        if user_signed_in?
+            render json:{erro: "000", body:{status: false}}
+        end
+        render json:{erro: "deu treta"}
     end
 
     private

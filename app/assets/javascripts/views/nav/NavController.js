@@ -11,18 +11,23 @@
         navVM.sessao = sessao;
 
         function sair() {
-            navVM.sessao.id = '';
-            navVM.sessao.nome = '';
-            $cookies.remove('sessao_pd_id');
-            $cookies.remove('sessao_pd_nome');
-            LoginService.logout(navVM.sessao.id);
-            $window.location.href = "#!/login/";
+            LoginService.logout()
+                .then(function (data) {
+                    $window.location.href = "#!/login/";
+                });
         }
 
         var init = function () {
             navVM.sessao.id = $cookies.get('sessao_pd_id');
+            navVM.sessao.nome = $cookies.get('sessao_pd_nome');
+            console.log($window.location.href);
             if ("undefined" != typeof navVM.sessao.id) {
-                navVM.sessao.nome = $cookies.get('sessao_pd_nome');
+                if ($window.location.href == "http://localhost:3000/#!/login/") {
+                    $window.location.href = "#!/home/";
+                }
+            }
+            else {
+                $window.location.href = "#!/login/";
             }
         }
 

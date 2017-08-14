@@ -15,17 +15,6 @@
         vm.logar = logar;
         vm.mensagem;
         vm.sessao = sessao;
-        vm.teste = teste;
-
-        function teste() {
-            console.log($cookies.get('sessao_pd_id'));
-            console.log($cookies.get('sessao_pd_nome'));
-            $cookies.put('sessao_pd_id', 1);
-            $cookies.put('sessao_pd_nome', "Caba");
-            vm.sessao.id = $cookies.get('sessao_pd_id');
-            vm.sessao.nome = $cookies.get('sessao_pd_nome');
-            $window.location.href = "#!/home/";
-        }
 
         function logar() {
             if (vm.form.$invalid) {
@@ -33,7 +22,6 @@
             }
             else {
                 vm.ciphertext = SHA2_256(vm.senha);
-                console.log(vm.ciphertext);
                 LoginService.enviarLogin(vm.login, vm.ciphertext)
                     .then(function (data) {
                         console.log(data);
@@ -46,8 +34,8 @@
                                 //cookiar
                                 vm.sessao.id = data.body.usuario_id;
                                 $cookies.put('sessao_pd_id', vm.sessao.id);
-                                vm.sessao.nome = vm.login;
-                                $cookies.put('sessao_pd_nome', vm.login);
+                                vm.sessao.nome = data.body.nome;
+                                $cookies.put('sessao_pd_nome', vm.sessao.nome);
                                 $window.location.href = "#!/home/";
                                 break;
                             case "202":
@@ -72,7 +60,6 @@
         var init = function () {
             vm.sessao.id = $cookies.get('sessao_pd_id');
             if ("undefined" != typeof vm.sessao.id) {
-                console.log(vm.sessao);
                 $window.location.href = "#!/home/";
             }
         }

@@ -1,0 +1,45 @@
+<div class="container" style="position:relative;transform: translate(0%, 5%); width:50%;top:0%;background-color:#fafafa">
+  <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">
+
+  <form name="vm.form">
+    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>
+
+    <label for="nome"> <h4>Nome</h4></label>
+    <input class="form-control" name="nome" type="text" ng-model="vm.evento.nome"><br>
+
+    <label for="tipo"> <h4>Tipo</h4> </label>
+    <input class="form-control" type="text" name="tipo" ng-model="vm.evento.tipo"><br>
+
+    <label for="data-inicio"> <h4>Data de inicio</h4> </label>
+    <input class="form-control" name="data-inicio" type="date" ng-model="vm.evento.data_inicio"> <br>
+
+    <label for="data-termino"> <h4>Data de término</h4> </label>
+    <input class="form-control" name="data-termino" type="date" ng-model="vm.evento.data_fim"> <br>
+
+    <label for="hora-inicio"> <h4>Hora de Inicio</h4> </label>
+    <input class="form-control" name="hora-inicio" type="time" ng-model="vm.evento.hora_inicio"> <br>
+
+    <label for="hora-termino"> <h4>Hora de Término</h4> </label>
+    <input class="form-control" name="hora-termino" type="time" ng-model="vm.evento.hora_fim"> <br>
+
+    <label for="local"> <h4>Local</h4> </label>
+    <textarea class="form-control" name="local" ng-model="vm.evento.local"></textarea> <br>
+
+    <label for="desc"> <h4>Descrição</h4> </label>
+    <textarea class="form-control" name="desc" ng-model="vm.evento.descricao"></textarea> <br>
+
+    <label for="qr"> <h4>Qrcode</h4> </label>
+    <input class="form-control" type="text" name="qr" ng-model="vm.evento.QR" disabled> <br>
+
+    <label for="latitude"> <h4>Latitude</h4> </label>
+    <input class="form-control" type="text" ng-model="vm.evento.latitude"> <br>
+
+    <label for="longitude"> <h4>Longitude</h4></label>
+    <input class="form-control" type="text" ng-model="vm.evento.longitude"> <br>
+
+    <br>
+    <button class="btn btn-info" ng-click="vm.editEvento()" ng-disabled="vm.botao" style="background-color:#007db7">OK</button>
+
+  </form>
+  <br><br>
+</div>

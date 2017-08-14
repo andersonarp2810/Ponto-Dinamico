@@ -1,6 +1,7 @@
 class Usuario < ApplicationRecord
 #adicionando enum
 enum nivel: { usuario_normal: 0, usuario_adm: 1 }
+enum status: {true: 1, false: 0}
 
 #validações de campos
 	validates :nome, :password, :email,:matricula, :mac, presence: true #validação de presença
@@ -48,6 +49,7 @@ enum nivel: { usuario_normal: 0, usuario_adm: 1 }
 				if @usuario.mac == usuario_request.mac
 					erro=202
 					if @usuario.password == usuario_request.password
+						@usuario.update(status: 1)
 						return @usuario
 					end
 				end
@@ -56,25 +58,53 @@ enum nivel: { usuario_normal: 0, usuario_adm: 1 }
 		{erro: erro, body: " "}
 	end
 #verifica os erros que aconteceram no banco e organiza
-	def self.verifica_erro(usuario)
-		usuario.errors
-		return {erro: usuario.errors.first[1], body: " "}
+	def self.verifica_erro(err)
+		if  err.first[1] = 102 #valor da mensagem de erro
+			return {erro: protocolo_em_uso(err.first[0]), body: " "}#chave da mensagem de erro
+		else
+			return {erro: err.first[1], body: " "}
+		end
 	end
 
 #realiza a pesquisa do evento do usuario que realizou a pesquisa
-	def self.ultimo_ponto(usuario_id)
-		retorno = UsuarioEvento.where(usuario_id: usuario_id).last
+	def self.ultimo_ponto(usuario_id, evento_id)
+		retorno = UsuarioEvento.order(:data).where("usuario_id = ? and evento_id = ?",usuario_id, evento_id).last
 		if retorno.blank?
 			return mensagem = {erro: "000", body: {entrada: " ", saida: " ", data: " "}} 	
 		else
-			return mensagem = {erro: "000", body: {entrada: retorno.hora_inicio.blank? ? " " : retorno.hora_inicio.to_s(:time), saida: retorno.hora_fim.blank? ? " " : retorno.hora_fim.to_s(:time), data: retorno.data.to_date}} 
+			return mensagem = {erro: "000", body: {entrada: retorno.hora_inicio.blank? ? " " : retorno.hora_inicio.to_s(:time), saida: retorno.hora_fim.blank? ? " " : retorno.hora_fim.to_s(:time), data: retorno.data.strftime("%d/%m/%Y")}} 
 		end
 
 	end
 
+#mtodo autenticar usuario mobile
+	def self.autentica_usuario_mobile(id)
+		if id.present?
+			usuario = Usuario.find_by(id: id)
+			if usuario.present?
+				usuario.status
+			end
+		end
+		return false
+	end
+#pesquisa de relatorio do usuario
+def self.search(id)
+   if id.present?
+		   usuarios = UsuarioEvento.where("usuario_id = ?" ,"#{id}").distinct.pluck(:evento_id)
+			if usuarios.present?
+				arr_evento = Array.new				
+				usuarios.each do |usu|
+					arr_evento.push(Evento.select("id,nome,data_inicio,data_fim").find_by(id: usu))
+				end
+				return arr_evento
+			end 
+		end
+   return nil
+end
 #protocolo de erro pra campos ja em uso
 	private
-		def protocolo_em_uso(nome)
-			protocolo = {"matricula": 105, "nome": 102, "email": 105}.to_json
+		def self.protocolo_em_uso(chave)
+			protocolo = {matricula: -3, mac: -2, email: -1} # falta ajustar protocolo
+			protocolo[chave]
 		end
 end

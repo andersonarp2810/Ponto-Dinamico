@@ -1,22 +1,19 @@
-<div class="container">
+<div class="container" style="background-color:#e3f2fd; ">
   <div class="row">
     <br>
     <br>
     <form name="vm.form" class="form-horizontal">
       <div class="form-group">
         <div class="col-xs-9">
-          <input type="text" class="form-control" ng-model="vm.search" placeholder="Nome ou Número de Matrícula">
+          <input type="text" class="form-control" ng-change="vm.buscar()" ng-model="vm.busca" placeholder="Nome ou Número de Matrícula">
           <br>
           <label class="radio-inline">Buscar por </label>
           <label class="radio-inline">
-                <input type="radio" ng-model="vm.radio" value="nome" checked='checked'> Nome
+                <input type="radio" name="busc" ng-change="vm.busca=''; vm.buscar()" ng-model="vm.radio" value="nome" checked='checked'> Nome
             </label>
           <label class="radio-inline">
-                <input type="radio" ng-model="vm.radio" value="matricula"> Número da matrícula
+                <input type="radio" name ="busc" ng-change="vm.busca=''; vm.buscar()" ng-model="vm.radio" value="matricula"> Número da matrícula
             </label>
-        </div>
-        <div class="col-xs-2">
-          <button type="button" class="btn btn-success" ng-click="vm.buscar()">Buscar</button>
         </div>
       </div>
     </form>
@@ -25,22 +22,75 @@
 <div class="container">
   <h2>Resultado</h2>
   <p>Informações :</p>
-  <table class="table">
+  <table class="table" fixed-header table-height="100px">
     <thead>
       <tr class="info">
         <th>NúmeroM</th>
         <th>Nome</th>
-        <th>Matricula</th>
+        <th> </th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-      <div ng-repeat="user in vm.users">
-        <tr>
-          <td>{{user.id}}</td>
-          <td>{{user.nome}}</td>
-          <td>{{user.matricula}}</td>
-        </tr>
-      </div>
+      <tr class="active" ng-repeat="user in vm.users | filter:vm.filtro:strict">
+        <td>{{user.matricula}}</td>
+        <td>{{user.nome}}</td>
+        <td><a ui-sref="editUser({user: user})" type="button" class="btn btn-primary" style="color:white">editar</a> </td>
+        <td><a href="" type="button" class="btn btn-primary" style="color:white">informações</a></td>
+        <td><a ng-click="vm.relatorio(user.id)" type="button" class="btn btn-primary" style="color:white">relatório</a></td>
+      </tr>
     </tbody>
   </table>
+  <div class="container">
+    <!--<div class="container" style="position:relative;transform: translate(-7%, 15%);width:90%">-->
+    <h2>Relatório:</h2>
+
+    <table class="table" fixed-header table-height="100px">
+      <thead>
+        <tr class="info">
+          <th>nome</th>
+          <th>Data Início</th>
+          <th>Data Fim</th>
+          <th>
+            <th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="active" ng-repeat="evento in vm.eventos">
+          <td>{{evento.nome}}</td>
+          <td>{{evento.data_inicio}}</td>
+          <td>{{evento.data_fim}}</td>
+          <td><a ng-click="vm.listaPontos(evento.id)" type="button" class="btn btn-primary" style="color:white">pontos</a></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="container">
+    <h2>Pontos:</h2>
+    <table class="table" fixed-header table-height="100px">
+      <thead>
+        <tr class="info">
+          <th>Data</th>
+          <th>Entrada</th>
+          <th>Saída</th>
+          <th>Mensagem de Atraso</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr class="active" ng-repeat="ponto in vm.pontos">
+          <td>{{ponto.data | date:"dd/MM/yyyy"}}</td>
+          <td>{{ponto.hora_inicio}}</td>
+          <td>{{ponto.hora_fim}}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
 </div>
