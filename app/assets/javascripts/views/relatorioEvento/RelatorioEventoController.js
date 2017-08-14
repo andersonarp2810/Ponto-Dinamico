@@ -16,6 +16,7 @@
         vm.mensagem;
 
         function RelatEvento() {
+            
                 vm.botao = true;
                 RelatorioEventosService.gerarRelatN(vm.nomeEvento)
                     .then(function(data){
