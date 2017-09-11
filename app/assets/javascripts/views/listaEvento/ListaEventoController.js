@@ -9,7 +9,6 @@
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
-        vm.botao = false;
         vm.data;
         vm.formatar = formatar;
         vm.eventos = [];

@@ -22,7 +22,7 @@ class UsuariosController < ApplicationController
         mensagem = {erro: "301", body: ""}
       end
     else
-      usuario = Usuario.select("id, nome, email, matricula")
+      usuario = Usuario.select("id, nome, email, matricula, mac")
       mensagem = {erro: "000", body:usuario}
     end
     render json: mensagem

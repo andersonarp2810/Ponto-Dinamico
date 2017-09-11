@@ -20,11 +20,10 @@ p, ol, ul, td {
     line-height: 18px;
     margin: 33px;
 }
-    }
 
 </style>
 <div ng-controller="NavController as navVM">
-    <nav ng-hide="navVM.sessao.nome==''" class="navbar navbar-inverse navbar-fixed-top" style="background-color:#007db7;border-color:white">
+    <nav ng-hide="navVM.sessao.nome==undefined||navVM.sessao.nome==''" class="navbar navbar-inverse navbar-fixed-top" style="background-color:#007db7;border-color:white">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">

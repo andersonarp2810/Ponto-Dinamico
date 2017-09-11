@@ -20,9 +20,11 @@
         var init = function () {
             navVM.sessao.id = $cookies.get('sessao_pd_id');
             navVM.sessao.nome = $cookies.get('sessao_pd_nome');
+            console.log($cookies.get('sessao_pd_nome'));
             console.log($window.location.href);
-            if ("undefined" != typeof navVM.sessao.id) {
-                if ($window.location.href == "http://localhost:3000/#!/login/") {
+            console.log($cookies.get('sessao_pd_id'));
+            if (navVM.sessao.id != undefined) {
+                if ($window.location.href == "http://localhost:3000/#!/login/" || $window.location.href == "http://localhost:3000/") {
                     $window.location.href = "#!/home/";
                 }
             }
