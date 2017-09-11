@@ -22,7 +22,7 @@ class UsuariosController < ApplicationController
         mensagem = {erro: "301", body: ""}
       end
     else
-      usuario = Usuario.select("id, nome, email, matricula")
+      usuario = Usuario.select("id, nome, email, matricula, mac")
       mensagem = {erro: "000", body:usuario}
     end
     render json: mensagem
@@ -30,8 +30,8 @@ class UsuariosController < ApplicationController
 
   # GET /usuarios/1
   # GET /usuarios/1.json
-  def show
-  end
+  #def show
+  #end
 
   # GET /usuarios/new
   def new

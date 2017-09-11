@@ -18,7 +18,7 @@ end
  
  def eventos_mobile
    if params[:keynome].present?
-        @eventos = Evento.formate(Evento.where("nome LIKE ?", "%#{params[:keynome]}%"))
+        @eventos = Evento.formate(Evento.where("LOWER(nome) LIKE ?", "%#{params[:keynome].downcase}%"))
     else
         @eventos = Evento.formate(Evento.all)
     end

@@ -4,14 +4,37 @@ class UsuarioEventosController < ApplicationController
   #before_action :can_change, only: [:edit, :update, :destroy, :index]
 
   #relatorio mobile ponto do usuario
-  # GET / relatoriousuario/1
+  # GET / relatoriousuario/1/1
   def relatoriousuario
-        usuario_evento = UsuarioEvento.search(params[:usu_id], params[:eve_id])
+        usuario_evento = UsuarioEvento.search(params[:usu_id], params[:eve_id],"")
         if usuario_evento.present?
           render json: {erro: "000", body: usuario_evento}
         else
           render json: {erro: "301", body: ""}
         end
+  end
+
+  #GET /pesquisarelatoriousuario/nome/1
+  def pesquisa_relatorio_evento
+    mensagem = {erro: "301", body: ""}
+    id_evento = Evento.select(:id).where("LOWER(nome) LIKE ?", "%#{params[:nome_evento].downcase}%")
+    if id_evento.present?
+      usuario_evento = UsuarioEvento.search(params[:usuario_id],id_evento[0].id,"")
+      if usuario_evento.present?
+        mensagem = {erro: "000", body: usuario_evento}        
+      end
+    end
+    render json: mensagem
+  end
+
+  #GET /datarelatorioevento/data/usuario_id
+  def data_relatorio_evento
+    usuario_evento = UsuarioEvento.search(params[:usuario_id], "",params[:data])
+    if usuario_evento.present?
+      render json: {erro: "000", body: usuario_evento}
+    else
+      render json: {erro: "301", body: ""}
+    end
   end
   
 
