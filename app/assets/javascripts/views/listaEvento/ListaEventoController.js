@@ -9,11 +9,9 @@
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
-        vm.botao = false;
         vm.data;
         vm.formatar = formatar;
         vm.eventos = [];
-        vm.filtro;
         vm.mensagem;
         vm.radio = "nome";
         vm.relatorio = relatorio;
@@ -21,7 +19,7 @@
         vm.users = null;
 
         vm.filtro = {
-            nome: '',
+            nome: vm.busca,
             data_inicio: ''
         }
 
@@ -50,8 +48,8 @@
         }
 
 
-        function relatorio(evento) {
-            EventoService.relatorioEventos(evento.id)
+        function relatorio(eventoid) {
+            EventoService.relatorioEventos(eventoid)
                 .then(function (data) {
                     console.log(data);
                     switch (data.erro) {

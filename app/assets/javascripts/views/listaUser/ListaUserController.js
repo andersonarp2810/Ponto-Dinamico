@@ -3,14 +3,16 @@
         .module('pdApp')
         .controller('ListaUserController', ListaUserController);
 
-    ListaUserController.$inject = ['LoginService', 'UserService', 'sessao', '$window'];
+    ListaUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$window'];
 
-    function ListaUserController(LoginService, UserService, sessao, $window) {
+    function ListaUserController(LoginService, UserService, sessao, $Respostas, $window) {
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
         vm.eventos = null;
-        vm.filtro;
+        vm.usu_id = null;
+        vm.listaPontos = listaPontos;
+        vm.pontos = null;
         vm.radio = 'nome';
         vm.relatorio = relatorio;
         vm.sessao = sessao;
@@ -31,15 +33,47 @@
             }
         }
 
-        function relatorio(usuario) {
-            UserService.relatorio(usuario.id)
+        function listaPontos(eve_id) {
+            vm.pontos = null;
+            UserService.pontos(vm.usu_id, eve_id)
                 .then(function (data) {
                     console.log(data);
                     switch (data.erro) {
                         case '000':
                             console.log(data.body);
+                            vm.pontos = data.body;
+                            break;
+                        case '501':
+                            console.log("sessão expirada");
+                            LoginService.apagar();
+                            $window.location.href = "#!/login";
                             break;
                         default:
+                            vm.mensagem = 'Erro' + $Respostas[data.erro];
+                            break;
+                    }
+                });
+        }
+
+        function relatorio(id) {
+            vm.eventos = null;
+            vm.usu_id = null;
+            UserService.relatorio(id)
+                .then(function (data) {
+                    console.log(data);
+                    switch (data.erro) {
+                        case '000':
+                            console.log(data.body);
+                            vm.eventos = data.body;
+                            vm.usu_id = id;
+                            break;
+                        case '501':
+                            console.log("sessão expirada");
+                            LoginService.apagar();
+                            $window.location.href = "#!/login";
+                            break;
+                        default:
+                            vm.mensagem = 'Erro' + $Respostas[data.erro];
                             break;
                     }
                 });
@@ -65,8 +99,10 @@
                 console.log("faça login");
                 $window.location.href = "#!/login/";
             } else {
-                LoginService.checar();
-                listar();
+                LoginService.checar()
+                    .then(function (data) {
+                        listar();
+                    });
             }
         }
 

@@ -22,3 +22,6 @@
 
 # Ignorar database.yml pras treta de login no banco
 config/database.yml
+
+#Gemfile frescando
+Gemfile.lock

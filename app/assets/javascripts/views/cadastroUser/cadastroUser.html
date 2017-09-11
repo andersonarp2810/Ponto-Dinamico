@@ -49,7 +49,7 @@
 			<div role="alert">
 				<span class="error" ng-show="vm.form.imei.$dirty && vm.form.imei.$error.required">
        			(Campo obrigatório)</span>
-				<span class="error" ng-show="vm.form.imei.$invalid">
+				<span class="error" ng-show="vm.form.imei.$dirty && vm.form.imei.$invalid">
 				    Insira um e-mail válido.</span>
 			</div>
 		</form>

@@ -94,7 +94,7 @@ def self.search(id)
 			if usuarios.present?
 				arr_evento = Array.new				
 				usuarios.each do |usu|
-					arr_evento.push(Evento.select("id,nome").where(id: usu))
+					arr_evento.push(Evento.select("id,nome,data_inicio,data_fim").find_by(id: usu))
 				end
 				return arr_evento
 			end 
