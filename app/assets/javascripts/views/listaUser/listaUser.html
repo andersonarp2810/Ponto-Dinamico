@@ -42,55 +42,51 @@
       </tr>
     </tbody>
   </table>
-  <div class="container">
-    <!--<div class="container" style="position:relative;transform: translate(-7%, 15%);width:90%">-->
-    <h2>Relatório:</h2>
+  <h2>Relatório:</h2>
 
-    <table class="table" fixed-header table-height="100px">
-      <thead>
-        <tr class="info">
-          <th>nome</th>
-          <th>Data Início</th>
-          <th>Data Fim</th>
-          <th>
-            <th>
-        </tr>
-      </thead>
-      <tbody>
+  <table class="table" fixed-header table-height="100px">
+    <thead>
+      <tr class="info">
+        <th>nome</th>
+        <th>Data Início</th>
+        <th>Data Fim</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
 
-        <tr class="active" ng-repeat="evento in vm.eventos">
-          <td>{{evento.nome}}</td>
-          <td>{{evento.data_inicio}}</td>
-          <td>{{evento.data_fim}}</td>
-          <td><a ng-click="vm.listaPontos(evento.id)" type="button" class="btn btn-primary" style="color:white">pontos</a></td>
-        </tr>
+      <tr class="active" ng-repeat="evento in vm.eventos">
+        <td>{{evento.nome}}</td>
+        <td>{{evento.data_inicio}}</td>
+        <td>{{evento.data_fim}}</td>
+        <td><a ng-click="vm.listaPontos(evento.id)" type="button" class="btn btn-primary" style="color:white">pontos</a></td>
+        <td></td>
+      </tr>
 
-      </tbody>
-    </table>
-  </div>
+    </tbody>
+  </table>
 
-  <div class="container">
-    <h2>Pontos:</h2>
-    <table class="table" fixed-header table-height="100px">
-      <thead>
-        <tr class="info">
-          <th>Data</th>
-          <th>Entrada</th>
-          <th>Saída</th>
-          <th>Mensagem de Atraso</th>
-        </tr>
-      </thead>
+  <h2>Pontos:</h2>
+  <table class="table" fixed-header table-height="100px">
+    <thead>
+      <tr class="info">
+        <th>Data</th>
+        <th>Entrada</th>
+        <th>Saída</th>
+        <th>Mensagem de Atraso</th>
+      </tr>
+    </thead>
 
-      <tbody>
-        <tr class="active" ng-repeat="ponto in vm.pontos">
-          <td>{{ponto.data | date:"dd/MM/yyyy"}}</td>
-          <td>{{ponto.hora_inicio}}</td>
-          <td>{{ponto.hora_fim}}</td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <tbody>
+      <tr class="active" ng-repeat="ponto in vm.pontos">
+        <td>{{ponto.data | date:"dd/MM/yyyy"}}</td>
+        <td>{{ponto.hora_inicio}}</td>
+        <td>{{ponto.hora_fim}}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 
 </div>
 </div>

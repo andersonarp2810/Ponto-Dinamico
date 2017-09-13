@@ -20,7 +20,7 @@
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-sm-10 control-label" for="formGroupInputSmall">Número MAC</label>
-				<input class="form-control" name="mac" type="text" placeholder="MAC" ng-model="vm.user.mac"><br>
+				<input class="form-control" ng-disabled="vm.user.nivel=='usuario_adm'" name="mac" type="text" placeholder="MAC" ng-model="vm.user.mac"><br>
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-sm-5 control-label" for="formGroupInputSmall">E-mail</label>

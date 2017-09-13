@@ -26,6 +26,8 @@
 				UserService.enviarUser(vm.name, vm.senha, vm.email, vm.matricula)
 					.then(function (data) {
 						vm.mensagem = '';
+						console.log("data.erro");
+						console.log(data.erro);
 						switch (data.erro) { // definir erro pra cada campo
 							case "000":
 								console.log(data.body);
