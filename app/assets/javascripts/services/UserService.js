@@ -35,7 +35,7 @@
 
             dados = {
                 nome: name,
-                senha: senha,
+                password: senha,
                 email: email,
                 matricula: matricula
             }
