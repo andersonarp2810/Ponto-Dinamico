@@ -25,30 +25,24 @@ def self.formate(eventos)
     arr.reverse
 end
 
+UsuarioEvento.group(:usuario_id).select(:usuario_id).where("evento_id = 28").count
+
 #pesquisa pelo nome
 def self.search(id)
-   if id.present?
-       arr = Array.new
-       users = Array.new
-       evento = Evento.find_by(id: id)
-       usuarios = UsuarioEvento.order(data: :desc).where("evento_id = ? and data >= ? and data<= ?", "#{evento.id}" ,"#{evento.data_inicio}", "#{evento.data_fim}").select(:id, :usuario_id, :data, :mensagem)
-       if usuarios.present?
-        usuarios.each do |usuario|
-                arr.push(usuario[:usuario_id])
+    arr_usuarios = Array.new
+    if id.present?
+        usuario_eventos = Usuario.joins(:usuario_eventos).order(:nome).where("evento_id = ?", "#{id}").select(:nome).group(:nome).count
+        if usuario_eventos.present?
+            usuario_eventos.keys.each do |key|
+                usuario_evento = Hash.new
+                usuario_evento["nome"] = key
+                usuario_evento["presenca"] = usuario_eventos[key]
+                arr_usuarios.push(usuario_evento)
             end
-            ids = arr.uniq
-            ids.each do |id| 
-                user = Hash.new
-                usuario = Usuario.find_by(id: id)
-                user["nome"] = usuario.nome
-                user["presenca"] = arr.count(id)
-                users.push(user)
-            end
-        else
-            return nil
+            return arr_usuarios    
         end
    end
-   users
+   return nil
 end
 
 def self.confirma_ponto(evento,usuario_id,mensagem)

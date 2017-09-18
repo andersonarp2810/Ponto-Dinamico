@@ -87,18 +87,25 @@ enum status: {true: 1, false: 0}
 		end
 		return false
 	end
+	
 #pesquisa de relatorio do usuario
 def self.search(id)
    if id.present?
-		   usuarios = UsuarioEvento.where("usuario_id = ?" ,"#{id}").distinct.pluck(:evento_id)
-			if usuarios.present?
-				arr_evento = Array.new				
-				usuarios.each do |usu|
-					arr_evento.push(Evento.select("id,nome,data_inicio,data_fim").find_by(id: usu))
-				end
-				return arr_evento
-			end 
+		arr_evento = Array.new
+		eventos = Evento.joins(:usuario_eventos).where("usuario_id = ?","#{id}").distinct.pluck(:id,:nome, :data_inicio, :data_fim)
+		if eventos.present? 
+			eventos.each do |evento|
+				hash_evento = Hash.new			
+				hash_evento["id"] = evento[0]
+				hash_evento["nome"] = evento[1]
+				hash_evento["data_inicio"] = evento[2]
+				hash_evento["data_fim"] = evento[3]
+
+				arr_evento.push(hash_evento)
+			end
+			return arr_evento 
 		end
+	end
    return nil
 end
 #protocolo de erro pra campos ja em uso

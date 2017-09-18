@@ -46,7 +46,7 @@ class UsuariosController < ApplicationController
   # POST /usuarios
   # POST /usuarios.json
   def create
-    retorno = {erro: "107", body: " "}     
+    retorno = {erro: "107", body: " "}
     @usuario = Usuario.new(valid_request?)
     if @usuario.valid?
       if @usuario.save
