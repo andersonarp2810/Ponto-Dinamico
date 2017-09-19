@@ -14,3 +14,15 @@
  *= require_tree .
  *= require_self
  */
+
+tr{
+    width: 100% !important;
+}
+
+td{
+    word-wrap: break-word;
+}
+
+tbody>tr:first-child{
+    width: 100% !important;
+}
