@@ -48,6 +48,7 @@ class UsuariosController < ApplicationController
   def create
     retorno = {erro: "107", body: " "}
     @usuario = Usuario.new(valid_request?)
+    @usuario.status = 1
     if @usuario.mac.blank?  
       @usuario.nivel = "usuario_adm"
       @usuario.mac = ""
