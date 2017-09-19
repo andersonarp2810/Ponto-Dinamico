@@ -28,17 +28,19 @@
         <th>NúmeroM</th>
         <th>Nome</th>
         <th> </th>
-        <th></th>
-        <th></th>
+        <th> </th>
+        <th> </th>
       </tr>
     </thead>
     <tbody>
       <tr class="active" ng-repeat="user in vm.users | filter:vm.filtro:strict">
+        <span style="width: max-content">
         <td>{{user.matricula}}</td>
         <td>{{user.nome}}</td>
-        <td><a ui-sref="editUser({user: user})" type="button" class="btn btn-primary" style="color:white">editar</a> </td>
+        <td><a ui-sref="editUser({user: user})" type="button" class="btn btn-primary" style="color:white">editar</a></td>
         <td><a href="" type="button" class="btn btn-primary" style="color:white">informações</a></td>
         <td><a ng-click="vm.relatorio(user.id)" type="button" class="btn btn-primary" style="color:white">relatório</a></td>
+        </span>
       </tr>
     </tbody>
   </table>
@@ -50,8 +52,8 @@
         <th>nome</th>
         <th>Data Início</th>
         <th>Data Fim</th>
-        <th></th>
-        <th></th>
+        <th> </th>
+        <th> </th>
       </tr>
     </thead>
     <tbody>
@@ -61,7 +63,7 @@
         <td>{{evento.data_inicio}}</td>
         <td>{{evento.data_fim}}</td>
         <td><a ng-click="vm.listaPontos(evento.id)" type="button" class="btn btn-primary" style="color:white">pontos</a></td>
-        <td></td>
+        <td> </td>
       </tr>
 
     </tbody>
@@ -83,7 +85,7 @@
         <td>{{ponto.data | date:"dd/MM/yyyy"}}</td>
         <td>{{ponto.hora_inicio}}</td>
         <td>{{ponto.hora_fim}}</td>
-        <td></td>
+        <td> </td>
       </tr>
     </tbody>
   </table>

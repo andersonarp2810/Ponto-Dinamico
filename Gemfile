@@ -5,8 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-#gem de alguma coisa de Windows sei lá o que é mas pediu
-gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 #gem angular
 gem 'angular-rails-templates'
 #gem rack-cors
