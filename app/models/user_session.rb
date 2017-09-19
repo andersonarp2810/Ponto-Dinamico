@@ -48,7 +48,6 @@ class UserSession
     def destroy(id)
         if user_signed_in?
             @session[:user_id] = nil
-        else
             usuario = Usuario.find_by(id: id)
             if usuario.present? and usuario.status = "true"
                 usuario.update(status: 0)

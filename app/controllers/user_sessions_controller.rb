@@ -14,6 +14,7 @@ class UserSessionsController < ApplicationController
         @user_session = UserSession.new(session, valid_request?)
         if @user_session.authenticate!
             if user_signed_in?.present?
+                Usuario.update(current_user.id, status: 1)
                 render json:{erro: "000", body: {usuario_id:current_user.id, nome:current_user.nome, matricula:current_user.matricula, status: current_user.status}}.to_json
             else
                 render json: {erro: @user_session.authenticate![:erro], body:{status: false}}
