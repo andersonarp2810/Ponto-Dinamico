@@ -8,24 +8,22 @@ validates :nome, :tipo, :data_fim, :data_fim, :hora_inicio, :hora_fim, :local, :
 has_many :usuario_eventos
 
 def self.formate(eventos)
-    arr = Array.new
+    arr_eventos = Array.new
     eventos.each do |evento|
-        ev = Hash.new
-        ev["id"] = evento.id
-        ev["nome"] = evento.nome
-        ev["tipo"] = evento.tipo
-        ev["data_inicio"] = evento.data_inicio.strftime("%d/%m/%Y")
-        ev["data_fim"] = evento.data_fim.strftime("%d/%m/%Y")
-        ev["hora_inicio"] = evento.hora_inicio.to_s(:time)
-        ev["hora_fim"] = evento.hora_fim.to_s(:time)
-        ev["local"] = evento.local
-        ev["descricao"] = evento.descricao
-        arr.push(ev)
+        evento_hash = Hash.new
+        evento_hash["id"] = evento.id
+        evento_hash["nome"] = evento.nome
+        evento_hash["tipo"] = evento.tipo
+        evento_hash["data_inicio"] = evento.data_inicio.strftime("%d/%m/%Y")
+        evento_hash["data_fim"] = evento.data_fim.strftime("%d/%m/%Y")
+        evento_hash["hora_inicio"] = evento.hora_inicio.to_s(:time)
+        evento_hash["hora_fim"] = evento.hora_fim.to_s(:time)
+        evento_hash["local"] = evento.local
+        evento_hash["descricao"] = evento.descricao
+        arr_eventos.push(evento_hash)
     end
-    arr.reverse
+    arr_eventos
 end
-
-UsuarioEvento.group(:usuario_id).select(:usuario_id).where("evento_id = 28").count
 
 #pesquisa pelo nome
 def self.search(id)

@@ -50,7 +50,6 @@ class UsuariosController < ApplicationController
     if params[:mac].present?
       @usuario = Usuario.new(valid_request?)
     else
-      print("administrador cadastrado")  
       @usuario = Usuario.new(valid_request?)
       @usuario.nivel = "usuario_adm"
       @usuario.mac = "--"

@@ -111,7 +111,7 @@ end
 #protocolo de erro pra campos ja em uso
 	private
 		def self.protocolo_em_uso(chave)
-			protocolo = {matricula: -3, mac: 20, email: -1} # falta ajustar protocolo
+			protocolo = {matricula: -3, mac: -2, email: -1} # falta ajustar protocolo
 			protocolo[chave]
 		end
 end

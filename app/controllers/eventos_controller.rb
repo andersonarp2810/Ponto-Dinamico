@@ -18,9 +18,9 @@ end
  
  def eventos_mobile
    if params[:keynome].present?
-        @eventos = Evento.formate(Evento.where("LOWER(nome) LIKE ?", "%#{params[:keynome].downcase}%"))
+        @eventos = Evento.formate(Evento.order(data_inicio: :desc).where("LOWER(nome) LIKE ?", "%#{params[:keynome].downcase}%"))
     else
-        @eventos = Evento.formate(Evento.all)
+        @eventos = Evento.formate(Evento.all.order(data_inicio: :desc))
     end
       render json:{erro: "000", body: @eventos}
  end
