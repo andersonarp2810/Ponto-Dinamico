@@ -47,12 +47,10 @@ class UsuariosController < ApplicationController
   # POST /usuarios.json
   def create
     retorno = {erro: "107", body: " "}
-    if params[:mac].present?
-      @usuario = Usuario.new(valid_request?)
-    else
-      @usuario = Usuario.new(valid_request?)
+    @usuario = Usuario.new(valid_request?)
+    if @usuario.mac.blank?  
       @usuario.nivel = "usuario_adm"
-      @usuario.mac = "--"
+      @usuario.mac = ""
     end
 
     if @usuario.valid?
