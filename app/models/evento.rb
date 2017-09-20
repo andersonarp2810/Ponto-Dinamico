@@ -72,12 +72,13 @@ private
     end
 
     def self.registrar_ponto
-        hora_atual = Time.now
-        data_atual = Time.now.to_date
+        limite_tempo = 15
+        hora_atual = Time.zone.now
+        data_atual = Time.zone.now.to_date
         usuario_evento  = UsuarioEvento.find_by(data: data_atual, usuario_id: @usuario_id)
         if usuario_evento.blank?#verifica se o usuario ja fez o primeiro ponto
             #ponto no inicio do evento
-            if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_inicio.hour * 60) + @evento.hora_inicio.min)).abs <= 30
+            if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_inicio.hour * 60) + @evento.hora_inicio.min)).abs <= limite_tempo
                 usuario_evento = UsuarioEvento.new
                 usuario_evento.data = data_atual
                 usuario_evento.hora_inicio = hora_atual.to_s(:time)
@@ -92,7 +93,11 @@ private
             else
                 #escrever mensagem de atraso
                 if @mensagem.blank?
-                    erro = 312
+                    if ((hora_atual.hour * 60) + hora_atual.min) < ((((@evento.hora_inicio.hour * 60) + @evento.hora_inicio.min)) - limite_tempo)
+                        erro = 319
+                    else
+                        erro = 312
+                    end
                 else
                     usuario_evento = UsuarioEvento.new
                     usuario_evento.data = data_atual
@@ -111,7 +116,7 @@ private
         else
             if usuario_evento.hora_fim.nil?
                 #faz o ponto no final do evento
-                if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_fim.hour * 60) + @evento.hora_fim.min)).abs <= 30 #verifica se esta no intervalo permitido para realizar o ponto
+                if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_fim.hour * 60) + @evento.hora_fim.min)).abs <= limite_tempo #verifica se esta no intervalo permitido para realizar o ponto
                     usuario_evento.update(hora_fim: hora_atual.to_s(:time))
                     return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data.strftime("%d/%m/%Y"), hora_fim: usuario_evento.hora_fim.to_s(:time)}}#dados do usuario          }
                 else
