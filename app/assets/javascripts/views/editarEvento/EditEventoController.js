@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('EditEventoController', EditEventoController);
 
-    EditEventoController.$inject = ['EventoService', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$stateParams', '$window'];
+    EditEventoController.$inject = ['$scope', 'EventoService', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$stateParams', '$window'];
 
-    function EditEventoController(EventoService, GeoService, LoginService, sessao, $Respostas, $stateParams, $window) {
+    function EditEventoController($scope, EventoService, GeoService, LoginService, sessao, $Respostas, $stateParams, $window) {
         var vm = this;
         vm.botao = false;
         x = $stateParams.evento;
@@ -17,6 +17,11 @@
         vm.evento = x;
         vm.mensagem;
         vm.sessao = sessao;
+
+        $scope.$watch('vm.evento.hora_fim', function (current, original) {
+            console.info('vm.evento.hora_fim era %s', original);
+            console.info('vm.evento.hora_fim é %s', current);
+        });
 
         function editEvento() {
             if (vm.form.$invalid) {
@@ -73,11 +78,17 @@
             } else {
                 LoginService.checar();
                 GeoService.getPosicao()
-                    .then(function (data) {
+                    .then(
+                    function (data) {
                         console.log(data);
                         //vm.latitude = data.latitude;
                         //vm.longitude = data.longitude;
-                    });
+                    },
+                    function (erro) {
+                        console.log(erro);
+                    }
+                    );
+                delete vm.evento.classe;
                 console.log(vm.evento);
             }
         }

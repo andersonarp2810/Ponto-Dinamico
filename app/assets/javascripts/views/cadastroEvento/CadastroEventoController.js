@@ -29,6 +29,8 @@
             }
             else {
                 vm.botao = true;
+                vm.horaInicio.setFullYear(2000);
+                vm.horaFim.setFullYear(2000);
                 EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
                     vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
                     vm.latitude, vm.longitude)
@@ -89,12 +91,17 @@
 
                 console.log("geo");
                 GeoService.getPosicao()
-                    .then(function (data) {
+                    .then(
+                    function (data) {
                         console.log("pegou geo");
                         console.log(data);
                         vm.latitude = data.latitude;
                         vm.longitude = data.longitude;
-                    });
+                    },
+                    function (erro) {
+                        console.log(erro);
+                    }
+                    );
             }
         }
 

@@ -22,7 +22,7 @@
 <div class="container">
   <h2>Resultado</h2>
   <p>Informações :</p>
-  <table class="table" fixed-header table-height="55px">
+  <table class="table" fixed-header table-height="100px">
     <thead>
       <tr class="info">
         <th>Data</th>
@@ -34,12 +34,12 @@
     </thead>
     <tbody>
       <div>
-        <tr class="active" ng-repeat="evento in vm.eventos | filter:vm.filtro:strict">
+        <tr ng-repeat="evento in vm.eventos | filter:vm.filtro:strict" ng-class="evento.classe">
           <td>{{evento.data_inicio | date:"dd/MM/yyyy"}}</td>
           <td>{{evento.nome}}</td>
           <td><a ui-sref="editEvento({evento: evento})" type="button" class="btn btn-primary" style="color:white">editar</a>            </td>
           <td><a href="" type="button" class="btn btn-primary" style="color:white">informações</a></td>
-          <td><a ng-click="vm.relatorio(evento.id)" type="button" class="btn btn-primary" style="color:white">relatório</a></td>
+          <td><a ng-click="vm.relatorio(evento)" type="button" class="btn btn-primary" style="color:white">relatório</a></td>
         </tr>
       </div>
     </tbody>

@@ -16,9 +16,13 @@
 
             url = $Rotas.editEvento;
 
+            ev = Object.assign({}, evento);
+            //ev.hora_fim = evento.hora_fim.getTime();
+            //ev.hora_inicio = evento.hora_inicio.getTime();
+
             tipo = "evento";
 
-            return Requisicoes.put(url, evento, tipo);
+            return Requisicoes.put(url, ev, tipo);
         }
 
         function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, QR,
@@ -41,6 +45,9 @@
                 localizacao_lati: latitude,
                 localizacao_long: longitude
             }
+
+            //evento.hora_fim = evento.hora_fim.getTime();
+            //evento.hora_inicio = evento.hora_inicio.getTime();
 
             return Requisicoes.post(url, evento, tipo);
         }

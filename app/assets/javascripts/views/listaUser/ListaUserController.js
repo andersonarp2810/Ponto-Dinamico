@@ -33,9 +33,13 @@
             }
         }
 
-        function listaPontos(eve_id) {
+        function listaPontos(evento) {
+            vm.eventos.forEach(function (ev) {
+                ev.classe = 'active';
+            });
+            evento.classe = 'warning';
             vm.pontos = null;
-            UserService.pontos(vm.usu_id, eve_id)
+            UserService.pontos(vm.usu_id, evento.id)
                 .then(function (data) {
                     console.log(data);
                     switch (data.erro) {
@@ -55,7 +59,12 @@
                 });
         }
 
-        function relatorio(id) {
+        function relatorio(user) {
+            vm.users.forEach(function (item) {
+                item.classe = 'active';
+            });
+            user.classe = 'warning';
+            id = user.id;
             vm.eventos = null;
             vm.usu_id = null;
             UserService.relatorio(id)
@@ -65,6 +74,9 @@
                         case '000':
                             console.log(data.body);
                             vm.eventos = data.body;
+                            vm.eventos.forEach(function (ev) {
+                                ev.classe = 'active';
+                            });
                             vm.usu_id = id;
                             break;
                         case '501':
@@ -87,6 +99,9 @@
                         case '000':
                             console.log(data.body);
                             vm.users = data.body;
+                            vm.users.forEach(function (user) {
+                                user.classe = 'active';
+                            });
                             break;
                         default:
                             break;
