@@ -8,9 +8,13 @@ class UsuarioEventosController < ApplicationController
   def relatoriousuario
         usuario_evento = UsuarioEvento.search(params[:usu_id], params[:eve_id],"")
         if usuario_evento.present?
-          render json: {erro: "000", body: usuario_evento}
+          if usuario_evento[0]["hora_inicio"].blank?
+            render json: {erro: "301", body: ""}
+          else
+            render json: {erro: "000", body: usuario_evento}
+          end
         else
-          render json: {erro: "301", body: ""}
+          render json: {erro: "314", body: ""}
         end
   end
 
