@@ -61,21 +61,31 @@
     </div>
 
     <label for="qr"> <h4>Qrcode</h4> </label>
-    <input class="form-control" type="text" name="qr" ng-model="vm.QR" required> <br>
+    <input class="form-control" type="text" name="qr" ng-model="vm.QR" required style="width:400px" >
+    <br>
+    <button type="button" class="btn btn-primary" style="position:relative;transform:translate(300%,-150%)"><span class="	glyphicon glyphicon-qrcode"></span> Gerar Qrcode </button> 
+    <br>
     <div role="alert">
       <span class="error" ng-show="vm.form.qr.$dirty && vm.form.qr.$error.required">
         (Campo obrigatório)</span>
     </div>
-
+    <label for="qr"> <h4>Imagem</h4> </label>
+    <input class="form-control" type="text" name="imagem" ng-model="vm.QR" required style="width:380px" >
+    <br>
+    <button type="button" class="btn btn-primary" style="position:relative;transform:translate(235%,-150%)"><span class="		glyphicon glyphicon-camera"></span> Escolher Imagem </button> 
+    <br>
+    <div role="alert">
+      <span class="error" ng-show="vm.form.qr.$dirty && vm.form.qr.$error.required">
+        (Campo obrigatório)</span>
+    </div>
     <label for="latitude"> <h4>Latitude</h4> </label>
     <input class="form-control" type="text" ng-model="vm.latitude"> <br>
-
     <label for="longitude"> <h4>Longitude</h4></label>
     <input class="form-control" type="text" ng-model="vm.longitude"> <br>
 
     <br>
-    <button class="btn btn-info" ng-click="vm.cadastrarEvento()" ng-disabled="vm.botao" style="background-color:#007db7">OK</button>
-
+    <button class="btn btn-info" ng-click="vm.cadastrarEvento()" ng-disabled="vm.botao" style="background-color:#007db7"><span class="	glyphicon glyphicon-ok"></span> OK</button>
+    
   </form>
   <br><br>
 </div>
