@@ -68,8 +68,8 @@ end
     #verifica se usuario tem privilegio
     if Evento.autentica_usuario(@usuario_id)
       if @evento.valid?#valida evento antes de salvar
-        @evento.hora_inicio = Time.zone.parse(@evento.hora_inicio.to_s)-3600
-        @evento.hora_fim = Time.zone.parse(@evento.hora_fim.to_s)-3600
+        @evento.hora_inicio = Time.zone.parse(@evento.hora_inicio.to_s)
+        @evento.hora_fim = Time.zone.parse(@evento.hora_fim.to_s)
         if @evento.save
           retorno = {erro: "000", body:{evento_id: @evento.id, evento_nome: @evento.nome}}
         end
@@ -84,8 +84,8 @@ end
   # PATCH/PUT /eventos/1.json
   def update
     retorno = {erro: "333", body: ""}
-      @evento.hora_inicio = Time.zone.parse(@evento.hora_inicio.to_s)-3600
-      @evento.hora_fim = Time.zone.parse(@evento.hora_fim.to_s)-3600
+      @evento.hora_inicio = Time.zone.parse(@evento.hora_inicio.to_s)
+      @evento.hora_fim = Time.zone.parse(@evento.hora_fim.to_s)
       if @evento.update(valid_request?)
         retorno = {erro: "000", body: ""}
       end

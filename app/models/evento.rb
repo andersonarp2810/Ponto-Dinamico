@@ -75,7 +75,7 @@ private
         limite_tempo = 15
         hora_atual = Time.zone.now
         data_atual = Time.zone.now.to_date
-        usuario_evento  = UsuarioEvento.find_by(data: data_atual, usuario_id: @usuario_id)
+        usuario_evento  = UsuarioEvento.find_by(data: data_atual, usuario_id: @usuario_id, evento_id: @evento.id)
         if usuario_evento.blank?#verifica se o usuario ja fez o primeiro ponto
             #ponto no inicio do evento
             if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_inicio.hour * 60) + @evento.hora_inicio.min)).abs <= limite_tempo
