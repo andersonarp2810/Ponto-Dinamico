@@ -9,6 +9,7 @@
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
+        vm.deletar = deletar;
         vm.eventos = null;
         vm.usu_id = null;
         vm.listaPontos = listaPontos;
@@ -33,11 +34,37 @@
             }
         }
 
+        function deletar(id) {
+            if (confirm("Tem certeza que deseja deletar este usuário?")) {
+                UserService.deletUser(id).then(
+                    function (data) {
+                        console.log(data);
+                        switch (data.erro) {
+                            case '000':
+                                console.log(data.body);
+                                console.log("usuário deletado");
+                                vm.listaEventos();
+                                break;
+                            case '501':
+                                console.log("sessão expirada");
+                                LoginService.apagar();
+                                $window.location.href = "#!/login";
+                                break;
+                            default:
+                                vm.mensagem = 'Erro: ' + $Respostas[data.erro];
+                                vm.users = null;
+                                break;
+                        }
+                    }
+                );
+            }
+        }
+
         function listaPontos(evento) {
             vm.eventos.forEach(function (ev) {
                 ev.classe = 'active';
             });
-            evento.classe = 'warning';
+            evento.classe = 'danger';
             vm.pontos = null;
             UserService.pontos(vm.usu_id, evento.id)
                 .then(function (data) {
@@ -63,7 +90,7 @@
             vm.users.forEach(function (item) {
                 item.classe = 'active';
             });
-            user.classe = 'warning';
+            user.classe = 'danger';
             id = user.id;
             vm.eventos = null;
             vm.usu_id = null;

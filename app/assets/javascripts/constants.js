@@ -3,6 +3,8 @@
         .module('pdApp')
         .constant("$Rotas", {
             "checar": "autentica",
+            "deletEvento": "eventos",
+            "deletUser": "usuarios",
             "editEvento": "eventos",
             "editUser": "usuarios",
             "sendEvento": "cadastrarevento",

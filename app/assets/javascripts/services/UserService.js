@@ -7,11 +7,18 @@
 
     function UserService(Requisicoes, $Rotas) {
 
+        this.deletUser = deletUser;
         this.editUser = editUser;
         this.enviarUser = enviarUser;
         this.listar = listar;
         this.pontos = pontos;
         this.relatorio = relatorio;
+
+        function deletUser(id) {
+            url = $Rotas.deletUser;
+
+            return Requisicoes.destroy(url, id);
+        }
 
         function editUser(user) {
             if (user.password != undefined) {

@@ -11,15 +11,16 @@
         vm.cadastrarEvento = cadastrarEvento;
         vm.dataInicio;
         vm.dataFim;
+        vm.descricao;
         vm.horaInicio;
         vm.horaFim;
-        vm.descricao;
+        vm.imagem;
         vm.local;
         vm.latitude;
         vm.longitude;
         vm.mensagem;
         vm.nome;
-        vm.QR;
+        vm.QR = '';
         vm.tipo;
         vm.sessao = sessao;
 

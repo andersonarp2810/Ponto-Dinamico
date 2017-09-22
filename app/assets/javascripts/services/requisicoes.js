@@ -14,16 +14,12 @@
         escopo.put = put;
         escopo.sessao = sessao;
 
-        function destroy(url, dados, tipo) {
-            rl = $IP + url;
+        function destroy(url, id) {
+            url = $IP + url + "/" + id;
             resposta = $q.defer();
-            da = {};
-            da[tipo] = dados;
             $http({
                 method: "DELETE",
                 url: url,
-                data: da,  // um objeto
-                headers: { 'Content-Type': 'application/json' }
             }).then(
                 function sucesso(response) {
                     console.log("resolve")
