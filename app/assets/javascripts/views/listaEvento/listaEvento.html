@@ -28,8 +28,9 @@
         <th>Data</th>
         <th>Nome do evento</th>
         <th> </th>
-        <th></th>
-        <th></th>
+        <th> </th>
+        <th> </th>
+        <th> </th>
       </tr>
     </thead>
     <tbody>
@@ -40,6 +41,7 @@
           <td><a ui-sref="editEvento({evento: evento})" type="button" class="btn btn-primary" style="color:white">editar</a>            </td>
           <td><a href="" type="button" class="btn btn-primary" style="color:white">informações</a></td>
           <td><a ng-click="vm.relatorio(evento)" type="button" class="btn btn-primary" style="color:white">relatório</a></td>
+          <td><a ng-click="vm.relatorio(evento.id)" type="button" class="btn btn-danger" style="color:white">Excluir</a></td>
         </tr>
       </div>
     </tbody>
