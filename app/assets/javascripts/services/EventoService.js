@@ -7,18 +7,24 @@
 
     function EventoService(Requisicoes, sessao, $Rotas) {
 
+        this.deletEvento = deletEvento;
         this.editEvento = editEvento;
         this.enviarEvento = enviarEvento;
         this.listaEventos = listaEventos;
         this.relatorioEventos = relatorioEventos;
+
+        function deletEvento(id) {
+
+            url = $Rotas.deletEvento;
+
+            return Requisicoes.destroy(url, id);
+        }
 
         function editEvento(evento) {
 
             url = $Rotas.editEvento;
 
             ev = Object.assign({}, evento);
-            //ev.hora_fim = evento.hora_fim.getTime();
-            //ev.hora_inicio = evento.hora_inicio.getTime();
 
             tipo = "evento";
 

@@ -19,7 +19,7 @@
         vm.longitude;
         vm.mensagem;
         vm.nome;
-        vm.QR;
+        vm.QR = '';
         vm.tipo;
         vm.sessao = sessao;
 

@@ -10,6 +10,7 @@
         vm.busca = '';
         vm.buscar = buscar;
         vm.data;
+        vm.deletar = deletar;
         vm.formatar = formatar;
         vm.eventos = [];
         vm.mensagem;
@@ -33,6 +34,31 @@
             }
         }
 
+        function deletar(id) {
+            if (confirm("Tem certeza que deseja deletar este evento?")) {
+                EventoService.deletEvento(id).then(
+                    function (data) {
+                        console.log(data);
+                        switch (data.erro) {
+                            case '000':
+                                console.log(data.body);
+                                console.log("evento deletado");
+                                vm.listaEventos();
+                                break;
+                            case '501':
+                                console.log("sessão expirada");
+                                LoginService.apagar();
+                                $window.location.href = "#!/login";
+                                break;
+                            default:
+                                vm.mensagem = 'Erro: ' + $Respostas[data.erro];
+                                vm.users = null;
+                                break;
+                        }
+                    }
+                );
+            }
+        }
 
         function formatar(para) {
             hf = para.hora_fim.split(":");
@@ -49,10 +75,10 @@
 
 
         function relatorio(evento) {
-            vm.eventos.forEach(function(item) {
+            vm.eventos.forEach(function (item) {
                 item.classe = 'active';
             });
-            evento.classe = 'warning';
+            evento.classe = 'danger';
             EventoService.relatorioEventos(evento.id)
                 .then(function (data) {
                     console.log(data);
