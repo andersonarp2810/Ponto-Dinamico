@@ -26,3 +26,9 @@ td{
 tbody>tr:first-child{
     width: 100% !important;
 }
+
+@media print{
+    .naoimprimivel { display: none; }
+    .imprimivel { display: block; }
+    
+}

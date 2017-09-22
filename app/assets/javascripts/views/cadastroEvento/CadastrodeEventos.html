@@ -1,28 +1,31 @@
-<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<div class="imprimivel">
+  <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header naoimprimivel">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
-        <h4 class="modal-title" id="myModalLabel">Código QR</h4>
-      </div>
-      <div class="modal-body">
-        <div>
-          <span ng-if="vm.QR.length>0">
+          <h4 class="modal-title" id="myModalLabel">Código QR</h4>
+        </div>
+        <div class="modal-body">
+          <div>
+            {{vm.nome}}
+            <span ng-if="vm.QR==undefined || vm.QR.trim().length>0">
               <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.QR}}">
             </span>
+          </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-primary info">Imprimir</button>
+        <div class="modal-footer naoimprimivel">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="container" style="position:relative;transform: translate(0%, 0%); width:50%;top:0%;background-color:#fafafa">
+<div class="container naoimprimivel" style="position:relative;transform: translate(0%, 0%); width:50%;top:0%;background-color:#fafafa">
   <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">
 
 
@@ -84,11 +87,11 @@
       <span class="error" ng-show="vm.form.qr.$dirty && vm.form.desc.$error.required">
         (Campo obrigatório)</span>
     </div>
-
     <label for="qr"> <h4>Qrcode</h4> </label>
     <input class="form-control" type="text" name="qr" ng-model="vm.QR" required style="width:400px">
     <br>
-    <button type="button" ng-disabled="vm.QR.length<1" data-toggle="modal" data-target="#myModal" class="btn btn-primary" style="position:relative;transform:translate(300%,-150%)"><span class="	glyphicon glyphicon-qrcode"></span> Gerar Qrcode </button>
+    <button type="button" ng-disabled="vm.QR==undefined || vm.QR.trim().length<1" data-toggle="modal" data-target="#myModal"
+      class="btn btn-primary" style="position:relative;transform:translate(300%,-150%)"><span class="	glyphicon glyphicon-qrcode"></span> Gerar Qrcode </button>
     <br>
     <div role="alert">
       <span class="error" ng-show="vm.form.qr.$dirty && vm.form.qr.$error.required">
