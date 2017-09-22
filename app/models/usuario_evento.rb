@@ -17,8 +17,8 @@ class UsuarioEvento < ApplicationRecord
       pontos.each do |ponto|
         ponto_usuario = Hash.new
         ponto_usuario["nome"] = ponto.nome
-        ponto_usuario["data"] = ponto.data.strftime("%d/%m/%Y")
-        ponto_usuario["hora_inicio"] = ponto.hora_inicio.to_s(:time)
+        ponto_usuario["data"] = ponto.data.nil? ? " " : ponto.data.strftime("%d/%m/%Y")
+        ponto_usuario["hora_inicio"] = ponto.hora_inicio.blank? ? " " : ponto.hora_inicio.to_s(:time)
         ponto_usuario["mensagem"] = ponto.mensagem
         if ponto["hora_fim"].blank? 
             ponto_usuario["hora_fim"] = " "

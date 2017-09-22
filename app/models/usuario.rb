@@ -70,9 +70,9 @@ enum status: {true: 1, false: 0}
 	def self.ultimo_ponto(usuario_id, evento_id)
 		retorno = UsuarioEvento.order(:data).where("usuario_id = ? and evento_id = ?",usuario_id, evento_id).last
 		if retorno.blank?
-			return mensagem = {erro: "000", body: {entrada: " ", saida: " ", data: " "}} 	
+			return mensagem = {erro: "314", body: {entrada:" ", saida:" ", data: " "}} 	
 		else
-			return mensagem = {erro: "000", body: {entrada: retorno.hora_inicio.blank? ? " " : retorno.hora_inicio.to_s(:time), saida: retorno.hora_fim.blank? ? " " : retorno.hora_fim.to_s(:time), data: retorno.data.strftime("%d/%m/%Y")}} 
+			return mensagem = {erro: "000", body: {entrada: retorno.hora_inicio.blank? ? " " : retorno.hora_inicio.to_s(:time), saida: retorno.hora_fim.blank? ? " " : retorno.hora_fim.to_s(:time), data: retorno.data.blank? ? " " : retorno.data.strftime("%d/%m/%Y")}} 
 		end
 
 	end
