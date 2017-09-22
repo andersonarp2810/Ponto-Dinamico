@@ -26,6 +26,9 @@
 
             ev = Object.assign({}, evento);
 
+            ev.hora_fim = ev.hora_fim.toTimeString().substr(0, 8);
+            ev.hora_inicio = ev.hora_inicio.toTimeString().substr(0, 8);
+
             tipo = "evento";
 
             return Requisicoes.put(url, ev, tipo);
@@ -52,8 +55,9 @@
                 localizacao_long: longitude
             }
 
-            //evento.hora_fim = evento.hora_fim.getTime();
-            //evento.hora_inicio = evento.hora_inicio.getTime();
+            
+            evento.hora_fim = ev.hora_fim.toTimeString().substr(0, 8);
+            evento.hora_inicio = ev.hora_inicio.toTimeString().substr(0, 8);
 
             return Requisicoes.post(url, evento, tipo);
         }
