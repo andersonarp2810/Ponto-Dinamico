@@ -114,6 +114,10 @@ end
   # DELETE /eventos/1
   # DELETE /eventos/1.json
   def destroy
+    usuario_eventos = UsuarioEvento.where(evento_id: @evento.id)
+    usuario_eventos.each do |usuario_evento|
+      usuario_evento.destroy
+    end
     @evento.destroy
     render json: {erro: "000", body: ""}
   end
