@@ -27,7 +27,7 @@
 
         function cadastrarEvento() {
             if (vm.form.$invalid) {
-                alerta("Preencha os campos corretamente.");
+                alert("Preencha os campos corretamente.");
             }
             else {
                 vm.botao = true;

@@ -56,8 +56,8 @@
             }
 
             
-            evento.hora_fim = ev.hora_fim.toTimeString().substr(0, 8);
-            evento.hora_inicio = ev.hora_inicio.toTimeString().substr(0, 8);
+            evento.hora_fim = evento.hora_fim.toTimeString().substr(0, 8);
+            evento.hora_inicio = evento.hora_inicio.toTimeString().substr(0, 8);
 
             return Requisicoes.post(url, evento, tipo);
         }
