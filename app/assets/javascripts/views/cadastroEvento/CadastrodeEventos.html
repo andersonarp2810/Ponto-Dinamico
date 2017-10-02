@@ -3,79 +3,107 @@
   
   <form name="vm.form">
     <div ng-if="vm.mensagem">{{vm.mensagem}}</div>
-
+<div>
     <label for="nome"> <h4>Nome</h4></label>
     <input class="form-control" name="nome" type="text" ng-model="vm.nome" required><br>
     <div role="alert">
       <span class="error" ng-show="vm.form.nome.$dirty && vm.form.nome.$error.required">
         (Campo obrigatório)</span>
     </div>
-
-    <label for="tipo"> <h4>Tipo</h4> </label>
-    <input class="form-control" type="text" name="tipo" ng-model="vm.tipo" required><br>
-    <div role="alert">
-      <span class="error" ng-show="vm.form.tipo.$dirty && vm.form.tipo.$error.required">
+</div>
+<div>  
+  <label for="tipo"> <h4>Tipo</h4> </label>
+  <input class="form-control" type="text" name="tipo" ng-model="vm.tipo" required><br>
+  <div role="alert">
+    <span class="error" ng-show="vm.form.tipo.$dirty && vm.form.tipo.$error.required">
         (Campo obrigatório)</span>
-    </div>
-
-    <label for="data-inicio"> <h4>Data de inicio</h4> </label>
-    <input class="form-control" name="data-inicio" type="date" ng-model="vm.dataInicio" required> <br>
-    <div role="alert">
-      <span class="error" ng-show="vm.form.data-inicio.$dirty && vm.form.data-inicio.$error.required">
+  </div>
+</div>
+<div>
+  <label for="data-inicio"> <h4>Data de inicio</h4> </label>
+  <input class="form-control" name="data-inicio" type="date" ng-model="vm.dataInicio" required> <br>
+  <div role="alert">
+    <span class="error" ng-show="vm.form.data-inicio.$dirty && vm.form.data-inicio.$error.required">
         (Campo obrigatório)</span>
-    </div>
-
-    <label for="data-termino"> <h4>Data de término</h4> </label>
-    <input class="form-control" name="data-termino" type="date" ng-model="vm.dataFim" required> <br>
-    <div role="alert">
-      <span class="error" ng-show="vm.form.data-termino.$dirty && vm.form.data-termino.$error.required">
+  </div>
+</div>
+<div>  
+  <label for="data-termino"> <h4>Data de término</h4> </label>
+  <input class="form-control" name="data-termino" type="date" ng-model="vm.dataFim" required> <br>
+  <div role="alert">
+    <span class="error" ng-show="vm.form.data-termino.$dirty && vm.form.data-termino.$error.required">
         (Campo obrigatório)</span>
-    </div>
-
-    <label for="hora-inicio"> <h4>Hora de Inicio</h4> </label>
-    <input class="form-control" name="hora-inicio" type="time" ng-model="vm.horaInicio" required> <br>
-    <div role="alert">
-      <span class="error" ng-show="vm.form.hora-inicio.$dirty && vm.form.hora-inicio.$error.required">
+  </div>
+</div>
+<div>  
+  <label for="hora-inicio"> <h4>Hora de Inicio</h4> </label>
+  <input class="form-control" name="hora-inicio" type="time" ng-model="vm.horaInicio" required> <br>
+  <div role="alert">
+    <span class="error" ng-show="vm.form.hora-inicio.$dirty && vm.form.hora-inicio.$error.required">
         (Campo obrigatório)</span>
-    </div>
-
-    <label for="hora-termino"> <h4>Hora de Término</h4> </label>
-    <input class="form-control" name="hora-termino" type="time" ng-model="vm.horaFim" required> <br>
-    <div role="alert">
-      <span class="error" ng-show="vm.form.hora-termino.$dirty && vm.form.hora-termino.$error.required">
+  </div>
+</div>
+<div>  
+  <label for="hora-termino"> <h4>Hora de Término</h4> </label>
+  <input class="form-control" name="hora-termino" type="time" ng-model="vm.horaFim" required> <br>
+  <div role="alert">
+    <span class="error" ng-show="vm.form.hora-termino.$dirty && vm.form.hora-termino.$error.required">
         (Campo obrigatório)</span>
-    </div>
-
-    <label for="local"> <h4>Local</h4> </label>
-    <textarea class="form-control" name="local" ng-model="vm.local" required></textarea> <br>
-    <div role="alert">
-      <span class="error" ng-show="vm.form.qr.$dirty && vm.form.local.$error.required">
+  </div>
+</div>
+<div>  
+  <label for="local"> <h4>Local</h4> </label>
+  <textarea class="form-control" name="local" ng-model="vm.local" required></textarea> <br>
+  <div role="alert">
+    <span class="error" ng-show="vm.form.local.$dirty && vm.form.local.$error.required">
         (Campo obrigatório)</span>
-    </div>
-
-    <label for="desc"> <h4>Descrição</h4> </label>
-    <textarea class="form-control" name="desc" ng-model="vm.descricao" required></textarea> <br>
-    <div role="alert">
-      <span class="error" ng-show="vm.form.qr.$dirty && vm.form.desc.$error.required">
+  </div>
+</div>
+<div>  
+  <label for="desc"> <h4>Descrição</h4> </label>
+  <textarea class="form-control" name="desc" ng-model="vm.descricao" required></textarea> <br>
+  <div role="alert">
+    <span class="error" ng-show="vm.form.desc.$dirty && vm.form.desc.$error.required">
+      (Campo obrigatório)</span>
+  </div>
+</div>
+<div class="form-inline"> 
+  <label for="qr"> <h4>Qrcode</h4> </label>
+  <button type="button" class="btn btn-primary" style="width:auto"><span class="	glyphicon glyphicon-qrcode"style="width:auto"></span> Gerar Qrcode </button> 
+  <input class="form-control" type="text" name="qr" ng-model="vm.QR" required style="width:60%" >   
+  <div role="alert">
+    <span class="error" ng-show="vm.form.qr.$dirty && vm.form.qr.$error.required">
         (Campo obrigatório)</span>
-    </div>
-
-    <label for="qr"> <h4>Qrcode</h4> </label>
-    <input class="form-control" type="text" name="qr" ng-model="vm.QR" required> <br>
-    <div role="alert">
-      <span class="error" ng-show="vm.form.qr.$dirty && vm.form.qr.$error.required">
+  </div>
+</div>
+<div class="form-inline"> 
+  <label for="qr"> <h4>Imagem</h4> </label>
+  <input class="form-control" type="text" name="imagem" ng-model="vm.Imagem" required style="width:55%" >
+  <button type="button" class="btn btn-primary" style="width:auto"><span class="glyphicon glyphicon-camera"></span> Escolher Imagem </button> 
+  <div role="alert">
+    <span class="error" ng-show="vm.form.imagem.$dirty && vm.form.imagem.$error.required">
         (Campo obrigatório)</span>
-    </div>
-
-    <label for="latitude"> <h4>Latitude</h4> </label>
-    <input class="form-control" type="text" ng-model="vm.latitude"> <br>
-
-    <label for="longitude"> <h4>Longitude</h4></label>
-    <input class="form-control" type="text" ng-model="vm.longitude"> <br>
-
+  </div>   
+</div> 
+<div>  
+  <label for="latitude"> <h4>Latitude</h4> </label>
+  <input class="form-control" type="text" ng-model="vm.latitude" name="lat"> <br>
+  <div role="alert">
+    <span class="error" ng-show="vm.form.lat.$dirty && vm.form.lat.$error.required">
+        (Campo obrigatório)</span>
+  </div>
+</div>
+<div>  
+  <label for="longitude"> <h4>Longitude</h4></label>
+  <input class="form-control" type="text" ng-model="vm.longitude" name="long"> <br>
+  <div role="alert">
+    <span class="error" ng-show="vm.form.long.$dirty && vm.form.long.$error.required">
+        (Campo obrigatório)</span>
+  </div>
+</div>  
     <br>
-    <button class="btn btn-info" ng-click="vm.cadastrarEvento()" ng-disabled="vm.botao" style="background-color:#007db7">OK</button>
-
+    <button class="btn btn-info" ng-click="vm.cadastrarEvento()" ng-disabled="vm.botao" style="background-color:#007db7"><span class="	glyphicon glyphicon-ok"></span> OK</button>
+    
   </form>
   <br><br>
 </div>
