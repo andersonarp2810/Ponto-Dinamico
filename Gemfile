@@ -56,4 +56,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 #versão do ruvy
-ruby '2.3.3p222'
+ruby '2.3.3'
