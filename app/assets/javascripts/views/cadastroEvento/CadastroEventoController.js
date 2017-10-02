@@ -14,6 +14,7 @@
         vm.descricao;
         vm.horaInicio;
         vm.horaFim;
+        vm.imprime = imprime;
         vm.imagem;
         vm.local;
         vm.latitude;
@@ -26,7 +27,7 @@
 
         function cadastrarEvento() {
             if (vm.form.$invalid) {
-                alerta("Preencha os campos corretamente.");
+                alert("Preencha os campos corretamente.");
             }
             else {
                 vm.botao = true;
@@ -62,6 +63,10 @@
                         vm.botao = false;
                     }); //end then
             }
+        }
+
+        function imprime(){
+            window.print();
         }
 
         function limpar() {
