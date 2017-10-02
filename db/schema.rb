@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170522174624) do
+ActiveRecord::Schema.define(version: 20171002185718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,7 +18,6 @@ ActiveRecord::Schema.define(version: 20170522174624) do
   create_table "eventos", force: :cascade do |t|
     t.string   "nome"
     t.string   "tipo"
-    t.string   "pessoa_evento"
     t.date     "data_inicio"
     t.date     "data_fim"
     t.time     "hora_inicio"
@@ -30,6 +29,7 @@ ActiveRecord::Schema.define(version: 20170522174624) do
     t.datetime "updated_at",       null: false
     t.float    "localizacao_long"
     t.float    "localizacao_lati"
+    t.string   "imagem"
   end
 
   create_table "usuario_eventos", force: :cascade do |t|
@@ -47,13 +47,13 @@ ActiveRecord::Schema.define(version: 20170522174624) do
 
   create_table "usuarios", force: :cascade do |t|
     t.string   "nome"
-    t.string   "password"
     t.string   "email"
     t.string   "matricula"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.integer  "nivel",      default: 0
     t.string   "mac"
+    t.string   "password"
     t.integer  "status",     default: 0
     t.index ["email"], name: "index_usuarios_on_email", unique: true, using: :btree
     t.index ["mac"], name: "index_usuarios_on_mac", unique: true, using: :btree
