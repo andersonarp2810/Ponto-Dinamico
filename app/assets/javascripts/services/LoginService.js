@@ -22,16 +22,21 @@
         function checar() {
             res = $q.defer();
             url = $Rotas.checar;
-            Requisicoes.get(url).then(function (data) {
-                console.log(data);
-                if (data.erro == '501') {
-                    apagar();
-                    $window.location.href = "#!/login/";
-                    res.reject(0);
-                } else {
-                    res.resolve(1);
+            Requisicoes.get(url).then(
+                function (data) {
+                    console.log(data);
+                    if (data.erro == '501') {
+                        apagar();
+                        $window.location.href = "#!/login/";
+                        res.reject(0);
+                    } else {
+                        res.resolve(1);
+                    }
+                },
+                function (err) {
+                    console.error(err);
                 }
-            });
+            );
             return res.promise;
         }
 

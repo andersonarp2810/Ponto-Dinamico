@@ -12,9 +12,14 @@
 
         function sair() {
             LoginService.logout()
-                .then(function (data) {
+                .then(
+                function (data) {
                     $window.location.href = "#!/login/";
-                });
+                },
+                function (err) {
+                    console.error(err);
+                }
+            );
         }
 
         var init = function () {

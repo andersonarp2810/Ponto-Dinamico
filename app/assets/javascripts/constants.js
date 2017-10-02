@@ -30,6 +30,6 @@
             "userRelat": "relatorioUser",
         })
         //.constant("$IP", "http://192.168.74.123:3000/") //felix
-        .constant("$IP", "https://ponto-dinamico.herokuapp.com/")
+        .constant("$IP", "http://localhost:3000/")
         ;
 })();
