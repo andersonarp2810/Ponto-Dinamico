@@ -28,8 +28,16 @@
     <label for="desc"> <h4>Descrição</h4> </label>
     <textarea class="form-control" name="desc" ng-model="vm.evento.descricao"></textarea> <br>
 
-    <label for="qr"> <h4>Qrcode</h4> </label>
-    <input class="form-control" type="text" name="qr" ng-model="vm.evento.QR" disabled> <br>
+    <div class="form-inline"> 
+      <label for="qr"> <h4>Qrcode</h4> </label>
+      <input class="form-control" type="text" name="qr" ng-model="vm.QR" required style="width:60%" >   
+      <button type="button" class="btn btn-primary" style="width:auto"><span class="	glyphicon glyphicon-qrcode"style="width:auto"></span> Gerar Qrcode </button> 
+    </div>
+    <div class="form-inline"> 
+      <label for="qr"> <h4>Imagem</h4> </label>
+      <input class="form-control" type="text" name="imagem" ng-model="vm.Imagem" required style="width:55%" >
+      <button type="button" class="btn btn-primary" style="width:auto"><span class="glyphicon glyphicon-camera"></span> Escolher Imagem </button>  
+    </div> 
 
     <label for="latitude"> <h4>Latitude</h4> </label>
     <input class="form-control" type="text" ng-model="vm.evento.localizacao_lati"> <br>
