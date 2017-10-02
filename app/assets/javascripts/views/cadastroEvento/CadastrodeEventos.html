@@ -14,6 +14,7 @@
             <span ng-if="vm.QR==undefined || vm.QR.trim().length>0">
               <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.QR}}">
             </span>
+            <img ng-src="{{vm.imagem}}" width="300">
           </div>
         </div>
         <div class="modal-footer naoimprimivel">
@@ -98,7 +99,8 @@
         (Campo obrigatório)</span>
     </div>
     <label for="qr"> <h4>Imagem</h4> </label>
-    <input class="form-control" type="text" name="img" ng-model="vm.imagem" required style="width:380px">
+    <br>
+    <input class="form-control" type="file" name="img" ng-model="vm.imagem" required style="width:380px" accept="image/*" app-filereader >
     <br>
     <button type="button" class="btn btn-primary" style="position:relative;transform:translate(235%,-150%)"><span class="		glyphicon glyphicon-camera"></span> Escolher Imagem </button>
     <br>
