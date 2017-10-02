@@ -20,7 +20,9 @@
             return Requisicoes.destroy(url, id);
         }
 
-        function editUser(user) {
+        function editUser(usuario) {
+
+            user = Object.assign({}, usuario);
             if (user.password != undefined) {
                 user.password = SHA2_256(user.password);
             }
@@ -42,7 +44,7 @@
 
             dados = {
                 nome: name,
-                password: senha,
+                password: SHA2_256(senha),
                 email: email,
                 matricula: matricula
             }
