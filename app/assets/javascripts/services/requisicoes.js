@@ -51,7 +51,7 @@
 
         function post(url, dados, tipo) {
             url = $IP + url;
-            console.log(`${url}`);
+            console.log(url);
             resposta = $q.defer();
             da = {};
             da['id'] = escopo.sessao.id;
@@ -79,7 +79,7 @@
 
         function put(url, dados, tipo) {
             url = $IP + url;
-            console.log(`${url}`);
+            console.log(url);
             resposta = $q.defer();
             da = {};
             da[tipo] = dados;

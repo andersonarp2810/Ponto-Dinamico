@@ -85,7 +85,7 @@ private
         hora_atual = Time.zone.now
         data_atual = Time.zone.now.to_date
         usuario_evento  = UsuarioEvento.find_by(data: data_atual, usuario_id: @usuario_id, evento_id: @evento.id)
-        if !usuario_evento.nil?
+        if !usuario_evento.nil?# verifica se o usuário está inscrito
             if !usuario_evento.hora_inicio.blank?#verifica se o usuario ja fez o primeiro ponto
                 #ponto no inicio do evento
                 if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_inicio.hour * 60) + @evento.hora_inicio.min)).abs <= limite_tempo
@@ -103,8 +103,14 @@ private
                 else
                     #escrever mensagem de atraso
                     if @mensagem.blank?
+                        #verifica se o evento ja iniciou
                         if ((hora_atual.hour * 60) + hora_atual.min) < ((((@evento.hora_inicio.hour * 60) + @evento.hora_inicio.min)) - limite_tempo)
-                            erro = 319
+                            #verifica se o evento ainda não terminou
+                            if ((hora_atual.hour * 60) + hora_atual.min) > ((((@evento.hora_fim.hour * 60) + @evento.hora_fim.min)) + limite_tempo)
+                                erro = 315
+                            else
+                                erro = 319
+                            end
                         else
                             erro = 312
                         end
