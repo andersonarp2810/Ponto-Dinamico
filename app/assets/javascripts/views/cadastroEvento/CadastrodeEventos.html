@@ -25,6 +25,33 @@
   </div>
 </div>
 
+<div class="naoimprimivel">
+  <div class="modal fade" id="modalimage" role="dialog" aria-labelledby="modalimageLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+          <h4 class="modal-title" id="modalimageLabel">Imagem</h4>
+        </div>
+        <div class="modal-body">
+          <div>
+
+            <img ng-src="{{vm.imagem}}" width="300" height="300">
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="container naoimprimivel" style="position:relative;transform: translate(0%, 0%); width:50%;top:0%;background-color:#fafafa">
   <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">
 
@@ -98,10 +125,24 @@
         (Campo obrigatório)</span>
     </div>
     <label for="qr"> <h4>Imagem</h4> </label>
-    <input class="form-control" type="text" name="img" ng-model="vm.imagem" required style="width:380px">
     <br>
-    <button type="button" class="btn btn-primary" style="position:relative;transform:translate(235%,-150%)"><span class="		glyphicon glyphicon-camera"></span> Escolher Imagem </button>
+
+    <div class="input-group">
+      <label class="input-group-btn">
+                <span class="btn btn-primary">
+                    <span class="glyphicon glyphicon-camera"></span> Escolher Imagem
+                    <input type="file" name="img" ng-model="vm.imagem" required accept="image/*" style="display: none !important;" app-filereader>
+                </span>
+            </label>
+      <input type="text" class="form-control" style="width: 300px" readonly>
+      <button type="button" data-toggle="modal" data-target="#modalimage"
+        class="btn btn-primary" style="position:relative;transform:translate(300%,-150%)"></span> Ver imagem
+      </button>
+    </div>
+
+
     <br>
+
     <!-- imagem não deve ser obrigatória ainda
     <div role="alert">
       <span class="error" ng-show="vm.form.img.$dirty && vm.form.img.$error.required">
