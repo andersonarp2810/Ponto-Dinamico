@@ -22,7 +22,7 @@ class UsuariosController < ApplicationController
         mensagem = {erro: "301", body: ""}
       end
     else
-      usuario = Usuario.select("id, nome, email, matricula, mac")
+      usuario = Usuario.select("id, nome, email, matricula, mac, nivel")
       mensagem = {erro: "000", body:usuario}
     end
     render json: mensagem
@@ -30,8 +30,8 @@ class UsuariosController < ApplicationController
 
   # GET /usuarios/1
   # GET /usuarios/1.json
-  def show
-  end
+  #def show
+  #end
 
   # GET /usuarios/new
   def new
@@ -46,8 +46,14 @@ class UsuariosController < ApplicationController
   # POST /usuarios
   # POST /usuarios.json
   def create
-    retorno = {erro: "107", body: " "}     
+    retorno = {erro: "107", body: " "}
     @usuario = Usuario.new(valid_request?)
+    @usuario.status = 1
+    if @usuario.mac.blank?  
+      @usuario.nivel = "usuario_adm"
+      @usuario.mac = ""
+    end
+
     if @usuario.valid?
       if @usuario.save
         retorno = {erro: "000", body: {usuario_id: @usuario.id, usuario_nome: @usuario.nome, status: true}}

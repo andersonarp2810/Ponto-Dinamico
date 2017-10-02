@@ -8,47 +8,39 @@ validates :nome, :tipo, :data_fim, :data_fim, :hora_inicio, :hora_fim, :local, :
 has_many :usuario_eventos
 
 def self.formate(eventos)
-    arr = Array.new
+    arr_eventos = Array.new
     eventos.each do |evento|
-        ev = Hash.new
-        ev["id"] = evento.id
-        ev["nome"] = evento.nome
-        ev["tipo"] = evento.tipo
-        ev["data_inicio"] = evento.data_inicio.strftime("%d/%m/%Y")
-        ev["data_fim"] = evento.data_fim.strftime("%d/%m/%Y")
-        ev["hora_inicio"] = evento.hora_inicio.to_s(:time)
-        ev["hora_fim"] = evento.hora_fim.to_s(:time)
-        ev["local"] = evento.local
-        ev["descricao"] = evento.descricao
-        arr.push(ev)
+        evento_hash = Hash.new
+        evento_hash["id"] = evento.id
+        evento_hash["nome"] = evento.nome
+        evento_hash["tipo"] = evento.tipo
+        evento_hash["data_inicio"] = evento.data_inicio.strftime("%d/%m/%Y")
+        evento_hash["data_fim"] = evento.data_fim.strftime("%d/%m/%Y")
+        evento_hash["hora_inicio"] = evento.hora_inicio.to_s(:time)
+        evento_hash["hora_fim"] = evento.hora_fim.to_s(:time)
+        evento_hash["local"] = evento.local
+        evento_hash["descricao"] = evento.descricao
+        arr_eventos.push(evento_hash)
     end
-    arr.reverse
+    arr_eventos
 end
 
 #pesquisa pelo nome
 def self.search(id)
-   if id.present?
-       arr = Array.new
-       users = Array.new
-       evento = Evento.find_by(id: id)
-       usuarios = UsuarioEvento.order(data: :desc).where("evento_id = ? and data >= ? and data<= ?", "#{evento.id}" ,"#{evento.data_inicio}", "#{evento.data_fim}").select(:id, :usuario_id, :data, :mensagem)
-       if usuarios.present?
-        usuarios.each do |usuario|
-                arr.push(usuario[:usuario_id])
+    arr_usuarios = Array.new
+    if id.present?
+        usuario_eventos = Usuario.joins(:usuario_eventos).order(:nome).where("evento_id = ?", "#{id}").select(:nome).group(:nome).count
+        if usuario_eventos.present?
+            usuario_eventos.keys.each do |key|
+                usuario_evento = Hash.new
+                usuario_evento["nome"] = key
+                usuario_evento["presenca"] = usuario_eventos[key]
+                arr_usuarios.push(usuario_evento)
             end
-            ids = arr.uniq
-            ids.each do |id| 
-                user = Hash.new
-                usuario = Usuario.find_by(id: id)
-                user["nome"] = usuario.nome
-                user["presenca"] = arr.count(id)
-                users.push(user)
-            end
-        else
-            return nil
+            return arr_usuarios    
         end
    end
-   users
+   return nil
 end
 
 def self.confirma_ponto(evento,usuario_id,mensagem)
