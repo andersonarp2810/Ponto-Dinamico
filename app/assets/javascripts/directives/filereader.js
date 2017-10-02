@@ -26,7 +26,7 @@
                             .then(function (values) {
                                 if (element.multiple) ngModel.$setViewValue(values);
                                 else ngModel.$setViewValue(values.length ? values[0] : null);
-                                element.value = null;
+                                //element.value = null; // isso faz com que o nome da imagem suma
                                 element.disabled = false;
                             });
 
