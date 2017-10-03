@@ -83,4 +83,8 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  #mais uma do rails = pegar no heroku
+  config.serve_static_assets = true
+  config.assets.digest = true
 end
