@@ -11,10 +11,10 @@
  * It is generally better to create a new file per style scope.
  *
 /*
- *= require bootstrap_and_overrides
- *= require_tree .
- *= require_self
  */
+// "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+@import "bootstrap-sprockets";
+@import "bootstrap";
 
 tr{
     width: 100% !important;
