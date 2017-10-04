@@ -156,7 +156,7 @@
 
     <div>
       <label for="latitude"> <h4>Latitude</h4> </label>
-      <input class="form-control" type="text" ng-model="vm.latitude" name="lat"> <br>
+      <input class="form-control" disabled type="text" ng-model="vm.latitude" name="lat"> <br>
       <div role="alert">
         <span class="error" ng-show="vm.form.lat.$dirty && vm.form.lat.$error.required">
         (Campo obrigatório)</span>
@@ -164,7 +164,7 @@
     </div>
     <div>
       <label for="longitude"> <h4>Longitude</h4></label>
-      <input class="form-control" type="text" ng-model="vm.longitude" name="long"> <br>
+      <input class="form-control" disabled type="text" ng-model="vm.longitude" name="long"> <br>
       <div role="alert">
         <span class="error" ng-show="vm.form.long.$dirty && vm.form.long.$error.required">
         (Campo obrigatório)</span>
@@ -180,4 +180,5 @@
   <br><br>
 </div>
 
-<div class="naoimprimivel" id="map-canvas" style="border: 2px solid #3872ac; height: 300px; width: 100%; margin: 0px; padding: 0px"></div>
+<input id="pac-input" class="controls" type="text" placeholder="Busca">
+<div class="naoimprimivel" id="map"></div>
