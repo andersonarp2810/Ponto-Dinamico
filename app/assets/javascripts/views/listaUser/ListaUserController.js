@@ -9,6 +9,7 @@
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
+        vm.deletar = deletar;
         vm.eventos = null;
         vm.usu_id = null;
         vm.listaPontos = listaPontos;
@@ -33,9 +34,39 @@
             }
         }
 
-        function listaPontos(eve_id) {
+        function deletar(id) {
+            if (confirm("Tem certeza que deseja deletar este usuário?")) {
+                UserService.deletUser(id).then(
+                    function (data) {
+                        console.log(data);
+                        switch (data.erro) {
+                            case '000':
+                                console.log(data.body);
+                                console.log("usuário deletado");
+                                vm.listaEventos();
+                                break;
+                            case '501':
+                                console.log("sessão expirada");
+                                LoginService.apagar();
+                                $window.location.href = "#!/login";
+                                break;
+                            default:
+                                vm.mensagem = 'Erro: ' + $Respostas[data.erro];
+                                vm.users = null;
+                                break;
+                        }
+                    }
+                );
+            }
+        }
+
+        function listaPontos(evento) {
+            vm.eventos.forEach(function (ev) {
+                ev.classe = 'active';
+            });
+            evento.classe = 'danger';
             vm.pontos = null;
-            UserService.pontos(vm.usu_id, eve_id)
+            UserService.pontos(vm.usu_id, evento.id)
                 .then(function (data) {
                     console.log(data);
                     switch (data.erro) {
@@ -55,7 +86,12 @@
                 });
         }
 
-        function relatorio(id) {
+        function relatorio(user) {
+            vm.users.forEach(function (item) {
+                item.classe = 'active';
+            });
+            user.classe = 'danger';
+            id = user.id;
             vm.eventos = null;
             vm.usu_id = null;
             UserService.relatorio(id)
@@ -65,6 +101,9 @@
                         case '000':
                             console.log(data.body);
                             vm.eventos = data.body;
+                            vm.eventos.forEach(function (ev) {
+                                ev.classe = 'active';
+                            });
                             vm.usu_id = id;
                             break;
                         case '501':
@@ -87,6 +126,9 @@
                         case '000':
                             console.log(data.body);
                             vm.users = data.body;
+                            vm.users.forEach(function (user) {
+                                user.classe = 'active';
+                            });
                             break;
                         default:
                             break;

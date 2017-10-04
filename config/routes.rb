@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   match 'realizarponto', to: 'eventos#realizarponto', via: [:post]
 #rota get ultimo ponto
   match 'getponto/:user_id/:evento_id', to: 'usuarios#get_ponto', via: [:get]
+#rota realizar inscrição
+  match 'inscricao/:usuario_id/:evento_id', to: 'eventos#inscricao', via: [:get]
 #rota cadastrar eventos
   match 'cadastrarevento', to: 'eventos#create', via: [:post]
   #rota relatorio ponto usuario

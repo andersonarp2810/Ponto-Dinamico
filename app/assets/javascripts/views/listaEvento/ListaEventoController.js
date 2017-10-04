@@ -10,6 +10,7 @@
         vm.busca = '';
         vm.buscar = buscar;
         vm.data;
+        vm.deletar = deletar;
         vm.formatar = formatar;
         vm.eventos = [];
         vm.mensagem;
@@ -33,12 +34,37 @@
             }
         }
 
+        function deletar(id) {
+            if (confirm("Tem certeza que deseja deletar este evento?")) {
+                EventoService.deletEvento(id).then(
+                    function (data) {
+                        console.log(data);
+                        switch (data.erro) {
+                            case '000':
+                                console.log(data.body);
+                                console.log("evento deletado");
+                                vm.listaEventos();
+                                break;
+                            case '501':
+                                console.log("sessão expirada");
+                                LoginService.apagar();
+                                $window.location.href = "#!/login";
+                                break;
+                            default:
+                                vm.mensagem = 'Erro: ' + $Respostas[data.erro];
+                                vm.users = null;
+                                break;
+                        }
+                    }
+                );
+            }
+        }
 
         function formatar(para) {
             hf = para.hora_fim.split(":");
-            para.hora_fim = new Date(1970, 0, 1, parseInt(hf[0], 10), parseInt(hf[1], 10));
+            para.hora_fim = new Date(2000, 0, 1, parseInt(hf[0], 10), parseInt(hf[1], 10));
             hi = para.hora_inicio.split(":");
-            para.hora_inicio = new Date(1970, 0, 1, parseInt(hi[0], 10), parseInt(hi[1], 10));
+            para.hora_inicio = new Date(2000, 0, 1, parseInt(hi[0], 10), parseInt(hi[1], 10));
             df = para.data_fim.split("/");
             para.data_fim = new Date(parseInt(df[2]), + parseInt(df[1], 10) - 1, parseInt(df[0], 10));
             di = para.data_inicio.split("/");
@@ -48,8 +74,12 @@
         }
 
 
-        function relatorio(eventoid) {
-            EventoService.relatorioEventos(eventoid)
+        function relatorio(evento) {
+            vm.eventos.forEach(function (item) {
+                item.classe = 'active';
+            });
+            evento.classe = 'danger';
+            EventoService.relatorioEventos(evento.id)
                 .then(function (data) {
                     console.log(data);
                     switch (data.erro) {
@@ -84,6 +114,7 @@
                             evs = data.body;
                             for (i = 0; i < evs.length; i++) {
                                 evs[i] = formatar(evs[i]);
+                                evs[i].classe = 'active';
                             }
                             vm.eventos = evs;
                             break;

@@ -1,0 +1,34 @@
+<div class="container " style="position:relative;transform: translate(0%, 10%); width:50%;top:5%; background-color:	#fafafa">
+	<div class="form-group form-group-sm">
+		<form name="vm.form">
+			<div style="text-align: center; font-family: inherit;">
+				<h2 style="color:black">Editar<small><br><div style="color:black">(Campos em branco não serão modificados)</div></small> </h2>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<label class="col-sm-8 control-label" for="formGroupInputSmall">Nova senha</label>
+				<input class="form-control" type="password" name="senha" placeholder="Senha" ng-model="vm.user.password"><br>
+			</div>
+			<div class="form-group form-group-sm">
+				<label class="col-sm-6 control-label" for="formGroupInputSmall">Confirmar senha</label>
+				<input class="form-control" type="password" name="confirmaSenha" placeholder="Confirmar Senha" ng-model="vm.confirmaSenha"
+				 ng-pattern="{{vm.user.password}}"><br>
+			</div>
+			<div role="alert">
+				<span class="error" ng-show="vm.form.confirmaSenha.$dirty && vm.form.confirmaSenha.$error.pattern">
+					As senhas não correspondem</span>
+			</div>
+			<div class="form-group form-group-sm">
+				<label class="col-sm-10 control-label" for="formGroupInputSmall">Número MAC</label>
+				<input class="form-control" ng-disabled="vm.user.nivel=='usuario_adm'" name="mac" type="text" placeholder="MAC" ng-model="vm.user.mac"><br>
+			</div>
+			<div class="form-group form-group-sm">
+				<label class="col-sm-5 control-label" for="formGroupInputSmall">E-mail</label>
+				<input class="form-control" name="imei" type="email" placeholder="E-mail" ng-model="vm.user.email"><br>
+			</div>
+		</form>
+		<div style="text-align-last: right">
+			<button class="btn btn-primary" ng-click="vm.editarUser()">Editar</button>
+		</div>
+	</div>
+</div>

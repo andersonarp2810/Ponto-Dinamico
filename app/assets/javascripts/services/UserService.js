@@ -7,13 +7,22 @@
 
     function UserService(Requisicoes, $Rotas) {
 
+        this.deletUser = deletUser;
         this.editUser = editUser;
         this.enviarUser = enviarUser;
         this.listar = listar;
         this.pontos = pontos;
         this.relatorio = relatorio;
 
-        function editUser(user) {
+        function deletUser(id) {
+            url = $Rotas.deletUser;
+
+            return Requisicoes.destroy(url, id);
+        }
+
+        function editUser(usuario) {
+
+            user = Object.assign({}, usuario);
             if (user.password != undefined) {
                 user.password = SHA2_256(user.password);
             }
@@ -35,7 +44,7 @@
 
             dados = {
                 nome: name,
-                password: senha,
+                password: SHA2_256(senha),
                 email: email,
                 matricula: matricula
             }

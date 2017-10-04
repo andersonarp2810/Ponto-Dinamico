@@ -15,7 +15,7 @@
         escopo.sessao = sessao;
 
         function destroy(url, dados, tipo) {
-            rl = $IP + url;
+            url = $IP + url
             resposta = $q.defer();
             da = {};
             da[tipo] = dados;
@@ -55,7 +55,7 @@
 
         function post(url, dados, tipo) {
             url = $IP + url;
-            console.log(`${url}`);
+            console.log(url);
             resposta = $q.defer();
             da = {};
             da['id'] = escopo.sessao.id;
@@ -83,7 +83,7 @@
 
         function put(url, dados, tipo) {
             url = $IP + url;
-            console.log(`${url}`);
+            console.log(url);
             resposta = $q.defer();
             da = {};
             da[tipo] = dados;

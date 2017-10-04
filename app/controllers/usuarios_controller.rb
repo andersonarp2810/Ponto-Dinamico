@@ -22,7 +22,7 @@ class UsuariosController < ApplicationController
         mensagem = {erro: "301", body: ""}
       end
     else
-      usuario = Usuario.select("id, nome, email, matricula, mac, nivel")
+      usuario = Usuario.select("id, nome, email, matricula, mac, nivel").where(nivel: 0)
       mensagem = {erro: "000", body:usuario}
     end
     render json: mensagem
@@ -51,7 +51,8 @@ class UsuariosController < ApplicationController
     @usuario.status = 1
     if @usuario.mac.blank?  
       @usuario.nivel = "usuario_adm"
-      @usuario.mac = ""
+      m = Usuario.select(:mac).where("nivel = 1").last
+      @usuario.mac = (m.mac.to_i + 1).to_s
     end
 
     if @usuario.valid?

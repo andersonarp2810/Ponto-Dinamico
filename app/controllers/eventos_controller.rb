@@ -4,6 +4,25 @@ class EventosController < ApplicationController
   skip_before_action :verify_authenticity_token
  # before_action :can_change, only: [:create, :update, :destroy, :new, :edit]
 
+
+#método se inscrever no evento
+def inscricao
+  mensagem = {erro: "320", body: ""}
+  usuario_evento = UsuarioEvento.new
+  usuario_evento.usuario_id = params[:usuario_id]
+  usuario_evento.evento_id = params[:evento_id]
+  evento = Evento.find_by(id: usuario_evento.evento_id)
+  inscrito = UsuarioEvento.find_by(usuario_id: usuario_evento.usuario_id, evento_id: usuario_evento.evento_id)
+  if evento.present?
+    if inscrito.present?
+      mensagem = {erro: "321", body: ""}
+    elsif usuario_evento.save
+      mensagem = {erro: "000", body: ""}
+    end
+  end
+  render json: mensagem
+end
+ 
 # POST /realizarponto
 def realizarponto 
   #cria o objeto em memoria
@@ -68,6 +87,8 @@ end
     #verifica se usuario tem privilegio
     if Evento.autentica_usuario(@usuario_id)
       if @evento.valid?#valida evento antes de salvar
+        @evento.hora_inicio = Time.zone.parse(@evento.hora_inicio.to_s)
+        @evento.hora_fim = Time.zone.parse(@evento.hora_fim.to_s)
         if @evento.save
           retorno = {erro: "000", body:{evento_id: @evento.id, evento_nome: @evento.nome}}
         end
@@ -82,6 +103,8 @@ end
   # PATCH/PUT /eventos/1.json
   def update
     retorno = {erro: "333", body: ""}
+      @evento.hora_inicio = Time.zone.parse(@evento.hora_inicio.to_s)
+      @evento.hora_fim = Time.zone.parse(@evento.hora_fim.to_s)
       if @evento.update(valid_request?)
         retorno = {erro: "000", body: ""}
       end
@@ -91,6 +114,10 @@ end
   # DELETE /eventos/1
   # DELETE /eventos/1.json
   def destroy
+    usuario_eventos = UsuarioEvento.where(evento_id: @evento.id)
+    usuario_eventos.each do |usuario_evento|
+      usuario_evento.destroy
+    end
     @evento.destroy
     render json: {erro: "000", body: ""}
   end
@@ -103,7 +130,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def evento_params
-      params.require(:evento).permit(:nome, :tipo, :pessoa_evento, :data_inicio, :data_fim, :hora_inicio, :hora_fim, :local, :descricao, :qrcode, :localizacao_long, :localizacao_lati)
+      params.require(:evento).permit(:nome, :tipo, :pessoa_evento, :data_inicio, :data_fim, :hora_inicio, :hora_fim, :local, :descricao, :qrcode, :localizacao_long, :localizacao_lati, :imagem)
     end
 
     def valid_request?     

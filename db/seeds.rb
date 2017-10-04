@@ -17,5 +17,5 @@ eventos = Evento.all
 eventos.each do |evento|
     evento.destroy
 end
-Usuario.create(nome: 'Admin',email: "admin@admin.com",matricula:"12345", nivel: 1, mac:"--", password: "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5")
+Usuario.create(nome: 'Admin',email: "admin@admin.com",matricula:"12345", nivel: 1, mac:"1", password: "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5")
 

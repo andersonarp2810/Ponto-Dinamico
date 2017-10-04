@@ -11,24 +11,28 @@
         vm.cadastrarEvento = cadastrarEvento;
         vm.dataInicio;
         vm.dataFim;
+        vm.descricao;
         vm.horaInicio;
         vm.horaFim;
-        vm.descricao;
+        vm.imprime = imprime;
+        vm.imagem;
         vm.local;
         vm.latitude;
         vm.longitude;
         vm.mensagem;
         vm.nome;
-        vm.QR;
+        vm.QR = '';
         vm.tipo;
         vm.sessao = sessao;
 
         function cadastrarEvento() {
             if (vm.form.$invalid) {
-                alerta("Preencha os campos corretamente.");
+                alert("Preencha os campos corretamente.");
             }
             else {
                 vm.botao = true;
+                vm.horaInicio.setFullYear(2000);
+                vm.horaFim.setFullYear(2000);
                 EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
                     vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
                     vm.latitude, vm.longitude)
@@ -61,6 +65,10 @@
             }
         }
 
+        function imprime() {
+            window.print();
+        }
+
         function limpar() {
             vm.botao = false;
             vm.dataInicio = '';
@@ -89,13 +97,47 @@
 
                 console.log("geo");
                 GeoService.getPosicao()
-                    .then(function (data) {
+                    .then(
+                    function (data) {
                         console.log("pegou geo");
                         console.log(data);
                         vm.latitude = data.latitude;
                         vm.longitude = data.longitude;
-                    });
+                    },
+                    function (erro) {
+                        console.log(erro);
+                    }
+                    );
             }
+            //jquery do input pra mostrar qual arquivo escolhido
+            $(function () {
+
+                // We can attach the `fileselect` event to all file inputs on the page
+                $(document).on('change', ':file', function () {
+                    var input = $(this),
+                        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                    input.trigger('fileselect', [numFiles, label]);
+                });
+
+                // We can watch for our custom `fileselect` event like this
+                $(document).ready(function () {
+                    $(':file').on('fileselect', function (event, numFiles, label) {
+
+                        var input = $(this).parents('.input-group').find(':text'),
+                            log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+                        if (input.length) {
+                            input.val(log);
+                        } else {
+                            if (log) alert(log);
+                        }
+
+                    });
+                });
+
+            });
+            // jquery
         }
 
         init();
