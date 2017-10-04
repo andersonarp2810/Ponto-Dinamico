@@ -16,7 +16,7 @@
  *= require bootstrap_and_overrides
  */
 
-
+/* modal */
 tr{
     width: 100% !important;
 }
@@ -34,3 +34,64 @@ tbody>tr:first-child{
     .imprimivel { display: block; }
     
 }
+/* modal */
+
+/* mapa */
+
+#map {
+    border: 2px solid #3872ac;
+    height: 70vh;
+    width: 25%;                              /**/
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    top: 255vh;
+    right: 0px; 
+}
+
+.controls {
+    margin-top: 10px;
+    border: 1px solid transparent;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 32px;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+  
+  #pac-input {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 4px;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 50%;                            /* */
+  }
+  
+  #pac-input:focus {
+    border-color: #4d90fe;
+  }
+  
+  .pac-container {
+    font-family: Roboto;
+  }
+  
+  #type-selector {
+    color: #fff;
+    background-color: #4d90fe;
+    padding: 5px 11px 0px 11px;
+  }
+  
+  #type-selector label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+  }
+  #target {
+    width: 345px;
+  }
+
+  /* mapa */

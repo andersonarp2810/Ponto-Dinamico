@@ -14,7 +14,14 @@
                 $window.location.href = "#!/login/";
             }
             else {
-                LoginService.checar();
+                LoginService.checar().then(
+                    function(data){
+                        console.log(data);
+                    },
+                    function(err){
+                        console.error(err);
+                    }
+                );
             }
         }
 
