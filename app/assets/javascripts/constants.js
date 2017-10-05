@@ -29,6 +29,6 @@
             "userLista": "listaUser",
             "userRelat": "relatorioUser",
         })
-        .constant("$IP", "http://pontodinamico.herokuapp.com/")
+        .constant("$IP", "")
         ;
 })();
