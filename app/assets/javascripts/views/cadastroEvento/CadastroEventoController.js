@@ -158,12 +158,12 @@
                 draggable: false,
                 position: myLatlng,
                 map: map,
-                title: "Sua localização"
+                title: "Local do evento"
             });
 
             google.maps.event.addListener(map, 'click', function (event) {
                 marker.setPosition(event.latLng);
-                marker.setTitle("" + event.latLng);
+                //marker.setTitle("" + event.latLng);
                 console.log(event.latLng.lat());
                 console.log(event.latLng.lng());
                 $scope.$apply(function () {
