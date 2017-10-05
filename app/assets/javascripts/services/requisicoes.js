@@ -54,6 +54,7 @@
         };
 
         function post(url, dados, tipo) {
+            console.log($IP);
             url = $IP + url;
             console.log(url);
             resposta = $q.defer();
