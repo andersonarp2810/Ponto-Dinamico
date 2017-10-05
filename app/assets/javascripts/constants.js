@@ -30,6 +30,5 @@
             "userRelat": "relatorioUser",
         })
         .constant("$IP", "http://ponto-dinamico.herokuapp.com/")
-        //.constant("$IP", "http://localhost:3000/")
         ;
 })();
