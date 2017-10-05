@@ -139,8 +139,8 @@
             });
             // jquery
 
-            
-            google.maps.event.addDomListener(window, 'load', iniciarMapa);
+            iniciarMapa();
+            //google.maps.event.addDomListener(window, 'load', iniciarMapa);
         }
 
         // mapa
@@ -231,6 +231,10 @@
                     }
                 });
                 map.fitBounds(bounds);
+            });
+
+            $scope.$on('$viewContentLoaded', function () { // faz o mapa carregar sem f5
+                google.maps.event.trigger(map, 'resize');
             });
         }
         //mapa
