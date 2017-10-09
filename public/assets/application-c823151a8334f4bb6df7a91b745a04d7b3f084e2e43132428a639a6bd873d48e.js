@@ -52240,7 +52240,7 @@ angular.module('pdApp', [
             "userLista": "listaUser",
             "userRelat": "relatorioUser",
         })
-        .constant("$IP", "http://ponto-dinamico.herokuapp.com/")
+        .constant("$IP", "")
         ;
 })();
 /**
@@ -54228,9 +54228,9 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         .module('pdApp')
         .controller('NavController', NavController);
 
-    NavController.$inject = ['LoginService', 'sessao', '$cookies', '$window'];
+    NavController.$inject = ['LoginService', 'sessao', '$cookies', '$IP', '$window'];
 
-    function NavController(LoginService, sessao, $cookies, $window) {
+    function NavController(LoginService, sessao, $cookies, $IP, $window) {
         var navVM = this;
         navVM.sair = sair;
         navVM.sessao = sessao;
@@ -54254,7 +54254,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
             console.log($window.location.href);
             console.log($cookies.get('sessao_pd_id'));
             if (navVM.sessao.id != undefined) {
-                if ($window.location.href == "http://localhost:3000/#!/login/" || $window.location.href == "http://localhost:3000/") {
+                if ($window.location.href == $IP+"#!/login/" || $window.location.href ==  $IP) {
                     $window.location.href = "#!/home/";
                 }
             }

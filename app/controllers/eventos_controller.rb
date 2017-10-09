@@ -12,12 +12,15 @@ def inscricao
   usuario_evento.usuario_id = params[:usuario_id]
   usuario_evento.evento_id = params[:evento_id]
   evento = Evento.find_by(id: usuario_evento.evento_id)
-  inscrito = UsuarioEvento.find_by(usuario_id: usuario_evento.usuario_id, evento_id: usuario_evento.evento_id)
   if evento.present?
+    inscrito = UsuarioEvento.find_by(usuario_id: usuario_evento.usuario_id, evento_id: usuario_evento.evento_id)  
     if inscrito.present?
       mensagem = {erro: "321", body: ""}
-    elsif usuario_evento.save
-      mensagem = {erro: "000", body: ""}
+    else
+      usuario_evento.data = Time.zone.now
+      usuario_evento.save
+      mensagem = {erro: "000", body: {data: inscrito.data.nil? ? " " : inscrito.data.strftime("%d/%m/%Y"), hora_inicio: incrito.hora_inicio.blank? ? "" : inscrito.hora_inicio.to_s(:time),
+      hora_inicio: incrito.hora_fim.blank? ? "" : inscrito.hora_fim.to_s(:time)}}
     end
   end
   render json: mensagem
