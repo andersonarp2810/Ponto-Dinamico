@@ -84,17 +84,13 @@ private
         limite_tempo = 15
         hora_atual = Time.zone.now
         data_atual = Time.zone.now.to_date
-        usuario_evento  = UsuarioEvento.find_by(data: data_atual, usuario_id: @usuario_id, evento_id: @evento.id)
+        usuario_evento  = UsuarioEvento.find_by(usuario_id: @usuario_id, evento_id: @evento.id)
         if !usuario_evento.nil?# verifica se o usuário está inscrito
-            if usuario_evento.hora_inicio.blank?#verifica se o usuario ja fez o primeiro ponto
+            usuario_evento  = UsuarioEvento.find_by(usuario_id: @usuario_id, evento_id: @evento.id, data: data_atual)
+            if usuario_evento.hora_inicio.nil?#verifica se o usuario ja fez o primeiro ponto
                 #ponto no inicio do evento
                 if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_inicio.hour * 60) + @evento.hora_inicio.min)).abs <= limite_tempo
-                    usuario_evento = UsuarioEvento.new
-                    usuario_evento.data = data_atual
-                    usuario_evento.hora_inicio = hora_atual.to_s(:time)
-                    usuario_evento.evento_id = @evento.id
-                    usuario_evento.usuario_id = @usuario_id
-                    if usuario_evento.save
+                    if usuario_evento.update(hora_inicio: hora_atual.to_s(:time))
                         return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data.strftime("%d/%m/%Y"), hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
                     else
                         #algum erro
@@ -102,7 +98,7 @@ private
                     end
                 else
                     #escrever mensagem de atraso
-                    if @mensagem.blank?
+                    if @mensagem.nil?
                         #verifica se o evento ja iniciou
                         if ((hora_atual.hour * 60) + hora_atual.min) < ((((@evento.hora_inicio.hour * 60) + @evento.hora_inicio.min)) - limite_tempo)
                             #verifica se o evento ainda não terminou
@@ -115,13 +111,7 @@ private
                             erro = 312
                         end
                     else
-                        usuario_evento = UsuarioEvento.new
-                        usuario_evento.data = data_atual
-                        usuario_evento.hora_inicio = hora_atual.to_s(:time)
-                        usuario_evento.evento_id = @evento.id
-                        usuario_evento.usuario_id = @usuario_id
-                        usuario_evento.mensagem = @mensagem
-                        if usuario_evento.save
+                        if usuario_evento.update(hora_inicio: hora_atual.to_s(:time), mensagem: @mensagem)
                             return mensagem = {erro: "000", body:{evento_id: @evento.id, hora_inicio: usuario_evento.hora_inicio.to_s(:time), data: usuario_evento.data.strftime("%d/%m/%Y"), hora_fim: usuario_evento.hora_fim.blank? ? " " : usuario_evento.hora_fim}}#dados do usuario          }
                         else
                             #algum
@@ -130,7 +120,7 @@ private
                     end
                 end
             else
-                if usuario_evento.hora_fim.blank?
+                if usuario_evento.hora_fim.nil?
                     #faz o ponto no final do evento
                     if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_fim.hour * 60) + @evento.hora_fim.min)).abs <= limite_tempo #verifica se esta no intervalo permitido para realizar o ponto
                         usuario_evento.update(hora_fim: hora_atual.to_s(:time))
