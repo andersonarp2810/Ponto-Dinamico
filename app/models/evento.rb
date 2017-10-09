@@ -86,7 +86,7 @@ private
         data_atual = Time.zone.now.to_date
         usuario_evento  = UsuarioEvento.find_by(data: data_atual, usuario_id: @usuario_id, evento_id: @evento.id)
         if !usuario_evento.nil?# verifica se o usuário está inscrito
-            if !usuario_evento.hora_inicio.blank?#verifica se o usuario ja fez o primeiro ponto
+            if usuario_evento.hora_inicio.blank?#verifica se o usuario ja fez o primeiro ponto
                 #ponto no inicio do evento
                 if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_inicio.hour * 60) + @evento.hora_inicio.min)).abs <= limite_tempo
                     usuario_evento = UsuarioEvento.new

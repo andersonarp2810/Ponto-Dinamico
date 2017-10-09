@@ -11,8 +11,8 @@
         <div class="modal-body">
           <div>
             {{vm.evento.nome}}
-            <span ng-if="vm.evento.QR==undefined || vm.evento.QR.trim().length>0">
-              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.QR}}">
+            <span ng-if="vm.evento.qrcode==undefined || vm.evento.qrcode.trim().length>0">
+              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.evento.qrcode}}">
             </span>
           </div>
         </div>
@@ -109,9 +109,9 @@
         <h4>Qrcode</h4>
       </label>
       <br>
-      <button type="button" class="btn btn-primary btn-responsive" style="width:auto">
+      <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-responsive" style="width: auto">
         <span class="	glyphicon glyphicon-qrcode" style="width:auto"></span> Gerar Qrcode </button>
-      <input class="form-control" type="text" name="qr" ng-model="vm.evento.QR" style="width:60%">
+      <input class="form-control" type="text" name="qr" ng-model="vm.evento.qrcode" style="width:60%">
     </div>
 
 
@@ -131,7 +131,7 @@
         </label>
         <input type="text" class="form-control" style="width: 75%" readonly>
         <button type="button" data-toggle="modal" data-target="#modalimage" class="btn btn-primary" style="width: 25%">
-          </span> Ver imagem</button>
+          Ver imagem</button>
       </div>
     </div>
 
