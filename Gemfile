@@ -5,6 +5,8 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'carrierwave'
+gem 'fog-aws'
 gem 'bootstrap-sass', '~> 3.3.6'
 #gem angular
 gem 'angular-rails-templates'

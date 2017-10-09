@@ -2,7 +2,7 @@ class Evento < ApplicationRecord
 #validação
 
 validates :nome, :tipo, :data_fim, :data_fim, :hora_inicio, :hora_fim, :local, :descricao, :qrcode, :localizacao_lati, :localizacao_long,  presence: true #validação de presença
-
+mount_uploader :imagem, ImagemUploader
 
 #associação
 has_many :usuario_eventos
@@ -20,6 +20,9 @@ def self.formate(eventos)
         evento_hash["hora_fim"] = evento.hora_fim.to_s(:time)
         evento_hash["local"] = evento.local
         evento_hash["descricao"] = evento.descricao
+        evento_hash["qrcode"] = evento.qrcode
+        evento_hash["longitude"] = evento.localizacao_long
+        evento_hash["latitude"] = evento.localizacao_lati
         arr_eventos.push(evento_hash)
     end
     arr_eventos
