@@ -29,6 +29,5 @@
             "userLista": "listaUser",
             "userRelat": "relatorioUser",
         })
-        .constant("$IP", "")
         ;
 })();

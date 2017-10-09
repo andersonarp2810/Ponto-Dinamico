@@ -103,6 +103,7 @@
                         console.log(data);
                         vm.latitude = data.latitude;
                         vm.longitude = data.longitude;
+                        iniciarMapa();
                     },
                     function (erro) {
                         console.log(erro);
@@ -139,7 +140,6 @@
             });
             // jquery
 
-            iniciarMapa();
             //google.maps.event.addDomListener(window, 'load', iniciarMapa);
         }
 
@@ -149,7 +149,7 @@
             var myLatlng = new google.maps.LatLng(vm.latitude, vm.longitude);
 
             var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 20,
+                zoom: 18,
                 center: myLatlng,
                 mapTypeId: 'roadmap'
             });
@@ -231,6 +231,15 @@
                     }
                 });
                 map.fitBounds(bounds);
+
+                // atualiza em busca
+                centro = map.getCenter(); // tipo LatLng
+                marker.setPosition(centro);
+                $scope.$apply(function () {
+                    vm.latitude = centro.lat();
+                    vm.longitude = centro.lng();
+                });
+
             });
 
             $scope.$on('$viewContentLoaded', function () { // faz o mapa carregar sem f5
