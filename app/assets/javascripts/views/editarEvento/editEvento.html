@@ -4,15 +4,15 @@
       <div class="modal-content">
         <div class="modal-header naoimprimivel">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+            <span aria-hidden="true">&times;</span>
+          </button>
           <h4 class="modal-title" id="myModalLabel">Código QR</h4>
         </div>
         <div class="modal-body">
           <div>
-            {{vm.nome}}
-            <span ng-if="vm.evento.qr==undefined || vm.evento.qr.trim().length>0">
-              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.evento.qr}}">
+            {{vm.evento.nome}}
+            <span ng-if="vm.evento.qrcode==undefined || vm.evento.qrcode.trim().length>0">
+              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.evento.qrcode}}">
             </span>
           </div>
         </div>
@@ -31,14 +31,14 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+            <span aria-hidden="true">&times;</span>
+          </button>
           <h4 class="modal-title" id="modalimageLabel">Imagem</h4>
         </div>
         <div class="modal-body">
           <div>
 
-            <img ng-src="{{vm.evento.imagem}}" width="300" height="300">
+            <img ng-src="{{vm.evento.imagem}}" width="100%" height="100%">
 
           </div>
         </div>
@@ -56,60 +56,104 @@
   <form name="vm.form">
     <div ng-if="vm.mensagem">{{vm.mensagem}}</div>
 
-    <label for="nome"> <h4>Nome</h4></label>
-    <input class="form-control" name="nome" type="text" ng-model="vm.evento.nome"><br>
+    <label for="nome">
+      <h4>Nome</h4>
+    </label>
+    <input class="form-control" name="nome" type="text" ng-model="vm.evento.nome">
+    <br>
 
-    <label for="tipo"> <h4>Tipo</h4> </label>
-    <input class="form-control" type="text" name="tipo" ng-model="vm.evento.tipo"><br>
+    <label for="tipo">
+      <h4>Tipo</h4>
+    </label>
+    <input class="form-control" type="text" name="tipo" ng-model="vm.evento.tipo">
+    <br>
 
-    <label for="data-inicio"> <h4>Data de inicio</h4> </label>
-    <input class="form-control" name="data-inicio" type="date" ng-model="vm.evento.data_inicio"> <br>
+    <label for="data-inicio">
+      <h4>Data de inicio</h4>
+    </label>
+    <input class="form-control" name="data-inicio" type="date" ng-model="vm.evento.data_inicio">
+    <br>
 
-    <label for="data-termino"> <h4>Data de término</h4> </label>
-    <input class="form-control" name="data-termino" type="date" ng-model="vm.evento.data_fim"> <br>
+    <label for="data-termino">
+      <h4>Data de término</h4>
+    </label>
+    <input class="form-control" name="data-termino" type="date" ng-model="vm.evento.data_fim">
+    <br>
 
-    <label for="hora-inicio"> <h4>Hora de Inicio</h4> </label>
-    <input class="form-control" name="hora-inicio" type="time" ng-model="vm.evento.hora_inicio"> <br>
+    <label for="hora-inicio">
+      <h4>Hora de Inicio</h4>
+    </label>
+    <input class="form-control" name="hora-inicio" type="time" ng-model="vm.evento.hora_inicio">
+    <br>
 
-    <label for="hora-termino"> <h4>Hora de Término</h4> </label>
-    <input class="form-control" name="hora-termino" type="time" ng-model="vm.evento.hora_fim"> <br>
+    <label for="hora-termino">
+      <h4>Hora de Término</h4>
+    </label>
+    <input class="form-control" name="hora-termino" type="time" ng-model="vm.evento.hora_fim">
+    <br>
 
-    <label for="local"> <h4>Local</h4> </label>
-    <textarea class="form-control" name="local" ng-model="vm.evento.local"></textarea> <br>
+    <label for="local">
+      <h4>Local</h4>
+    </label>
+    <textarea class="form-control" name="local" ng-model="vm.evento.local"></textarea>
+    <br>
 
-    <label for="desc"> <h4>Descrição</h4> </label>
-    <textarea class="form-control" name="desc" ng-model="vm.evento.descricao"></textarea> <br>
+    <label for="desc">
+      <h4>Descrição</h4>
+    </label>
+    <textarea class="form-control" name="desc" ng-model="vm.evento.descricao"></textarea>
+    <br>
 
-    <div class="form-inline"> 
-      <label for="qr"> <h4>Qrcode</h4> </label>
-      <button type="button" ng-disabled="vm.evento.qr == undefined || vm.evento.qr.length == 0" data-toggle="modal" data-target="#myModal" class="btn btn-primary"
-      style="width: 23%"><span class="	glyphicon glyphicon-qrcode"style="width:auto"></span> Gerar Qrcode </button>
-      <input class="form-control" type="text" name="qr" ng-model="vm.evento.qr" required style="width:76%" >
+    <div class="form-inline">
+      <label for="qr">
+        <h4>Qrcode</h4>
+      </label>
+      <br>
+      <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-responsive" style="width: auto">
+        <span class="	glyphicon glyphicon-qrcode" style="width:auto"></span> Gerar Qrcode </button>
+      <input class="form-control" type="text" name="qr" ng-model="vm.evento.qrcode" style="width:60%">
     </div>
 
 
+    <br>
+
     <div class="form-inline">
+      <label for="qr">
+        <h4>Imagem</h4>
+      </label>
+      <br>
       <div class="input-group" style="width: 100%;">
         <label class="input-group-btn" style="width: 20%">
-            <span class="btn btn-primary">
-              <span class="glyphicon glyphicon-camera"></span> Escolher Imagem
-              <input type="file" name="img" ng-model="vm.evento.imagem" required accept="image/*" style="display: none !important;" app-filereader>
-            </span>
+          <span class="btn btn-primary">
+            <span class="glyphicon glyphicon-camera"></span> Escolher Imagem
+            <input type="file" name="img" ng-model="vm.evento.imagem" accept="image/*" style="display: none !important;" app-filereader>
+          </span>
         </label>
         <input type="text" class="form-control" style="width: 75%" readonly>
-        <button type="button" data-toggle="modal" data-target="#modalimage" class="btn btn-primary" style="width: 25%" ></span> Ver imagem</button>
+        <button type="button" data-toggle="modal" data-target="#modalimage" class="btn btn-primary" style="width: 25%">
+          Ver imagem</button>
       </div>
     </div>
 
-    <label for="latitude"> <h4>Latitude</h4> </label>
-    <input class="form-control" type="text" ng-model="vm.evento.localizacao_lati"> <br>
+    <label for="latitude">
+      <h4>Latitude</h4>
+    </label>
+    <input class="form-control" type="text" disabled ng-model="vm.evento.localizacao_lati">
+    <br>
 
-    <label for="longitude"> <h4>Longitude</h4></label>
-    <input class="form-control" type="text" ng-model="vm.evento.localizacao_long"> <br>
+    <label for="longitude">
+      <h4>Longitude</h4>
+    </label>
+    <input class="form-control" type="text" disabled ng-model="vm.evento.localizacao_long">
+    <br>
 
     <br>
     <button class="btn btn-info" ng-click="vm.editEvento()" ng-disabled="vm.botao" style="background-color:#007db7">OK</button>
 
   </form>
-  <br><br>
+  <br>
+  <br>
 </div>
+
+<input id="pac-input" class="controls" type="text" placeholder="Busca">
+<div class="naoimprimivel" id="map"></div>

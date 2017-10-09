@@ -3,9 +3,9 @@
         .module('pdApp')
         .service('Requisicoes', Requisicoes);
 
-    Requisicoes.$inject = ['sessao', '$http', '$q', '$IP'];
+    Requisicoes.$inject = ['sessao', '$http', '$q'];
 
-    function Requisicoes(sessao, $http, $q, $IP) {
+    function Requisicoes(sessao, $http, $q) {
 
         var escopo = this;
         escopo.destroy = destroy;
@@ -15,7 +15,6 @@
         escopo.sessao = sessao;
 
         function destroy(url, dados, tipo) {
-            url = $IP + url
             resposta = $q.defer();
             da = {};
             da[tipo] = dados;
@@ -41,7 +40,6 @@
 
         function get(url) {
             resposta = $q.defer();
-            url = $IP + url;
             $http({
                 method: "GET",
                 url: url
@@ -54,7 +52,6 @@
         };
 
         function post(url, dados, tipo) {
-            url = $IP + url;
             console.log(url);
             resposta = $q.defer();
             da = {};
@@ -82,7 +79,6 @@
         };
 
         function put(url, dados, tipo) {
-            url = $IP + url;
             console.log(url);
             resposta = $q.defer();
             da = {};

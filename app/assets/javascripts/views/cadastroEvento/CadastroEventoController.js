@@ -103,6 +103,7 @@
                         console.log(data);
                         vm.latitude = data.latitude;
                         vm.longitude = data.longitude;
+                        iniciarMapa();
                     },
                     function (erro) {
                         console.log(erro);
@@ -139,8 +140,7 @@
             });
             // jquery
 
-            
-            google.maps.event.addDomListener(window, 'load', iniciarMapa);
+            //google.maps.event.addDomListener(window, 'load', iniciarMapa);
         }
 
         // mapa
@@ -149,7 +149,7 @@
             var myLatlng = new google.maps.LatLng(vm.latitude, vm.longitude);
 
             var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 20,
+                zoom: 18,
                 center: myLatlng,
                 mapTypeId: 'roadmap'
             });
@@ -158,12 +158,12 @@
                 draggable: false,
                 position: myLatlng,
                 map: map,
-                title: "Sua localização"
+                title: "Local do evento"
             });
 
             google.maps.event.addListener(map, 'click', function (event) {
                 marker.setPosition(event.latLng);
-                marker.setTitle("" + event.latLng);
+                //marker.setTitle("" + event.latLng);
                 console.log(event.latLng.lat());
                 console.log(event.latLng.lng());
                 $scope.$apply(function () {
@@ -231,6 +231,19 @@
                     }
                 });
                 map.fitBounds(bounds);
+
+                // atualiza em busca
+                centro = map.getCenter(); // tipo LatLng
+                marker.setPosition(centro);
+                $scope.$apply(function () {
+                    vm.latitude = centro.lat();
+                    vm.longitude = centro.lng();
+                });
+
+            });
+
+            $scope.$on('$viewContentLoaded', function () { // faz o mapa carregar sem f5
+                google.maps.event.trigger(map, 'resize');
             });
         }
         //mapa

@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('NavController', NavController);
 
-    NavController.$inject = ['LoginService', 'sessao', '$cookies', '$window'];
+    NavController.$inject = ['LoginService', 'sessao', '$cookies', '$Estados', '$state', '$window',];
 
-    function NavController(LoginService, sessao, $cookies, $window) {
+    function NavController(LoginService, sessao, $cookies, $Estados, $state, $window) {
         var navVM = this;
         navVM.sair = sair;
         navVM.sessao = sessao;
@@ -14,27 +14,27 @@
             LoginService.logout()
                 .then(
                 function (data) {
-                    $window.location.href = "#!/login/";
+                    $state.go($Estados.login);
                 },
                 function (err) {
                     console.error(err);
                 }
-            );
+                );
         }
 
         var init = function () {
             navVM.sessao.id = $cookies.get('sessao_pd_id');
             navVM.sessao.nome = $cookies.get('sessao_pd_nome');
-            console.log($cookies.get('sessao_pd_nome'));
             console.log($window.location.href);
+            console.log($cookies.get('sessao_pd_nome'));
             console.log($cookies.get('sessao_pd_id'));
             if (navVM.sessao.id != undefined) {
-                if ($window.location.href == "http://localhost:3000/#!/login/" || $window.location.href == "http://localhost:3000/") {
-                    $window.location.href = "#!/home/";
+                if ($window.location.href.includes("login") || !($window.location.href.includes("#"))) {
+                    $state.go($Estados.home);
                 }
             }
             else {
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             }
         }
 
