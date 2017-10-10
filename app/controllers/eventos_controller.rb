@@ -20,7 +20,7 @@ def inscricao
       usuario_evento = UsuarioEvento.new()
       usuario_evento.data = Time.zone.now.to_date
       if usuario_evento.save
-        mensagem = {erro: "000", body: {data: usuario_evento.data.strftime("%d/%m/%Y"), hora_inicio: "", hora_fim: ""}
+        mensagem = {erro: "000", body: {data: usuario_evento.data.strftime("%d/%m/%Y"), hora_inicio: "", hora_fim: ""}}
       end
     end
   end
