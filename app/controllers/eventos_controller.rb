@@ -21,6 +21,7 @@ def inscricao
       usuario_evento.data = Time.zone.now.to_date
       if usuario_evento.save
         mensagem = {erro: "000", body: {data: usuario_evento.data.strftime("%d/%m/%Y"), hora_inicio: "", hora_fim: ""}
+      end
     end
   end
   render json: mensagem
@@ -34,18 +35,18 @@ def realizarponto
   #verifica status do usuario
   if @status == "true"
     mensagem = Evento.confirma_ponto(evento_request,@usuario_id, @mensagem)
-    end
+  end
   render json: mensagem.to_json
 end
  
- def eventos_mobile
-   if params[:keynome].present?
-        @eventos = Evento.formate(Evento.order(data_inicio: :desc).where("LOWER(nome) LIKE ?", "%#{params[:keynome].downcase}%"))
-    else
-        @eventos = Evento.formate(Evento.all.order(data_inicio: :desc))
-    end
-      render json:{erro: "000", body: @eventos}
- end
+def eventos_mobile
+  if params[:keynome].present?
+       @eventos = Evento.formate(Evento.order(data_inicio: :desc).where("LOWER(nome) LIKE ?", "%#{params[:keynome].downcase}%"))
+  else
+       @eventos = Evento.formate(Evento.all.order(data_inicio: :desc))
+  end
+     render json:{erro: "000", body: @eventos}
+end
 
  #listagem dos eventos
   # GET /eventos
