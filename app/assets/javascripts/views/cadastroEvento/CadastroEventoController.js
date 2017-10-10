@@ -34,7 +34,7 @@
                 vm.horaInicio.setFullYear(2000);
                 vm.horaFim.setFullYear(2000);
                 EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
-                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
+                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.imagem, vm.QR,
                     vm.latitude, vm.longitude)
                     .then(function (data) {
                         console.log(data);

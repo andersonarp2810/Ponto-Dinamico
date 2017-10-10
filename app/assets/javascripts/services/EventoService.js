@@ -34,7 +34,7 @@
             return Requisicoes.put(url, ev, tipo);
         }
 
-        function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, QR,
+        function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, imagem, QR,
             latitude, longitude) {
 
             url = $Rotas.sendEvento;
@@ -50,6 +50,7 @@
                 hora_fim: horaFim,
                 descricao: descricao,
                 local: local,
+                imagem: imagem,
                 qrcode: QR,
                 localizacao_lati: latitude,
                 localizacao_long: longitude
