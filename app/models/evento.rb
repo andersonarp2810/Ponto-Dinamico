@@ -23,6 +23,7 @@ def self.formate(eventos)
         evento_hash["qrcode"] = evento.qrcode
         evento_hash["longitude"] = evento.localizacao_long
         evento_hash["latitude"] = evento.localizacao_lati
+        evento_hash["imagem"] = evento.imagem
         arr_eventos.push(evento_hash)
     end
     arr_eventos
