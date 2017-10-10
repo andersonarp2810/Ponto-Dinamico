@@ -28,20 +28,6 @@ class UsuariosController < ApplicationController
     render json: mensagem
   end
 
-  # GET /usuarios/1
-  # GET /usuarios/1.json
-  #def show
-  #end
-
-  # GET /usuarios/new
-  def new
-    @usuario = Usuario.new
-  end
-
-  # GET /usuarios/1/edit
- def edit
- end
-
   #POST /cadastrarusuario.json
   # POST /usuarios
   # POST /usuarios.json
@@ -52,8 +38,8 @@ class UsuariosController < ApplicationController
     if @usuario.mac.blank?  
       @usuario.nivel = "usuario_adm"
       @usuario.status = 0
-      m = Usuario.select(:mac).where("nivel = 1").last
-      @usuario.mac = (m.mac.to_i + 1).to_s
+      usuario = Usuario.select(:mac).where("nivel = 1").last
+      @usuario.mac = (usuario.mac.to_i + 1).to_s
     end
 
     if @usuario.valid?

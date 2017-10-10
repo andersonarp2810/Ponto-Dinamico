@@ -17,10 +17,10 @@ def inscricao
     if inscrito.present?
       mensagem = {erro: "321", body: ""}
     else
-      usuario_evento.data = Time.zone.now
-      usuario_evento.save
-      mensagem = {erro: "000", body: {data: inscrito.data.nil? ? " " : inscrito.data.strftime("%d/%m/%Y"), hora_inicio: incrito.hora_inicio.blank? ? "" : inscrito.hora_inicio.to_s(:time),
-      hora_inicio: incrito.hora_fim.blank? ? "" : inscrito.hora_fim.to_s(:time)}}
+      usuario_evento = UsuarioEvento.new()
+      usuario_evento.data = Time.zone.now.to_date
+      if usuario_evento.save
+        mensagem = {erro: "000", body: {data: usuario_evento.data.strftime("%d/%m/%Y"), hora_inicio: "", hora_fim: ""}
     end
   end
   render json: mensagem
@@ -65,16 +65,6 @@ end
       render json:{erro: "000", body: @eventos}
     end
 
-  end
-
-  # GET /eventos/1
-  # GET /eventos/1.json
-  def show
-  end
-
-  # GET /eventos/new
-  def new
-    @evento = Evento.new
   end
 
   # GET /eventos/1/edit

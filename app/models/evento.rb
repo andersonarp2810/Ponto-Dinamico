@@ -21,8 +21,9 @@ def self.formate(eventos)
         evento_hash["local"] = evento.local
         evento_hash["descricao"] = evento.descricao
         evento_hash["qrcode"] = evento.qrcode
-        evento_hash["longitude"] = evento.localizacao_long
-        evento_hash["latitude"] = evento.localizacao_lati
+        evento_hash["localizacao_long"] = evento.localizacao_long
+        evento_hash["localizacao_lati"] = evento.localizacao_lati
+        evento_hash["imagem"] = evento.imagem
         arr_eventos.push(evento_hash)
     end
     arr_eventos
@@ -79,17 +80,28 @@ private
     #realizar verificação de coordenada
     def self.valida_coodernada(coordenada)
         #deve retornar true
-    distancia = 6371 * Math.acos(Math.cos(Math::PI * (90 - coordenada [:LatB]) / 180) * Math.cos((90 - coordenada [:LatA]) * Math::PI / 180) + Math.sin((90 - coordenada [:LatB]) * Math::PI / 180) * Math.sin((90 - coordenada [:LatA])*Math::PI/180)*Math.cos(( coordenada [:LngA] - coordenada [:LngB])*Math::PI / 180))
-    distancia < 0.5
+        distancia = 6371 * Math.acos(Math.cos(Math::PI * (90 - coordenada [:LatB]) / 180) * Math.cos((90 - coordenada [:LatA]) * Math::PI / 180) + Math.sin((90 - coordenada [:LatB]) * Math::PI / 180) * Math.sin((90 - coordenada [:LatA])*Math::PI/180)*Math.cos(( coordenada [:LngA] - coordenada [:LngB])*Math::PI / 180))
+        distancia < 0.5
     end
 
     def self.registrar_ponto
         limite_tempo = 15
         hora_atual = Time.zone.now
         data_atual = Time.zone.now.to_date
-        usuario_evento  = UsuarioEvento.find_by(usuario_id: @usuario_id, evento_id: @evento.id)
-        if !usuario_evento.nil?# verifica se o usuário está inscrito
-            usuario_evento  = UsuarioEvento.find_by(usuario_id: @usuario_id, evento_id: @evento.id, data: data_atual)
+        usuario_evento  = UsuarioEvento.where(usuario_id: @usuario_id, evento_id: @evento.id)
+        # verifica se o usuário está inscrito
+        if !usuario_evento.nil?
+            #verifica se o último ponto é o da data atual
+            if usuario_evento.last.data != data_atual
+                usuario_evento = UsuarioEvento.new
+                usuario_evento.data = data_atual
+                usuario_evento.evento_id = @evento.id
+                usuario_evento.usuario_id = @usuario_id
+                usuario_evento.save
+            else
+                usuario_evento = usuario_evento.last
+            end
+
             if usuario_evento.hora_inicio.nil?#verifica se o usuario ja fez o primeiro ponto
                 #ponto no inicio do evento
                 if (((hora_atual.hour * 60) + hora_atual.min) - ((@evento.hora_inicio.hour * 60) + @evento.hora_inicio.min)).abs <= limite_tempo
