@@ -23,7 +23,7 @@ class UserSessionsController < ApplicationController
     end
 
     def destroy
-        id = params[:user_session][:id]
+        id = params[:id]
         usuario = Usuario.find_by(id: id)
         if usuario.nivel == "usuario_adm"
             user_session.destroy(id)
