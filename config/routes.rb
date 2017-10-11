@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 #verificar autenticação
   match 'autentica', to: "user_sessions#permit", via: [:get]
 #rota para logout usuario via post
-  match 'logout', to: 'user_sessions#destroy', via: [:delete]
+  match 'logout/:id', to: 'user_sessions#destroy', via: [:delete]
 #rota para cadastrar usuario via post
   match 'cadastrarusuario', to: 'usuarios#create', via: [:post]
 #rota para login usuario via post
