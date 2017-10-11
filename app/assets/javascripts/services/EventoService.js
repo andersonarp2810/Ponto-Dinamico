@@ -15,9 +15,9 @@
 
         function deletEvento(id) {
 
-            url = $Rotas.deletEvento;
+            url = $Rotas.deletEvento + "/" + id;
 
-            return Requisicoes.destroy(url, id);
+            return Requisicoes.destroy(url);
         }
 
         function editEvento(evento) {
@@ -56,7 +56,7 @@
                 localizacao_long: longitude
             }
 
-            
+
             evento.hora_fim = evento.hora_fim.toTimeString().substr(0, 8);
             evento.hora_inicio = evento.hora_inicio.toTimeString().substr(0, 8);
 
