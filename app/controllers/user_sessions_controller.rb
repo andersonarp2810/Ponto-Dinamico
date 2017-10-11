@@ -23,18 +23,19 @@ class UserSessionsController < ApplicationController
     end
 
     def destroy
+        mensagen = {erro: "deu treta"}
         id = params[:id]
         usuario = Usuario.find_by(id: id)
         if usuario.nivel == "usuario_adm"
             user_session.destroy(id)
             if user_signed_in?
-                render json:{erro: "000", body:{status: false}}
+                mensagen = {erro: "000", body:{status: false}}
             end
         else
             usuario.update(status: 0)
-            render json:{erro: "000", body:{status: false}}
+            mensagen = {erro: "000", body:{status: usuario.status}}
         end
-        render json:{erro: "deu treta"}
+        render json:mensagen
     end
 
     private
