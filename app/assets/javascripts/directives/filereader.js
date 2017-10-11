@@ -35,7 +35,12 @@
 
                             var reader = new FileReader()
                             reader.onload = function (e) {
-                                deferred.resolve(e.target.result);
+                                deferred.resolve(
+                                    {
+                                        url: e.target.result,
+                                        file: file
+                                    }
+                                );
                             }
                             reader.onerror = function (e) {
                                 deferred.reject(e);
