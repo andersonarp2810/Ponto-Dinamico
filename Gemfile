@@ -6,8 +6,11 @@ git_source(:github) do |repo_name|
 end
 
 gem "rmagick"
+#gem para trabalhar com imagem no rails
 gem 'carrierwave'
+#gem para conectar ao servidor amazon
 gem 'fog-aws'
+#gem bootstrap
 gem 'bootstrap-sass', '~> 3.3.6'
 #gem angular
 gem 'angular-rails-templates'

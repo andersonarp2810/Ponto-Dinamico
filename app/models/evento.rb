@@ -7,6 +7,7 @@ mount_uploader :imagem, ImagemUploader
 #associação
 has_many :usuario_eventos
 
+#formata os campos para retorno
 def self.formate(eventos)
     arr_eventos = Array.new
     eventos.each do |evento|
@@ -56,11 +57,13 @@ def self.search(id)
    return nil
 end
 
+#recebe requisição para tentar confirmar a presença
+#buscar um evento existente pelo qrcode
 def self.confirma_ponto(evento,usuario_id,mensagem)
-    data_atual = Time.now.to_date
+    data_atual = Time.zone.now.to_date
     @usuario_id = usuario_id
-    @evento = Evento.find_by(qrcode: evento.qrcode)
     @mensagem = mensagem
+    @evento = Evento.find_by(["qrcode = ? and data_inicio <= ? and data_fim >= ?",evento.qrcode,data_atual,data_atual])        
     erro = 311
     if @evento #verificação se evento existe para o qrcode
         erro = 304                    
@@ -77,13 +80,14 @@ def self.confirma_ponto(evento,usuario_id,mensagem)
 end
 
 private
-    #realizar verificação de coordenada
+    #realizar verificação das coordenadas
     def self.valida_coodernada(coordenada)
         #deve retornar true
         distancia = 6371 * Math.acos(Math.cos(Math::PI * (90 - coordenada [:LatB]) / 180) * Math.cos((90 - coordenada [:LatA]) * Math::PI / 180) + Math.sin((90 - coordenada [:LatB]) * Math::PI / 180) * Math.sin((90 - coordenada [:LatA])*Math::PI/180)*Math.cos(( coordenada [:LngA] - coordenada [:LngB])*Math::PI / 180))
         distancia < 0.5
     end
 
+    #verifica as condições para salvar o ponto
     def self.registrar_ponto
         limite_tempo = 15
         hora_atual = Time.zone.now

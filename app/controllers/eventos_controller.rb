@@ -7,10 +7,12 @@ class EventosController < ApplicationController
 
 #método se inscrever no evento
 def inscricao
+  usuario_id = params[:usuario_id]
+  evento_id = params[:evento_id]
   mensagem = {erro: "320", body: ""}
   usuario_evento = UsuarioEvento.new
-  usuario_evento.usuario_id = params[:usuario_id]
-  usuario_evento.evento_id = params[:evento_id]
+  usuario_evento.usuario_id = usuario_id
+  usuario_evento.evento_id = evento_id
   evento = Evento.find_by(id: usuario_evento.evento_id)
   if evento.present?
     inscrito = UsuarioEvento.find_by(usuario_id: usuario_evento.usuario_id, evento_id: usuario_evento.evento_id)  
@@ -19,6 +21,8 @@ def inscricao
     else
       usuario_evento = UsuarioEvento.new()
       usuario_evento.data = Time.zone.now.to_date
+      usuario_evento.usuario_id = usuario_id
+      usuario_evento.evento_id = evento_id
       if usuario_evento.save
         mensagem = {erro: "000", body: {data: usuario_evento.data.strftime("%d/%m/%Y"), hora_inicio: "", hora_fim: ""}}
       end

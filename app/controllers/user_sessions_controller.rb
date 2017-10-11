@@ -23,8 +23,15 @@ class UserSessionsController < ApplicationController
     end
 
     def destroy
-        user_session.destroy(params[:user_session][:id])
-        if user_signed_in?
+        id = params[:user_session][:id]
+        usuario = Usuario.find_by(id: id)
+        if usuario.nivel == "usuario_adm"
+            user_session.destroy(id)
+            if user_signed_in?
+                render json:{erro: "000", body:{status: false}}
+            end
+        else
+            usuario.update(status: 0)
             render json:{erro: "000", body:{status: false}}
         end
         render json:{erro: "deu treta"}
