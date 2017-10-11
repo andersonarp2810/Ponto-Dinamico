@@ -52240,7 +52240,6 @@ angular.module('pdApp', [
             "userLista": "listaUser",
             "userRelat": "relatorioUser",
         })
-        .constant("$IP", "")
         ;
 })();
 /**
@@ -52527,7 +52526,7 @@ angular.module('pdApp', [
             return Requisicoes.put(url, ev, tipo);
         }
 
-        function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, QR,
+        function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, imagem, QR,
             latitude, longitude) {
 
             url = $Rotas.sendEvento;
@@ -52543,6 +52542,7 @@ angular.module('pdApp', [
                 hora_fim: horaFim,
                 descricao: descricao,
                 local: local,
+                imagem: imagem,
                 qrcode: QR,
                 localizacao_lati: latitude,
                 localizacao_long: longitude
@@ -52785,9 +52785,9 @@ angular.module('pdApp', [
         .module('pdApp')
         .service('Requisicoes', Requisicoes);
 
-    Requisicoes.$inject = ['sessao', '$http', '$q', '$IP'];
+    Requisicoes.$inject = ['sessao', '$http', '$q'];
 
-    function Requisicoes(sessao, $http, $q, $IP) {
+    function Requisicoes(sessao, $http, $q) {
 
         var escopo = this;
         escopo.destroy = destroy;
@@ -52797,7 +52797,6 @@ angular.module('pdApp', [
         escopo.sessao = sessao;
 
         function destroy(url, dados, tipo) {
-            url = $IP + url
             resposta = $q.defer();
             da = {};
             da[tipo] = dados;
@@ -52823,7 +52822,6 @@ angular.module('pdApp', [
 
         function get(url) {
             resposta = $q.defer();
-            url = $IP + url;
             $http({
                 method: "GET",
                 url: url
@@ -52836,8 +52834,6 @@ angular.module('pdApp', [
         };
 
         function post(url, dados, tipo) {
-            console.log($IP);
-            url = $IP + url;
             console.log(url);
             resposta = $q.defer();
             da = {};
@@ -52865,7 +52861,6 @@ angular.module('pdApp', [
         };
 
         function put(url, dados, tipo) {
-            url = $IP + url;
             console.log(url);
             resposta = $q.defer();
             da = {};
@@ -53315,7 +53310,7 @@ function SHA2_512_256(sData) {
                 vm.horaInicio.setFullYear(2000);
                 vm.horaFim.setFullYear(2000);
                 EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
-                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
+                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.imagem, vm.QR,
                     vm.latitude, vm.longitude)
                     .then(function (data) {
                         console.log(data);
@@ -53384,6 +53379,7 @@ function SHA2_512_256(sData) {
                         console.log(data);
                         vm.latitude = data.latitude;
                         vm.longitude = data.longitude;
+                        iniciarMapa();
                     },
                     function (erro) {
                         console.log(erro);
@@ -53420,7 +53416,6 @@ function SHA2_512_256(sData) {
             });
             // jquery
 
-            iniciarMapa();
             //google.maps.event.addDomListener(window, 'load', iniciarMapa);
         }
 
@@ -53430,7 +53425,7 @@ function SHA2_512_256(sData) {
             var myLatlng = new google.maps.LatLng(vm.latitude, vm.longitude);
 
             var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 20,
+                zoom: 18,
                 center: myLatlng,
                 mapTypeId: 'roadmap'
             });
@@ -53512,6 +53507,15 @@ function SHA2_512_256(sData) {
                     }
                 });
                 map.fitBounds(bounds);
+
+                // atualiza em busca
+                centro = map.getCenter(); // tipo LatLng
+                marker.setPosition(centro);
+                $scope.$apply(function () {
+                    vm.latitude = centro.lat();
+                    vm.longitude = centro.lng();
+                });
+
             });
 
             $scope.$on('$viewContentLoaded', function () { // faz o mapa carregar sem f5
@@ -53531,7 +53535,7 @@ function SHA2_512_256(sData) {
 // source: app/assets/javascripts/views/cadastroEvento/CadastrodeEventos.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/cadastroEvento/CadastrodeEventos.html", '<div class="imprimivel">\n  <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Código QR</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n            {{vm.nome}}\n            <span ng-if="vm.QR==undefined || vm.QR.trim().length>0">\n              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.QR}}">\n            </span>\n          </div>\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="naoimprimivel">\n  <div class="modal fade" id="modalimage" role="dialog" aria-labelledby="modalimageLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="modalimageLabel">Imagem</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n\n            <img ng-src="{{vm.imagem}}" width="100%" height="100%">\n\n          </div>\n        </div>\n        <div class="modal-footer">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n<div class="container naoimprimivel" style="position:relative;transform: translate(0%, 0%); width:50%;top:0%;background-color:#fafafa">\n  <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">\n\n\n  <form name="vm.form">\n    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n    <div>\n      <label for="nome">\n        <h4>Nome</h4>\n      </label>\n      <input class="form-control" name="nome" type="text" ng-model="vm.nome" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.nome.$dirty && vm.form.nome.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="tipo">\n        <h4>Tipo</h4>\n      </label>\n      <input class="form-control" type="text" name="tipo" ng-model="vm.tipo" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.tipo.$dirty && vm.form.tipo.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="data-inicio">\n        <h4>Data de inicio</h4>\n      </label>\n      <input class="form-control" name="data-inicio" type="date" ng-model="vm.dataInicio" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.data-inicio.$dirty && vm.form.data-inicio.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="data-termino">\n        <h4>Data de término</h4>\n      </label>\n      <input class="form-control" name="data-termino" type="date" ng-model="vm.dataFim" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.data-termino.$dirty && vm.form.data-termino.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="hora-inicio">\n        <h4>Hora de Inicio</h4>\n      </label>\n      <input class="form-control" name="hora-inicio" type="time" ng-model="vm.horaInicio" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.hora-inicio.$dirty && vm.form.hora-inicio.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="hora-termino">\n        <h4>Hora de Término</h4>\n      </label>\n      <input class="form-control" name="hora-termino" type="time" ng-model="vm.horaFim" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.hora-termino.$dirty && vm.form.hora-termino.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="local">\n        <h4>Local</h4>\n      </label>\n      <textarea class="form-control" name="local" ng-model="vm.local" required></textarea>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.local.$dirty && vm.form.local.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="desc">\n        <h4>Descrição</h4>\n      </label>\n      <textarea class="form-control" name="desc" ng-model="vm.descricao" required></textarea>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.desc.$dirty && vm.form.desc.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Qrcode</h4>\n      </label>\n      <br>\n      <button type="button" class="btn btn-primary btn-responsive" style="width:auto">\n        <span class="	glyphicon glyphicon-qrcode" style="width:auto"></span> Gerar Qrcode </button>\n      <input class="form-control" type="text" name="qr" ng-model="vm.QR" required style="width:60%">\n      <div role="alert">\n        <span class="error" ng-show="vm.form.qr.$dirty && vm.form.qr.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Imagem</h4>\n      </label>\n      <br>\n      <div class="input-group" style="width: 100%;">\n        <label class="input-group-btn" style="width: 20%">\n          <span class="btn btn-primary">\n            <span class="glyphicon glyphicon-camera"></span> Escolher Imagem\n            <input type="file" name="img" ng-model="vm.imagem" required accept="image/*" style="display: none !important;" app-filereader>\n          </span>\n        </label>\n        <input type="text" class="form-control" style="width: 75%" readonly>\n        <button type="button" data-toggle="modal" data-target="#modalimage" class="btn btn-primary" style="width: 25%">\n          </span> Ver imagem</button>\n      </div>\n    </div>\n\n    <div role="alert">\n      <span class="error" ng-show="vm.form.img.$dirty && vm.form.img.$error.required">\n        (Campo obrigatório)\n      </span>\n    </div>\n\n    <div>\n      <label for="latitude">\n        <h4>Latitude</h4>\n      </label>\n      <input class="form-control" disabled type="text" ng-model="vm.latitude" name="lat">\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.lat.$dirty && vm.form.lat.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="longitude">\n        <h4>Longitude</h4>\n      </label>\n      <input class="form-control" disabled type="text" ng-model="vm.longitude" name="long">\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.long.$dirty && vm.form.long.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <br>\n    <button class="btn btn-info btn-responsive" ng-click="vm.cadastrarEvento()" ng-disabled="vm.botao" style="background-color:#007db7">\n      <span class="	glyphicon glyphicon-ok"></span> OK</button>\n\n  </form>\n\n\n\n  <br>\n  <br>\n</div>\n\n<input id="pac-input" class="controls" type="text" placeholder="Busca">\n<div class="naoimprimivel" id="map"></div>')
+  $templateCache.put("views/cadastroEvento/CadastrodeEventos.html", '<div class="imprimivel">\n  <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Código QR</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n            {{vm.nome}}\n            <span ng-if="vm.QR==undefined || vm.QR.trim().length>0">\n              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.QR}}">\n            </span>\n          </div>\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="naoimprimivel">\n  <div class="modal fade" id="modalimage" role="dialog" aria-labelledby="modalimageLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="modalimageLabel">Imagem</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n\n            <img ng-src="{{vm.imagem}}" width="100%" height="100%">\n\n          </div>\n        </div>\n        <div class="modal-footer">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n<div class="container naoimprimivel" style="position:relative;transform: translate(0%, 0%); width:50%;top:0%;background-color:#fafafa">\n  <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">\n\n\n  <form name="vm.form">\n    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n    <div>\n      <label for="nome">\n        <h4>Nome</h4>\n      </label>\n      <input class="form-control" name="nome" type="text" ng-model="vm.nome" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.nome.$dirty && vm.form.nome.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="tipo">\n        <h4>Tipo</h4>\n      </label>\n      <input class="form-control" type="text" name="tipo" ng-model="vm.tipo" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.tipo.$dirty && vm.form.tipo.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="data-inicio">\n        <h4>Data de inicio</h4>\n      </label>\n      <input class="form-control" name="data-inicio" type="date" ng-model="vm.dataInicio" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.data-inicio.$dirty && vm.form.data-inicio.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="data-termino">\n        <h4>Data de término</h4>\n      </label>\n      <input class="form-control" name="data-termino" type="date" ng-model="vm.dataFim" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.data-termino.$dirty && vm.form.data-termino.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="hora-inicio">\n        <h4>Hora de Inicio</h4>\n      </label>\n      <input class="form-control" name="hora-inicio" type="time" ng-model="vm.horaInicio" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.hora-inicio.$dirty && vm.form.hora-inicio.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="hora-termino">\n        <h4>Hora de Término</h4>\n      </label>\n      <input class="form-control" name="hora-termino" type="time" ng-model="vm.horaFim" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.hora-termino.$dirty && vm.form.hora-termino.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="local">\n        <h4>Local</h4>\n      </label>\n      <textarea class="form-control" name="local" ng-model="vm.local" required></textarea>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.local.$dirty && vm.form.local.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="desc">\n        <h4>Descrição</h4>\n      </label>\n      <textarea class="form-control" name="desc" ng-model="vm.descricao" required></textarea>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.desc.$dirty && vm.form.desc.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Qrcode</h4>\n      </label>\n      <br>\n      <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-responsive" style="width: auto">\n        <span class="	glyphicon glyphicon-qrcode" style="width:auto"></span> Gerar Qrcode </button>\n      <input class="form-control" type="text" name="qr" ng-model="vm.QR" required style="width:60%">\n      <div role="alert">\n        <span class="error" ng-show="vm.form.qr.$dirty && vm.form.qr.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Imagem</h4>\n      </label>\n      <br>\n      <div class="input-group" style="width: 100%;">\n        <label class="input-group-btn" style="width: 20%">\n          <span class="btn btn-primary">\n            <span class="glyphicon glyphicon-camera"></span> Escolher Imagem\n            <input type="file" name="img" ng-model="vm.imagem" required accept="image/*" style="display: none !important;" app-filereader>\n          </span>\n        </label>\n        <input type="text" class="form-control" style="width: 75%" readonly>\n        <button type="button" data-toggle="modal" data-target="#modalimage" class="btn btn-primary btn-responsive" style="width: 25%">\n          Ver imagem</button>\n      </div>\n    </div>\n\n    <div role="alert">\n      <span class="error" ng-show="vm.form.img.$dirty && vm.form.img.$error.required">\n        (Campo obrigatório)\n      </span>\n    </div>\n\n    <div>\n      <label for="latitude">\n        <h4>Latitude</h4>\n      </label>\n      <input class="form-control" disabled type="text" ng-model="vm.latitude" name="lat">\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.lat.$dirty && vm.form.lat.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="longitude">\n        <h4>Longitude</h4>\n      </label>\n      <input class="form-control" disabled type="text" ng-model="vm.longitude" name="long">\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.long.$dirty && vm.form.long.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <br>\n    <button class="btn btn-info btn-responsive" ng-click="vm.cadastrarEvento()" ng-disabled="vm.botao" style="background-color:#007db7">\n      <span class="	glyphicon glyphicon-ok"></span> OK</button>\n\n  </form>\n\n\n\n  <br>\n  <br>\n</div>\n\n<input id="pac-input" class="controls" type="text" placeholder="Busca">\n<div class="naoimprimivel" id="map"></div>')
 }]);
 
 (function () {
@@ -53705,6 +53709,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         x.hora_inicio = new Date(x.hora_inicio);
         vm.editEvento = editEvento;
         vm.evento = x;
+        vm.imprime = imprime;
         vm.mensagem;
         vm.sessao = sessao;
 
@@ -53749,6 +53754,10 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
             }
         }
 
+        function imprime() {
+            window.print();
+        }
+
         function limpar() {
             vm.botao = false;
             vm.dataInicio = '';
@@ -53767,21 +53776,151 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                 $window.location.href = "#!/login/";
             } else {
                 LoginService.checar();
-                GeoService.getPosicao()
-                    .then(
-                    function (data) {
-                        console.log(data);
-                        //vm.latitude = data.latitude;
-                        //vm.longitude = data.longitude;
-                    },
-                    function (erro) {
-                        console.log(erro);
-                    }
-                    );
+
+                iniciarMapa();
+
                 delete vm.evento.classe;
                 console.log(vm.evento);
             }
+            //jquery do input pra mostrar qual arquivo escolhido
+            $(function () {
+
+                // We can attach the `fileselect` event to all file inputs on the page
+                $(document).on('change', ':file', function () {
+                    var input = $(this),
+                        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                    input.trigger('fileselect', [numFiles, label]);
+                });
+
+                // We can watch for our custom `fileselect` event like this
+                $(document).ready(function () {
+                    $(':file').on('fileselect', function (event, numFiles, label) {
+
+                        var input = $(this).parents('.input-group').find(':text'),
+                            log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+                        if (input.length) {
+                            input.val(log);
+                        } else {
+                            if (log) alert(log);
+                        }
+
+                    });
+                });
+
+            });
+            // jquery
+
+            //google.maps.event.addDomListener(window, 'load', iniciarMapa);
         }
+
+        // mapa
+        function iniciarMapa() {
+            console.log("iniciando mapa");
+
+            var myLatlng = new google.maps.LatLng(vm.evento.localizacao_lati, vm.evento.localizacao_long);
+
+            console.log(myLatlng.lat());
+            console.log(myLatlng.lng());
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 18,
+                center: myLatlng,
+                mapTypeId: 'roadmap'
+            });
+
+            var marker = new google.maps.Marker({
+                draggable: false,
+                position: myLatlng,
+                map: map,
+                title: "Local do evento"
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                marker.setPosition(event.latLng);
+                console.log(event.latLng.lat());
+                console.log(event.latLng.lng());
+                $scope.$apply(function () {
+                    vm.latitude = event.latLng.lat();
+                    vm.longitude = event.latLng.lng();
+                });
+            });
+
+
+            // Create the search box and link it to the UI element.
+            var input = document.getElementById('pac-input');
+            var searchBox = new google.maps.places.SearchBox(input);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+            // Bias the SearchBox results towards current map's viewport.
+            map.addListener('bounds_changed', function () {
+                searchBox.setBounds(map.getBounds());
+            });
+
+            var markers = [];
+            // Listen for the event fired when the user selects a prediction and retrieve
+            // more details for that place.
+            searchBox.addListener('places_changed', function () {
+                var places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                // Clear out the old markers.
+                markers.forEach(function (marker) {
+                    marker.setMap(null);
+                });
+                markers = [];
+
+                // For each place, get the icon, name and location.
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function (place) {
+                    if (!place.geometry) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+                    var icon = {
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(25, 25)
+                    };
+
+                    // Create a marker for each place.
+                    markers.push(new google.maps.Marker({
+                        map: map,
+                        icon: icon,
+                        title: place.name,
+                        position: place.geometry.location
+                    }));
+
+                    if (place.geometry.viewport) {
+                        // Only geocodes have viewport.
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+
+                // atualiza em busca
+                centro = map.getCenter(); // tipo LatLng
+                marker.setPosition(centro);
+                $scope.$apply(function () {
+                    vm.latitude = centro.lat();
+                    vm.longitude = centro.lng();
+                });
+
+            });
+
+            $scope.$on('$viewContentLoaded', function () { // faz o mapa carregar sem f5
+                google.maps.event.trigger(map, 'resize');
+            });
+        }
+        //mapa
 
         init();
     }
@@ -53790,7 +53929,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // source: app/assets/javascripts/views/editarEvento/editEvento.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/editarEvento/editEvento.html", '<div class="imprimivel">\n  <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n                  <span aria-hidden="true">&times;</span>\n                </button>\n          <h4 class="modal-title" id="myModalLabel">Código QR</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n            {{vm.nome}}\n            <span ng-if="vm.evento.qr==undefined || vm.evento.qr.trim().length>0">\n              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.evento.qr}}">\n            </span>\n          </div>\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="naoimprimivel">\n  <div class="modal fade" id="modalimage" role="dialog" aria-labelledby="modalimageLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n                    <span aria-hidden="true">&times;</span>\n                  </button>\n          <h4 class="modal-title" id="modalimageLabel">Imagem</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n\n            <img ng-src="{{vm.evento.imagem}}" width="300" height="300">\n\n          </div>\n        </div>\n        <div class="modal-footer">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="container" style="position:relative;transform: translate(0%, 5%); width:50%;top:0%;background-color:#fafafa">\n  <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">\n\n  <form name="vm.form">\n    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n\n    <label for="nome"> <h4>Nome</h4></label>\n    <input class="form-control" name="nome" type="text" ng-model="vm.evento.nome"><br>\n\n    <label for="tipo"> <h4>Tipo</h4> </label>\n    <input class="form-control" type="text" name="tipo" ng-model="vm.evento.tipo"><br>\n\n    <label for="data-inicio"> <h4>Data de inicio</h4> </label>\n    <input class="form-control" name="data-inicio" type="date" ng-model="vm.evento.data_inicio"> <br>\n\n    <label for="data-termino"> <h4>Data de término</h4> </label>\n    <input class="form-control" name="data-termino" type="date" ng-model="vm.evento.data_fim"> <br>\n\n    <label for="hora-inicio"> <h4>Hora de Inicio</h4> </label>\n    <input class="form-control" name="hora-inicio" type="time" ng-model="vm.evento.hora_inicio"> <br>\n\n    <label for="hora-termino"> <h4>Hora de Término</h4> </label>\n    <input class="form-control" name="hora-termino" type="time" ng-model="vm.evento.hora_fim"> <br>\n\n    <label for="local"> <h4>Local</h4> </label>\n    <textarea class="form-control" name="local" ng-model="vm.evento.local"></textarea> <br>\n\n    <label for="desc"> <h4>Descrição</h4> </label>\n    <textarea class="form-control" name="desc" ng-model="vm.evento.descricao"></textarea> <br>\n\n    <div class="form-inline"> \n      <label for="qr"> <h4>Qrcode</h4> </label>\n      <button type="button" ng-disabled="vm.evento.qr == undefined || vm.evento.qr.length == 0" data-toggle="modal" data-target="#myModal" class="btn btn-primary"\n      style="width: 23%"><span class="	glyphicon glyphicon-qrcode"style="width:auto"></span> Gerar Qrcode </button>\n      <input class="form-control" type="text" name="qr" ng-model="vm.evento.qr" required style="width:76%" >\n    </div>\n\n\n    <div class="form-inline">\n      <div class="input-group" style="width: 100%;">\n        <label class="input-group-btn" style="width: 20%">\n            <span class="btn btn-primary">\n              <span class="glyphicon glyphicon-camera"></span> Escolher Imagem\n              <input type="file" name="img" ng-model="vm.evento.imagem" required accept="image/*" style="display: none !important;" app-filereader>\n            </span>\n        </label>\n        <input type="text" class="form-control" style="width: 75%" readonly>\n        <button type="button" data-toggle="modal" data-target="#modalimage" class="btn btn-primary" style="width: 25%" ></span> Ver imagem</button>\n      </div>\n    </div>\n\n    <label for="latitude"> <h4>Latitude</h4> </label>\n    <input class="form-control" type="text" ng-model="vm.evento.localizacao_lati"> <br>\n\n    <label for="longitude"> <h4>Longitude</h4></label>\n    <input class="form-control" type="text" ng-model="vm.evento.localizacao_long"> <br>\n\n    <br>\n    <button class="btn btn-info" ng-click="vm.editEvento()" ng-disabled="vm.botao" style="background-color:#007db7">OK</button>\n\n  </form>\n  <br><br>\n</div>')
+  $templateCache.put("views/editarEvento/editEvento.html", '<div class="imprimivel">\n  <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Código QR</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n            {{vm.evento.nome}}\n            <span ng-if="vm.evento.qrcode==undefined || vm.evento.qrcode.trim().length>0">\n              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.evento.qrcode}}">\n            </span>\n          </div>\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="naoimprimivel">\n  <div class="modal fade" id="modalimage" role="dialog" aria-labelledby="modalimageLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="modalimageLabel">Imagem</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n\n            <img ng-src="{{vm.evento.imagem}}" width="100%" height="100%">\n\n          </div>\n        </div>\n        <div class="modal-footer">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="container" style="position:relative;transform: translate(0%, 5%); width:50%;top:0%;background-color:#fafafa">\n  <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">\n\n  <form name="vm.form">\n    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n\n    <label for="nome">\n      <h4>Nome</h4>\n    </label>\n    <input class="form-control" name="nome" type="text" ng-model="vm.evento.nome">\n    <br>\n\n    <label for="tipo">\n      <h4>Tipo</h4>\n    </label>\n    <input class="form-control" type="text" name="tipo" ng-model="vm.evento.tipo">\n    <br>\n\n    <label for="data-inicio">\n      <h4>Data de inicio</h4>\n    </label>\n    <input class="form-control" name="data-inicio" type="date" ng-model="vm.evento.data_inicio">\n    <br>\n\n    <label for="data-termino">\n      <h4>Data de término</h4>\n    </label>\n    <input class="form-control" name="data-termino" type="date" ng-model="vm.evento.data_fim">\n    <br>\n\n    <label for="hora-inicio">\n      <h4>Hora de Inicio</h4>\n    </label>\n    <input class="form-control" name="hora-inicio" type="time" ng-model="vm.evento.hora_inicio">\n    <br>\n\n    <label for="hora-termino">\n      <h4>Hora de Término</h4>\n    </label>\n    <input class="form-control" name="hora-termino" type="time" ng-model="vm.evento.hora_fim">\n    <br>\n\n    <label for="local">\n      <h4>Local</h4>\n    </label>\n    <textarea class="form-control" name="local" ng-model="vm.evento.local"></textarea>\n    <br>\n\n    <label for="desc">\n      <h4>Descrição</h4>\n    </label>\n    <textarea class="form-control" name="desc" ng-model="vm.evento.descricao"></textarea>\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Qrcode</h4>\n      </label>\n      <br>\n      <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-responsive" style="width: auto">\n        <span class="	glyphicon glyphicon-qrcode" style="width:auto"></span> Gerar Qrcode </button>\n      <input class="form-control" type="text" name="qr" ng-model="vm.evento.qrcode" style="width:60%">\n    </div>\n\n\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Imagem</h4>\n      </label>\n      <br>\n      <div class="input-group" style="width: 100%;">\n        <label class="input-group-btn" style="width: 20%">\n          <span class="btn btn-primary">\n            <span class="glyphicon glyphicon-camera"></span> Escolher Imagem\n            <input type="file" name="img" ng-model="vm.evento.imagem" accept="image/*" style="display: none !important;" app-filereader>\n          </span>\n        </label>\n        <input type="text" class="form-control" style="width: 75%" readonly>\n        <button type="button" data-toggle="modal" data-target="#modalimage" class="btn btn-primary" style="width: 25%">\n          Ver imagem</button>\n      </div>\n    </div>\n\n    <label for="latitude">\n      <h4>Latitude</h4>\n    </label>\n    <input class="form-control" type="text" disabled ng-model="vm.evento.localizacao_lati">\n    <br>\n\n    <label for="longitude">\n      <h4>Longitude</h4>\n    </label>\n    <input class="form-control" type="text" disabled ng-model="vm.evento.localizacao_long">\n    <br>\n\n    <br>\n    <button class="btn btn-info" ng-click="vm.editEvento()" ng-disabled="vm.botao" style="background-color:#007db7">OK</button>\n\n  </form>\n  <br>\n  <br>\n</div>\n\n<input id="pac-input" class="controls" type="text" placeholder="Busca">\n<div class="naoimprimivel" id="map"></div>')
 }]);
 
 // Angular Rails Template
@@ -54228,9 +54367,9 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         .module('pdApp')
         .controller('NavController', NavController);
 
-    NavController.$inject = ['LoginService', 'sessao', '$cookies', '$IP', '$window'];
+    NavController.$inject = ['LoginService', 'sessao', '$cookies', '$Estados', '$state', '$window',];
 
-    function NavController(LoginService, sessao, $cookies, $IP, $window) {
+    function NavController(LoginService, sessao, $cookies, $Estados, $state, $window) {
         var navVM = this;
         navVM.sair = sair;
         navVM.sessao = sessao;
@@ -54239,27 +54378,27 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
             LoginService.logout()
                 .then(
                 function (data) {
-                    $window.location.href = "#!/login/";
+                    $state.go($Estados.login);
                 },
                 function (err) {
                     console.error(err);
                 }
-            );
+                );
         }
 
         var init = function () {
             navVM.sessao.id = $cookies.get('sessao_pd_id');
             navVM.sessao.nome = $cookies.get('sessao_pd_nome');
-            console.log($cookies.get('sessao_pd_nome'));
             console.log($window.location.href);
+            console.log($cookies.get('sessao_pd_nome'));
             console.log($cookies.get('sessao_pd_id'));
             if (navVM.sessao.id != undefined) {
-                if ($window.location.href == $IP+"#!/login/" || $window.location.href ==  $IP) {
-                    $window.location.href = "#!/home/";
+                if ($window.location.href.includes("login") || !($window.location.href.includes("#"))) {
+                    $state.go($Estados.home);
                 }
             }
             else {
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             }
         }
 
