@@ -11,7 +11,7 @@
         navVM.sessao = sessao;
 
         function sair() {
-            LoginService.logout()
+            LoginService.logout(navVM.sessao.id)
                 .then(
                 function (data) {
                     $state.go($Estados.login);

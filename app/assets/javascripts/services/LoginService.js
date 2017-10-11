@@ -52,12 +52,11 @@
             return Requisicoes.post(url, dados, tipo);
         }
 
-        function logout() {
-            url = $Rotas.logout + "/" + sessao.id;
-            tipo = "user_session";
+        function logout(id) {
+            url = $Rotas.logout + "/" + id;
             apagar();
             console.log(sessao);
-            return Requisicoes.destroy(url, dados, tipo);
+            return Requisicoes.destroy(url);
         }
 
     };
