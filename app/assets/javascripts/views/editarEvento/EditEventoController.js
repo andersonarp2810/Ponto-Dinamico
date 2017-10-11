@@ -15,8 +15,6 @@
         x.hora_inicio = new Date(x.hora_inicio);
         vm.editEvento = editEvento;
         vm.evento = x;
-        vm.latitude; // coordenadas atuais e não do evento
-        vm.longitude; // usadas pra iniciar o mapa
         vm.imprime = imprime;
         vm.mensagem;
         vm.sessao = sessao;
@@ -84,18 +82,9 @@
                 $window.location.href = "#!/login/";
             } else {
                 LoginService.checar();
-                GeoService.getPosicao()
-                    .then(
-                    function (data) {
-                        console.log(data);
-                        vm.latitude = data.latitude;
-                        vm.longitude = data.longitude;
-                        iniciarMapa();
-                    },
-                    function (erro) {
-                        console.log(erro);
-                    }
-                    );
+
+                iniciarMapa();
+
                 delete vm.evento.classe;
                 console.log(vm.evento);
             }
@@ -136,8 +125,8 @@
         function iniciarMapa() {
             console.log("iniciando mapa");
 
-            var myLatlng = new google.maps.LatLng(vm.latitude, vm.longitude);
-            
+            var myLatlng = new google.maps.LatLng(vm.evento.localizacao_lati, vm.evento.localizacao_long);
+
             console.log(myLatlng.lat());
             console.log(myLatlng.lng());
 

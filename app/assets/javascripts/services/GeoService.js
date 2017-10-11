@@ -21,7 +21,8 @@
                     },
                     function (erro) {
                         deferred.reject(erro);
-                    }
+                    },
+                    {timeout: 30000, enableHighAccuracy: true, maximumAge: 75000}
                 );
             }
             return deferred.promise;

@@ -12,6 +12,8 @@
         vm.data;
         vm.deletar = deletar;
         vm.formatar = formatar;
+        vm.info;
+        vm.informar = informar;
         vm.eventos = [];
         vm.mensagem;
         vm.radio = "nome";
@@ -34,9 +36,10 @@
             }
         }
 
-        function deletar(id) {
-            if (confirm("Tem certeza que deseja deletar este evento?")) {
-                EventoService.deletEvento(id).then(
+        function deletar(id, nome) {
+            if (confirm("Tem certeza que deseja deletar evento " + nome + "?")) {
+                EventoService.deletEvento(id)
+                    .then(
                     function (data) {
                         console.log(data);
                         switch (data.erro) {
@@ -56,7 +59,7 @@
                                 break;
                         }
                     }
-                );
+                    );
             }
         }
 
@@ -73,6 +76,9 @@
             return para;
         }
 
+        function informar(evento) {
+            vm.info = evento;
+        }
 
         function relatorio(evento) {
             vm.eventos.forEach(function (item) {

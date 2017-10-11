@@ -53,11 +53,8 @@
         }
 
         function logout() {
-            url = $Rotas.logout;
+            url = $Rotas.logout + "/" + sessao.id;
             tipo = "user_session";
-            dados = {
-                id: sessao.id
-            }
             apagar();
             console.log(sessao);
             return Requisicoes.destroy(url, dados, tipo);
