@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-#gem de enviar imagem angular rails
+#gem upload imagem angular rails
 gem 'angularjs-file-upload-rails'
 
 gem "rmagick"
