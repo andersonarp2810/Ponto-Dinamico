@@ -61,19 +61,13 @@
           <label for="qr">
             <h4>Qrcode</h4>
           </label>
-          <input disabled class="form-control" type="text" name="qr" ng-model="vm.info.qrcode">
+          <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.info.qrcode}}">
           <br>
 
-          <label for="latitude">
-            <h4>Latitude</h4>
+          <label for="imagem">
+            <h4>Imagem</h4>
           </label>
-          <input disabled class="form-control" type="text" disabled ng-model="vm.info.localizacao_lati">
-          <br>
-
-          <label for="longitude">
-            <h4>Longitude</h4>
-          </label>
-          <input disabled class="form-control" type="text" disabled ng-model="vm.info.localizacao_long">
+          <img ng-src="{{vm.info.imagem.url}}">
           <br>
 
         </div>
@@ -107,7 +101,7 @@
     </form>
   </div>
 </div>
-<div class="container" >
+<div class="container">
   <h2>Resultado</h2>
   <p>Informações :</p>
   <table class="table" fixed-header table-height="100px">

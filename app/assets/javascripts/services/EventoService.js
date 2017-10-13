@@ -29,7 +29,13 @@
             ev.hora_fim = ev.hora_fim.toTimeString().substr(0, 8);
             ev.hora_inicio = ev.hora_inicio.toTimeString().substr(0, 8);
 
+            if ("file" in ev.imagem) {
+                ev.imagem = ev.imagem.file;
+            }
+
             tipo = "evento";
+
+            console.log(ev);
 
             return Requisicoes.put(url, ev, tipo);
         }
@@ -59,6 +65,8 @@
 
             evento.hora_fim = evento.hora_fim.toTimeString().substr(0, 8);
             evento.hora_inicio = evento.hora_inicio.toTimeString().substr(0, 8);
+
+            console.log(evento);
 
             return Requisicoes.post(url, evento, tipo);
         }

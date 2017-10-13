@@ -13,6 +13,8 @@
         vm.eventos = null;
         vm.usu_id = null;
         vm.listaPontos = listaPontos;
+        vm.info;
+        vm.informar = informar;
         vm.pontos = null;
         vm.radio = 'nome';
         vm.relatorio = relatorio;
@@ -84,6 +86,10 @@
                             break;
                     }
                 });
+        }
+
+        function informar(user) {
+            vm.info = user;
         }
 
         function relatorio(user) {
