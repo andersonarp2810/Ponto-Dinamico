@@ -170,7 +170,10 @@
         <label class="input-group-btn" style="width: 20%">
           <span class="btn btn-primary">
             <span class="glyphicon glyphicon-camera"></span> Escolher Imagem
+            <!--
             <input type="file" name="img" ng-model="vm.imagem" required accept="image/*" style="display: none !important;" app-filereader>
+            -->
+            <input type="file" name="img" nv-file-select uploader="vm.uploader" ng-model="vm.imagem" required accept="image/*" style="display: none !important;">
           </span>
         </label>
         <input type="text" class="form-control" style="width: 75%" readonly>
@@ -208,9 +211,12 @@
       </div>
     </div>
     <br>
+    <!--
     <button class="btn btn-info btn-responsive" ng-click="vm.cadastrarEvento()" ng-disabled="vm.botao" style="background-color:#007db7">
       <span class="	glyphicon glyphicon-ok"></span> OK</button>
-
+    -->
+    <button class="btn btn-info btn-responsive" ng-click="vm.uploader.queue[0].upload()" ng-disabled="vm.botao" style="background-color:#007db7">
+      <span class="	glyphicon glyphicon-ok"></span> OK</button>
   </form>
 
 

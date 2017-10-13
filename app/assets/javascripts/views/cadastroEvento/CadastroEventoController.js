@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('CadastroEventoController', CadastroEventoController);
 
-    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$window'];
+    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'FileUploader', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$window'];
 
-    function CadastroEventoController($scope, $log, EventoService, LoginService, GeoService, sessao, $Repostas, $window) {
+    function CadastroEventoController($scope, $log, EventoService, FileUploader, LoginService, GeoService, sessao, $Repostas, $window) {
         var vm = this; //view model
         vm.botao = false;
         vm.cadastrarEvento = cadastrarEvento;
@@ -22,12 +22,30 @@
         vm.mensagem;
         vm.nome;
         vm.QR = '';
+        vm.uploader = new FileUploader(propriedades);
         vm.tipo;
         vm.sessao = sessao;
 
-        vm.logzin = function(){
+        vm.logzin = function () {
             console.log(vm.imagem);
+            console.log(vm.uploader);
         }
+
+        propriedades = {
+            url: '\cadastrarevento',
+            alias: 'imagem',
+            formData: [vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
+            vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
+            vm.latitude, vm.longitude],
+            removeAfterUpload: true,
+
+        };
+
+        vm.uploader.onAfterAddingFile = function (item, filter, options) {
+            if (uploader.queue.length > 1) {
+                uploader.queue.splice(0, 1);
+            }
+        };
 
         function cadastrarEvento() {
             if (vm.form.$invalid) {
@@ -98,7 +116,6 @@
                 $window.location.href = "#!/login/";
             } else {
                 LoginService.checar();
-
                 console.log("geo");
                 GeoService.getPosicao()
                     .then(
