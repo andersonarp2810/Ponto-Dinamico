@@ -1,3 +1,48 @@
+<div class="naoimprimivel">
+  <div class="modal fade" id="informacoes" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header naoimprimivel">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Informações</h4>
+        </div>
+        <div class="modal-body">
+
+          <label for="nome">
+            <h4>Nome</h4>
+          </label>
+          <input disabled class="form-control" name="nome" type="text" ng-model="vm.info.nome"> -
+          <br>
+
+          <label for="email">
+            <h4>E-mail</h4>
+          </label>
+          <input disabled class="form-control" type="text" name="email" ng-model="vm.info.email">
+          <br>
+
+          <label for="matricula">
+            <h4>Matrícula</h4>
+          </label>
+          <input disabled class="form-control" name="matricula" type="text" ng-model="vm.info.matricula">
+          <br>
+
+          <label for="mac">
+            <h4>MAC</h4>
+          </label>
+          <input disabled class="form-control" name="mac" type="text" ng-model="vm.info.mac">
+          <br>
+
+        </div>
+        <div class="modal-footer naoimprimivel">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container" style="background-color:#e3f2fd; ">
   <div class="row">
     <br>
@@ -9,11 +54,11 @@
           <br>
           <label class="radio-inline">Buscar por </label>
           <label class="radio-inline">
-                <input type="radio" name="busc" ng-change="vm.busca=''; vm.buscar()" ng-model="vm.radio" value="nome" checked='checked'> Nome
-            </label>
+            <input type="radio" name="busc" ng-change="vm.busca=''; vm.buscar()" ng-model="vm.radio" value="nome" checked='checked'> Nome
+          </label>
           <label class="radio-inline">
-                <input type="radio" name ="busc" ng-change="vm.busca=''; vm.buscar()" ng-model="vm.radio" value="matricula"> Número da matrícula
-            </label>
+            <input type="radio" name="busc" ng-change="vm.busca=''; vm.buscar()" ng-model="vm.radio" value="matricula"> Número da matrícula
+          </label>
         </div>
       </div>
     </form>
@@ -35,11 +80,18 @@
     <tbody>
       <tr ng-repeat="user in vm.users | filter:vm.filtro:strict" ng-class="user.classe">
         <span style="width: max-content">
-        <td>{{user.matricula}}</td>
-        <td>{{user.nome}}</td>
-        <td><a ui-sref="editUser({user: user})" type="button" class="btn btn-primary" style="color:white">editar</a></td>
-        <td><a href="" type="button" class="btn btn-primary" style="color:white">informações</a></td>
-        <td><a ng-click="vm.relatorio(user)" type="button" class="btn btn-primary" style="color:white">relatório</a></td>
+          <td>{{user.matricula}}</td>
+          <td>{{user.nome}}</td>
+          <td>
+            <a ui-sref="editUser({user: user})" type="button" class="btn btn-primary" style="color:white">editar</a>
+          </td>
+          <td>
+            <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" ng-click="vm.informar(user)"
+              style="color:white">informações</a>
+          </td>
+          <td>
+            <a ng-click="vm.relatorio(user)" type="button" class="btn btn-primary" style="color:white">relatório</a>
+          </td>
         </span>
       </tr>
     </tbody>
@@ -62,7 +114,9 @@
         <td>{{evento.nome}}</td>
         <td>{{evento.data_inicio}}</td>
         <td>{{evento.data_fim}}</td>
-        <td><a ng-click="vm.listaPontos(evento)" type="button" class="btn btn-primary" style="color:white">pontos</a></td>
+        <td>
+          <a ng-click="vm.listaPontos(evento)" type="button" class="btn btn-primary" style="color:white">pontos</a>
+        </td>
         <td> </td>
       </tr>
 
