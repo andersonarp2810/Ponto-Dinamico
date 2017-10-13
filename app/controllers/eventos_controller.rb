@@ -24,7 +24,7 @@ def inscricao
       usuario_evento.usuario_id = usuario_id
       usuario_evento.evento_id = evento_id
       if usuario_evento.save
-        mensagem = {erro: "000", body: {data: usuario_evento.data.strftime("%d/%m/%Y"), hora_inicio: "", hora_fim: ""}}
+        mensagem = {erro: "000", body: {data: usuario_evento.data.strftime("%d/%m/%Y"), hora_inicio: "", hora_fim: ""}, tipo: "inscricao"}
       end
     end
   end
