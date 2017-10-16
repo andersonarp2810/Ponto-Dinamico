@@ -81,9 +81,20 @@ end
   # POST /eventos.json
   def create
    retorno = {erro: "333", body:""}
-    @evento = Evento.new(valid_request?)
+    @evento = Evento.new
+    @evento.nome = params[:nome]
+    @evento.tipo = params[:tipo]
+    @evento.data_inicio = params[:data_inicio]
+    @evento.data_fim = params[:data_fim]
+    @evento.hora_inicio = params[:hora_inicio]
+    @evento.hora_fim = params[:hora_fim]
+    @evento.localizacao_lati = params[:localizacao_lati]
+    @evento.localizacao_long = params[:localizacao_long]
+    @evento.imagem = params[:imagem]
+    @evento.qrcode = params[:qrcode]
+
     #verifica se usuario tem privilegio
-    if Evento.autentica_usuario(@usuario_id)
+    if Evento.autentica_usuario(params[:usuario_id])
       if @evento.valid?#valida evento antes de salvar
         @evento.hora_inicio = Time.zone.parse(@evento.hora_inicio.to_s)
         @evento.hora_fim = Time.zone.parse(@evento.hora_fim.to_s)

@@ -10,7 +10,7 @@
         </div>
         <div class="modal-body">
           <div>
-            <h1>{{vm.nome}}</h1>
+            {{vm.nome}}
             <br>
             <span ng-if="vm.QR==undefined || vm.QR.trim().length>0">
               <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.QR}}">

@@ -14,7 +14,7 @@
 //= require angular-cookies
 //= require angular-rails-templates
 //= require angular-ui-router
-//= require angularjs-file-upload
+//= require angular-file-upload
 //= require jquery
 //= require bootstrap-sprockets
 //= require jquery_ujs

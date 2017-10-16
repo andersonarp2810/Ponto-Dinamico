@@ -3,9 +3,9 @@
         .module('pdApp')
         .service('EventoService', EventoService);
 
-    EventoService.$inject = ["Requisicoes", 'sessao', "$Rotas"];
+    EventoService.$inject = ["FileUploader", "Requisicoes", 'sessao', "$Rotas"];
 
-    function EventoService(Requisicoes, sessao, $Rotas) {
+    function EventoService(FileUploader, Requisicoes, sessao, $Rotas) {
 
         this.deletEvento = deletEvento;
         this.editEvento = editEvento;
@@ -40,8 +40,8 @@
             return Requisicoes.put(url, ev, tipo);
         }
 
-        function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, imagem, QR,
-            latitude, longitude) {
+        function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, QR,
+            latitude, longitude, uploader) {
 
             url = $Rotas.sendEvento;
             tipo = "evento";
@@ -56,7 +56,7 @@
                 hora_fim: horaFim,
                 descricao: descricao,
                 local: local,
-                imagem: imagem,
+                //imagem: imagem,
                 qrcode: QR,
                 localizacao_lati: latitude,
                 localizacao_long: longitude
@@ -68,7 +68,14 @@
 
             console.log(evento);
 
-            return Requisicoes.post(url, evento, tipo);
+            //return Requisicoes.post(url, evento, tipo);
+
+            uploader.queue[0].formData[0] = evento;
+            console.log(uploader);
+            console.log(uploader.queue[0]);
+            uploader.queue[0].upload();
+            return 1;
+            //return uploader.queue[0].upload();
         }
 
         function listaEventos() {
