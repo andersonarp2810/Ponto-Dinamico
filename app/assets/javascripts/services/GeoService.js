@@ -19,7 +19,7 @@
                 console.log($window.navigator.geolocation.getCurrentPosition);
                 $window.navigator.geolocation.getCurrentPosition(
                     function (position) {
-                        console.log(entrou);
+                        console.log("entrou");
                         deferred.resolve(position.coords);
                     },
                     function (erro) {

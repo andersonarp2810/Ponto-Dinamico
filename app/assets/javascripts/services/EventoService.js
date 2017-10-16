@@ -73,8 +73,12 @@
             uploader.queue[0].formData[0] = evento;
             console.log(uploader);
             console.log(uploader.queue[0]);
+
+            uploader.queue[0].onComplete = function (response, status, headers) {
+                return response;
+            }
+
             uploader.queue[0].upload();
-            return 1;
             //return uploader.queue[0].upload();
         }
 
