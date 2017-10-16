@@ -10,22 +10,24 @@ has_many :usuario_eventos
 #formata os campos para retorno
 def self.formate(eventos)
     arr_eventos = Array.new
-    eventos.each do |evento|
-        evento_hash = Hash.new
-        evento_hash["id"] = evento.id
-        evento_hash["nome"] = evento.nome
-        evento_hash["tipo"] = evento.tipo
-        evento_hash["data_inicio"] = evento.data_inicio.strftime("%d/%m/%Y")
-        evento_hash["data_fim"] = evento.data_fim.strftime("%d/%m/%Y")
-        evento_hash["hora_inicio"] = evento.hora_inicio.to_s(:time)
-        evento_hash["hora_fim"] = evento.hora_fim.to_s(:time)
-        evento_hash["lugar"] = evento.lugar
-        evento_hash["descricao"] = evento.descricao
-        evento_hash["qrcode"] = evento.qrcode
-        evento_hash["localizacao_long"] = evento.localizacao_long
-        evento_hash["localizacao_lati"] = evento.localizacao_lati
-        evento_hash["imagem"] = evento.imagem
-        arr_eventos.push(evento_hash)
+    if !eventos.nil?
+        eventos.each do |evento|
+            evento_hash = Hash.new
+            evento_hash["id"] = evento.id
+            evento_hash["nome"] = evento.nome
+            evento_hash["tipo"] = evento.tipo
+            evento_hash["data_inicio"] = evento.data_inicio.strftime("%d/%m/%Y")
+            evento_hash["data_fim"] = evento.data_fim.strftime("%d/%m/%Y")
+            evento_hash["hora_inicio"] = evento.hora_inicio.to_s(:time)
+            evento_hash["hora_fim"] = evento.hora_fim.to_s(:time)
+            evento_hash["lugar"] = evento.lugar
+            evento_hash["descricao"] = evento.descricao
+            evento_hash["qrcode"] = evento.qrcode
+            evento_hash["localizacao_long"] = evento.localizacao_long
+            evento_hash["localizacao_lati"] = evento.localizacao_lati
+            evento_hash["imagem"] = evento.imagem
+            arr_eventos.push(evento_hash)
+        end
     end
     arr_eventos
 end
