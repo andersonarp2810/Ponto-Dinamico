@@ -1,7 +1,7 @@
 class Evento < ApplicationRecord
 #validação
 
-validates :nome, :tipo, :data_fim, :data_fim, :hora_inicio, :hora_fim, :local, :descricao, :qrcode, :localizacao_lati, :localizacao_long,  presence: true #validação de presença
+validates :nome, :tipo, :data_fim, :data_fim, :hora_inicio, :hora_fim, :lugar, :descricao, :qrcode, :localizacao_lati, :localizacao_long,  presence: true #validação de presença
 mount_uploader :imagem, ImagemUploader
 
 #associação
