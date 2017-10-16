@@ -19,7 +19,7 @@ def self.formate(eventos)
         evento_hash["data_fim"] = evento.data_fim.strftime("%d/%m/%Y")
         evento_hash["hora_inicio"] = evento.hora_inicio.to_s(:time)
         evento_hash["hora_fim"] = evento.hora_fim.to_s(:time)
-        evento_hash["local"] = evento.local
+        evento_hash["lugar"] = evento.lugar
         evento_hash["descricao"] = evento.descricao
         evento_hash["qrcode"] = evento.qrcode
         evento_hash["localizacao_long"] = evento.localizacao_long
