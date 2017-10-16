@@ -55,7 +55,7 @@
                 hora_inicio: horaInicio,
                 hora_fim: horaFim,
                 descricao: descricao,
-                local: local,
+                lugar: local,
                 //imagem: imagem,
                 qrcode: QR,
                 localizacao_lati: latitude,
