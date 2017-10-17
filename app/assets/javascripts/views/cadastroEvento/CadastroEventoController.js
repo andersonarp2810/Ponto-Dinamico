@@ -15,10 +15,10 @@
         vm.horaInicio;
         vm.horaFim;
         vm.imprime = imprime;
-        vm.imagem;
         vm.local;
         vm.latitude = -7.205858600000001;
         vm.longitude = -39.311446;
+        vm.mapLoad = false;
         vm.mensagem;
         vm.nome;
         vm.QR = '';
@@ -42,6 +42,7 @@
         };
 
         function cadastrarEvento() {
+            console.log(vm.uploader);
             if (vm.form.$invalid) {
                 alert("Preencha os campos corretamente.");
             }
@@ -128,7 +129,8 @@
                         iniciarMapa();
                     },
                     function (erro) {
-                        console.log(erro);
+                        console.error(erro);
+                        //alert("Erro de Geolocalização.");
                     }
                     );
             }
@@ -269,6 +271,8 @@
             $scope.$on('$viewContentLoaded', function () { // faz o mapa carregar sem f5
                 google.maps.event.trigger(map, 'resize');
             });
+
+            vm.mapLoad = true;
         }
         //mapa
 

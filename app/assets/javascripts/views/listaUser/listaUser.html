@@ -13,7 +13,7 @@
           <label for="nome">
             <h4>Nome</h4>
           </label>
-          <input disabled class="form-control" name="nome" type="text" ng-model="vm.info.nome"> -
+          <input disabled class="form-control" name="nome" type="text" ng-model="vm.info.nome">
           <br>
 
           <label for="email">
@@ -83,14 +83,14 @@
           <td>{{user.matricula}}</td>
           <td>{{user.nome}}</td>
           <td>
-            <a ui-sref="editUser({user: user})" type="button" class="btn btn-primary" style="color:white">editar</a>
+            <a ui-sref="editUser({user: user})" type="button" class="btn btn-primary" style="color:white">Editar</a>
           </td>
           <td>
             <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" ng-click="vm.informar(user)"
-              style="color:white">informações</a>
+              style="color:white">Informações</a>
           </td>
           <td>
-            <a ng-click="vm.relatorio(user)" type="button" class="btn btn-primary" style="color:white">relatório</a>
+            <a ng-click="vm.relatorio(user)" type="button" class="btn btn-primary" style="color:white">Relatório</a>
           </td>
         </span>
       </tr>

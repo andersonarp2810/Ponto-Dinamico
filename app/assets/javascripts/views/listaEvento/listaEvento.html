@@ -67,7 +67,7 @@
           <label for="imagem">
             <h4>Imagem</h4>
           </label>
-          <img ng-src="{{vm.info.imagem.url}}">
+          <img class="img-responsive" ng-src="{{vm.info.imagem.url}}">
           <br>
 
         </div>
@@ -121,13 +121,13 @@
           <td>{{evento.data_inicio | date:"dd/MM/yyyy"}}</td>
           <td>{{evento.nome}}</td>
           <td>
-            <a ui-sref="editEvento({evento: evento})" type="button" class="btn btn-primary" style="color:white">editar</a>
+            <a ui-sref="editEvento({evento: evento})" type="button" class="btn btn-primary" style="color:white">Editar</a>
           </td>
           <td>
-            <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" style="color:white" ng-click="vm.informar(evento)">informações</a>
+            <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" style="color:white" ng-click="vm.informar(evento)">Informações</a>
           </td>
           <td>
-            <a ng-click="vm.relatorio(evento)" type="button" class="btn btn-primary" style="color:white">relatório</a>
+            <a ng-click="vm.relatorio(evento)" type="button" class="btn btn-primary" style="color:white">Relatório</a>
           </td>
           <td>
             <a ng-click="vm.deletar(evento.id, evento.nome)" type="button" class="btn btn-danger" style="color:white">Excluir</a>
