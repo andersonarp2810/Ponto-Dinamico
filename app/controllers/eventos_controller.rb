@@ -1,5 +1,5 @@
 class EventosController < ApplicationController
-  before_action :set_evento, only: [:show, :edit, :update, :destroy]
+  before_action :set_evento, only: [:show, :edit, :destroy, :update, :create]
   before_action :require_authentication, only: [:show, :edit, :update, :destroy, :index, :create]
   skip_before_action :verify_authenticity_token
  # before_action :can_change, only: [:create, :update, :destroy, :new, :edit]
@@ -81,20 +81,7 @@ end
   # POST /eventos.json
   def create
    retorno = {erro: "333", body:""}
-    @evento = Evento.new
-    @evento.nome = params[:nome]
-    @evento.tipo = params[:tipo]
-    @evento.lugar = params[:lugar]
-    @evento.descricao = params[:descricao]
-    @evento.data_inicio = params[:data_inicio]
-    @evento.data_fim = params[:data_fim]
-    @evento.localizacao_lati = params[:localizacao_lati]
-    @evento.localizacao_long = params[:localizacao_long]
-    @evento.imagem = params[:imagem]
-    @evento.qrcode = params[:qrcode]
-    @evento.hora_inicio = Time.zone.parse(params[:hora_inicio].to_s)
-    @evento.hora_fim = Time.zone.parse(params[:hora_fim].to_s)
-
+   @evento = Evento.new(@request_hash)
     #verifica se usuario tem privilegio
     if Evento.autentica_usuario(params[:usuario_id])
       if @evento.valid?#valida evento antes de salvar
@@ -112,9 +99,7 @@ end
   # PATCH/PUT /eventos/1.json
   def update
     retorno = {erro: "333", body: ""}
-      @evento.hora_inicio = Time.zone.parse(@evento.hora_inicio.to_s)
-      @evento.hora_fim = Time.zone.parse(@evento.hora_fim.to_s)
-      if @evento.update(valid_request?)
+      if @evento.update(@request_hash)
         retorno = {erro: "000", body: ""}
       end
   render json: retorno
@@ -134,7 +119,22 @@ end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_evento
-      @evento = Evento.find_by("id = ?",params[:id])
+      if params[:id].present?
+        @evento = Evento.find_by("id = ?",params[:id])
+      end
+      @request_hash = Hash.new
+      @request_hash["nome"] = params[:nome]
+      @request_hash["tipo"] = params[:tipo]
+      @request_hash["lugar"] = params[:lugar]
+      @request_hash["descricao"] = params[:descricao]
+      @request_hash["data_inicio"] = params[:data_inicio]
+      @request_hash["data_fim"] = params[:data_fim]
+      @request_hash["localizacao_lati"] = params[:localizacao_lati]
+      @request_hash["localizacao_long"] = params[:localizacao_long]
+      @request_hash["imagem"] = params[:imagem]
+      @request_hash["qrcode"] = params[:qrcode]
+      @request_hash["hora_inicio"] = Time.zone.parse(params[:hora_inicio].to_s)
+      @request_hash["hora_fim"] = Time.zone.parse(params[:hora_fim].to_s)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
