@@ -11,6 +11,7 @@
         <div class="modal-body">
           <div>
             {{vm.evento.nome}}
+            <br>
             <span ng-if="vm.evento.qrcode==undefined || vm.evento.qrcode.trim().length>0">
               <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.evento.qrcode}}">
             </span>
@@ -25,7 +26,7 @@
   </div>
 </div>
 
-<div class="container" style="position:relative;transform: translate(0%, 5%); width:50%;top:0%;background-color:#fafafa">
+<div class="container naoimprimivel" style="position:relative;transform: translate(0%, 5%); width:50%;top:0%;background-color:#fafafa">
   <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">
 
   <form name="vm.form">
