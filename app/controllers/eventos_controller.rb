@@ -84,20 +84,20 @@ end
     @evento = Evento.new
     @evento.nome = params[:nome]
     @evento.tipo = params[:tipo]
+    @evento.lugar = params[:lugar]
+    @evento.descricao = params[:descricao]
     @evento.data_inicio = params[:data_inicio]
     @evento.data_fim = params[:data_fim]
-    @evento.hora_inicio = params[:hora_inicio]
-    @evento.hora_fim = params[:hora_fim]
     @evento.localizacao_lati = params[:localizacao_lati]
     @evento.localizacao_long = params[:localizacao_long]
     @evento.imagem = params[:imagem]
     @evento.qrcode = params[:qrcode]
+    @evento.hora_inicio = Time.zone.parse(params[:hora_inicio].to_s)
+    @evento.hora_fim = Time.zone.parse(params[:hora_fim].to_s)
 
     #verifica se usuario tem privilegio
     if Evento.autentica_usuario(params[:usuario_id])
       if @evento.valid?#valida evento antes de salvar
-        @evento.hora_inicio = Time.zone.parse(@evento.hora_inicio.to_s)
-        @evento.hora_fim = Time.zone.parse(@evento.hora_fim.to_s)
         if @evento.save
           retorno = {erro: "000", body:{evento_id: @evento.id, evento_nome: @evento.nome}}
         end
@@ -139,7 +139,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def evento_params
-      params.require(:evento).permit(:nome, :tipo, :pessoa_evento, :data_inicio, :data_fim, :hora_inicio, :hora_fim, :local, :descricao, :qrcode, :localizacao_long, :localizacao_lati, :imagem)
+      params.require(:evento).permit(:nome, :tipo, :pessoa_evento, :data_inicio, :data_fim, :hora_inicio, :hora_fim, :lugar, :descricao, :qrcode, :localizacao_long, :localizacao_lati, :imagem)
     end
 
     def valid_request?     
