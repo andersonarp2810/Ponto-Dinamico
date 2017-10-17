@@ -12,6 +12,7 @@
         escopo.get = get;
         escopo.post = post;
         escopo.put = put;
+        escopo.putEvento = putEvento;
         escopo.sessao = sessao;
 
         function destroy(url) {
@@ -83,6 +84,29 @@
                 method: "PUT",
                 url: url + "/" + da[tipo].id,
                 data: da,  // um objeto
+                headers: { 'Content-Type': 'application/json' }
+            }).then(
+                function sucesso(response) {
+                    console.log("resolve")
+                    resposta.resolve(response.data);
+                }, function falha(erro) {
+                    response = { erro: erro.data, status: erro.status };
+                    console.log("reject")
+                    resposta.reject(response);
+                }
+                );
+            console.log('resposta.promise');
+            console.log(resposta.promise);
+            return resposta.promise;
+        };
+
+        function putEvento(url, dados) {
+            console.log(url);
+            resposta = $q.defer();
+            $http({
+                method: "PUT",
+                url: url + "/" + da[tipo].id,
+                data: dados,  // um objeto
                 headers: { 'Content-Type': 'application/json' }
             }).then(
                 function sucesso(response) {
