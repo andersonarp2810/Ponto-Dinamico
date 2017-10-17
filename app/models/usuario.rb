@@ -69,10 +69,11 @@ enum status: {true: 1, false: 0}
 #realiza a pesquisa do último ponto que o usuário realizou em determinado evento
 	def self.ultimo_ponto(usuario_id, evento_id)
 		retorno = UsuarioEvento.order(:data).where("usuario_id = ? and evento_id = ?",usuario_id, evento_id).last
+		imagem = Evento.select(:imagem).find_by(id: evento_id)
 		if retorno.blank?
-			return mensagem = {erro: "314", body: {entrada:" ", saida:" ", data: " "}, tipo:"ultimoponto"} 	
+			return mensagem = {erro: "314", body: {entrada:" ", saida:" ", data: " ", imagem: imagem.imagem.url}, tipo:"ultimoponto"} 	
 		else
-			return mensagem = {erro: "000", body: {entrada: retorno.hora_inicio.blank? ? " " : retorno.hora_inicio.to_s(:time), saida: retorno.hora_fim.blank? ? " " : retorno.hora_fim.to_s(:time), data: retorno.data.blank? ? " " : retorno.data.strftime("%d/%m/%Y")},tipo:'ultimoponto'} 
+			return mensagem = {erro: "000", body: {entrada: retorno.hora_inicio.blank? ? " " : retorno.hora_inicio.to_s(:time), saida: retorno.hora_fim.blank? ? " " : retorno.hora_fim.to_s(:time), data: retorno.data.blank? ? " " : retorno.data.strftime("%d/%m/%Y"), imagem: imagem.imagem.url},tipo:'ultimoponto'} 
 		end
 
 	end
