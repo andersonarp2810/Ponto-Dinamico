@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('ListaUserController', ListaUserController);
 
-    ListaUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$window'];
+    ListaUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$stateParams', '$window'];
 
-    function ListaUserController(LoginService, UserService, sessao, $Respostas, $window) {
+    function ListaUserController(LoginService, UserService, sessao, $Respostas, $stateParams, $window) {
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
@@ -36,8 +36,8 @@
             }
         }
 
-        function deletar(id) {
-            if (confirm("Tem certeza que deseja deletar este usuário?")) {
+        function deletar(id, nome) {
+            if (confirm("Tem certeza que deseja deletar o usuário " + nome + "?")) {
                 UserService.deletUser(id).then(
                     function (data) {
                         console.log(data);
@@ -111,6 +111,16 @@
                                 ev.classe = 'active';
                             });
                             vm.usu_id = id;
+                            if ($stateParams.id_evento != null) {
+                                let alvo;
+                                vm.eventos.forEach(function (ev) {
+                                    if (ev.id == $stateParams.id_evento) {
+                                        alvo = ev;
+                                    }
+                                });
+                                vm.listaPontos(alvo);
+                            }
+
                             break;
                         case '501':
                             console.log("sessão expirada");
@@ -135,6 +145,17 @@
                             vm.users.forEach(function (user) {
                                 user.classe = 'active';
                             });
+                            console.log($stateParams);
+                            if ($stateParams.id_user != null) {
+                                let alvo;
+                                vm.users.forEach(function (u) {
+                                    if (u.id == $stateParams.id_user) {
+                                        alvo = u;
+                                    }
+                                });
+                                vm.relatorio(alvo);
+                            }
+
                             break;
                         default:
                             break;

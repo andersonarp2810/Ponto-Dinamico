@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('EditEventoController', EditEventoController);
 
-    EditEventoController.$inject = ['$scope', 'EventoService', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$stateParams', '$window'];
+    EditEventoController.$inject = ['$scope', 'EventoService', 'FileUploader', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$stateParams', '$window'];
 
-    function EditEventoController($scope, EventoService, GeoService, LoginService, sessao, $Respostas, $stateParams, $window) {
+    function EditEventoController($scope, EventoService, FileUploader, GeoService, LoginService, sessao, $Respostas, $stateParams, $window) {
         var vm = this;
         vm.botao = false;
         x = $stateParams.evento;

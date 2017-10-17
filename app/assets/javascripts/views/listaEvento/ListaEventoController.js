@@ -19,6 +19,7 @@
         vm.radio = "nome";
         vm.relatorio = relatorio;
         vm.sessao = sessao;
+        vm.user_evento;
         vm.users = null;
 
         vm.filtro = {
@@ -92,6 +93,7 @@
                         case '000':
                             console.log(data.body);
                             vm.users = data.body;
+                            vm.user_evento = evento.id;
                             break;
                         case '501':
                             console.log("sessão expirada");

@@ -75,6 +75,7 @@
         <th> </th>
         <th> </th>
         <th> </th>
+        <th> </th>
       </tr>
     </thead>
     <tbody>
@@ -91,6 +92,9 @@
           </td>
           <td>
             <a ng-click="vm.relatorio(user)" type="button" class="btn btn-primary" style="color:white">Relatório</a>
+          </td>
+          <td>
+            <a ng-click="vm.deletar(user.id, user.nome)" type="button" class="btn btn-danger" style="color:white">Excluir</a>
           </td>
         </span>
       </tr>

@@ -77,7 +77,6 @@
                 hora_fim: horaFim,
                 descricao: descricao,
                 lugar: local,
-                //imagem: imagem,
                 qrcode: QR,
                 localizacao_lati: latitude,
                 localizacao_long: longitude

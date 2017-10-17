@@ -15,9 +15,10 @@
         this.relatorio = relatorio;
 
         function deletUser(id) {
-            url = $Rotas.deletUser;
+            
+            url = $Rotas.deletUser + "/" + id;
 
-            return Requisicoes.destroy(url, id);
+            return Requisicoes.destroy(ur);
         }
 
         function editUser(usuario) {

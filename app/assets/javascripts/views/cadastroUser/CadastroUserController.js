@@ -33,7 +33,7 @@
 								console.log(data.body);
 								vm.mensagem = "Usuário criado";
 								//limpar();
-								$window.location.href = "#!/listaUser/";
+								$window.location.href = "#!/listaUser";
 								break;
 							default:
 								vm.mensagem = "Erro: " + $Respostas[data.erro];

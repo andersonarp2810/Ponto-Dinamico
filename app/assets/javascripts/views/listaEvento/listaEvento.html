@@ -142,12 +142,16 @@
       <tr class="info">
         <th>Nome:</th>
         <th>Presenças:</th>
+        <th> </th>
       </tr>
     </thead>
     <tbody>
       <tr class="active" ng-repeat="user in vm.users">
         <td>{{user.nome}}</td>
         <td>{{user.presenca}}</td>
+        <td>
+          <a ui-sref="listaUser({id_user: user.id, id_evento: vm.user_evento})" type="button" class="btn btn-primary" style="color:white">Abrir pontos</a>
+        </td>
       </tr>
     </tbody>
   </table>

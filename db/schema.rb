@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20171016212845) do
   create_table "eventos", force: :cascade do |t|
     t.string   "nome"
     t.string   "tipo"
+    t.string   "pessoa_evento"
     t.date     "data_inicio"
     t.date     "data_fim"
     t.time     "hora_inicio"
@@ -47,13 +48,13 @@ ActiveRecord::Schema.define(version: 20171016212845) do
 
   create_table "usuarios", force: :cascade do |t|
     t.string   "nome"
+    t.string   "password"
     t.string   "email"
     t.string   "matricula"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.integer  "nivel",      default: 0
     t.string   "mac"
-    t.string   "password"
     t.integer  "status",     default: 0
     t.index ["email"], name: "index_usuarios_on_email", unique: true, using: :btree
     t.index ["mac"], name: "index_usuarios_on_mac", unique: true, using: :btree
