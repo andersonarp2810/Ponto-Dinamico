@@ -30,11 +30,6 @@
         vm.tipo;
         vm.sessao = sessao;
 
-        vm.logzin = function () {
-            console.log(vm.imagem);
-            console.log(vm.uploader);
-        }
-
         vm.uploader.onAfterAddingFile = function (item, filter, options) {
             if (vm.uploader.queue.length > 1) {
                 vm.uploader.queue.splice(0, 1);
