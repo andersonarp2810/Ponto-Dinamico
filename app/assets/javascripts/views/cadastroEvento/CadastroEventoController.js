@@ -63,11 +63,11 @@
                 }
                 console.log(evento);
 
-                uploader.queue[0].formData[0] = evento;
-                console.log(uploader);
-                console.log(uploader.queue[0]);
+                vm.uploader.queue[0].formData[0] = evento;
+                console.log(vm.uploader);
+                console.log(vm.uploader.queue[0]);
 
-                uploader.queue[0].onSuccess = function (response, status, headers) {
+                vm.uploader.queue[0].onSuccess = function (response, status, headers) {
                     data = response.data;
                     console.log(data);
                     vm.mensagem = '';
@@ -94,15 +94,15 @@
                     } // end switch
                 }
 
-                uploader.queue[0].onError = function (response, status, headers) {
+                vm.uploader.queue[0].onError = function (response, status, headers) {
                     console.error(response);
                 }
 
-                uploader.queue[0].onComplete = function (response, status, headers) {
+                vm.uploader.queue[0].onComplete = function (response, status, headers) {
                     vm.botao = false;
                 }
 
-                uploader.queue[0].upload();
+                vm.uploader.queue[0].upload();
 
                 /* Como devia ser mas não é por causa do modulo de enviar imagem
                                 EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,

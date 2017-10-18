@@ -39,13 +39,13 @@
 
                 console.log(ev);
 
-                if (uploader.queue.length > 0) {
-                    uploader.queue[0].url = 'eventos/' + ev.id;
-                    uploader.queue[0].formData[0] = evento;
-                    uploader.queue[0].method = "PUT";
-                    console.log(uploader.queue[0]);
+                if (vm.uploader.queue.length > 0) {
+                    vm.uploader.queue[0].url = 'eventos/' + ev.id;
+                    vm.uploader.queue[0].formData[0] = evento;
+                    vm.uploader.queue[0].method = "PUT";
+                    console.log(vm.uploader.queue[0]);
 
-                    uploader.queue[0].onSuccess = function (response, status, headers) {
+                    vm.uploader.queue[0].onSuccess = function (response, status, headers) {
                         data = response.data;
                         console.log(data);
                         vm.mensagem = '';
@@ -72,15 +72,15 @@
                         } // end switch
                     }
 
-                    uploader.queue[0].onError = function (response, status, headers) {
+                    vm.uploader.queue[0].onError = function (response, status, headers) {
                         console.error(response);
                     }
 
-                    uploader.queue[0].onComplete = function (response, status, headers) {
+                    vm.uploader.queue[0].onComplete = function (response, status, headers) {
                         vm.botao = false;
                     }
 
-                    uploader.queue[0].upload();
+                    vm.uploader.queue[0].upload();
                 }
 
                 else { // caso não mude a imagem
