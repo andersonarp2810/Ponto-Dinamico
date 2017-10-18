@@ -46,6 +46,7 @@
                     console.log(vm.uploader.queue[0]);
 
                     vm.uploader.queue[0].onSuccess = function (response, status, headers) {
+                        console.log(response);
                         data = response.data;
                         console.log(data);
                         vm.mensagem = '';
