@@ -41,7 +41,7 @@
 
                 if (vm.uploader.queue.length > 0) {
                     vm.uploader.queue[0].url = 'eventos/' + ev.id;
-                    vm.uploader.queue[0].formData[0] = evento;
+                    vm.uploader.queue[0].formData[0] = ev;
                     vm.uploader.queue[0].method = "PUT";
                     console.log(vm.uploader.queue[0]);
 
