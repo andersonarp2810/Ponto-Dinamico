@@ -20,7 +20,7 @@
             return Requisicoes.destroy(url);
         }
 
-        function editEvento(evento, uploader) {
+        function editEvento(evento) {
 
             url = $Rotas.editEvento;
 
@@ -30,7 +30,7 @@
             ev.hora_inicio = ev.hora_inicio.toTimeString().substr(0, 8);
 
             console.log(ev);
-            
+
             return Requisicoes.putEvento(url, ev);
 
         }

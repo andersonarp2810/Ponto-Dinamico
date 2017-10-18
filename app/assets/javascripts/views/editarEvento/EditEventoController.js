@@ -83,7 +83,7 @@
                 }
 
                 else { // caso não mude a imagem
-                    EventoService.editEvento(vm.evento, vm.uploader)
+                    EventoService.editEvento(vm.evento)
                         .then(function (data) {
                             console.log(data);
                             vm.mensagem = '';
