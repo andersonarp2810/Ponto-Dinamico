@@ -11,7 +11,7 @@ CarrierWave.configure do |config|
         #
         # In Heroku, follow http://devcenter.heroku.com/articles/config-vars
         #
-        # $ heroku config:add S3_KEY=AKIAJ5GTNJLPSYNZXXXA S3_SECRET=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 S3_REGION=sa-east-1 S3_ASSET_URL=https://s3-sa-east-1.amazonaws.com/eventos-ponto S3_BUCKET_NAME=eventos-ponto S3_ENDPOINT=https://s3-sa-east-1.amazonaws.com/
+        # $ heroku config:add S3_KEY=AKIAIII7T4O7ITXCNEQA S3_SECRET=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 S3_REGION=sa-east-1 S3_ASSET_URL=https://s3-sa-east-1.amazonaws.com/eventos-ponto S3_BUCKET_NAME=eventos-ponto S3_ENDPOINT=https://s3-sa-east-1.amazonaws.com/
         # Configuration for Amazon S3
 
         :provider              => 'AWS',
