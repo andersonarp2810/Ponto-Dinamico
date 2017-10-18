@@ -25,19 +25,28 @@
             removeAfterUpload: true,
         });
 
-        $scope.$watch('vm.evento.hora_fim', function (current, original) {
-            console.info('vm.evento.hora_fim era %s', original);
-            console.info('vm.evento.hora_fim é %s', current);
-        });
-
         function editEvento() {
-            if (vm.form.$invalid) {
+            if (vm.form.$invalid || vm.evento.data_inicio > vm.evento.data_fim) {
                 alert("Preencha os campos corretamente.");
             }
             else {
                 vm.botao = true;
-                EventoService.editEvento(vm.evento, vm.uploader)
-                    .then(function (data) {
+
+                ev = Object.assign({}, evento);
+
+                ev.hora_fim = ev.hora_fim.toTimeString().substr(0, 8);
+                ev.hora_inicio = ev.hora_inicio.toTimeString().substr(0, 8);
+
+                console.log(ev);
+
+                if (uploader.queue.length > 0) {
+                    uploader.queue[0].url = 'eventos/' + ev.id;
+                    uploader.queue[0].formData[0] = evento;
+                    uploader.queue[0].method = "PUT";
+                    console.log(uploader.queue[0]);
+
+                    uploader.queue[0].onSuccess = function (response, status, headers) {
+                        data = response.data;
                         console.log(data);
                         vm.mensagem = '';
                         switch (data.erro) { // definir erro pra cada campo
@@ -61,8 +70,48 @@
                                 }
                                 break;
                         } // end switch
+                    }
+
+                    uploader.queue[0].onError = function (response, status, headers) {
+                        console.error(response);
+                    }
+
+                    uploader.queue[0].onComplete = function (response, status, headers) {
                         vm.botao = false;
-                    }); //end then
+                    }
+
+                    uploader.queue[0].upload();
+                }
+
+                else { // caso não mude a imagem
+                    EventoService.editEvento(vm.evento, vm.uploader)
+                        .then(function (data) {
+                            console.log(data);
+                            vm.mensagem = '';
+                            switch (data.erro) { // definir erro pra cada campo
+                                case "000":
+                                    console.log(data.body);
+                                    vm.mensagem = "Evento criado";
+                                    //limpar();
+                                    $state.go($Estados.eventoLista);
+                                    break;
+                                default:
+                                    vm.mensagem = 'Erro: ' + $Respostas[data.erro];
+                                    console.log(data.status);
+                                    switch (data.erro) {
+                                        case "102":
+                                            vm.nome = '';
+                                        case "501":
+                                            console.log("sessão expirada");
+                                            LoginService.apagar();
+                                            $state.go($Estados.login);
+                                        //deslogar
+                                    }
+                                    break;
+                            } // end switch
+                            vm.botao = false;
+                        }); //end then
+                }   // fim do else não mude imagem
             }
         }
 

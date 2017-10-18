@@ -45,7 +45,7 @@
                             case '000':
                                 console.log(data.body);
                                 console.log("usuário deletado");
-                                vm.listar();
+                                listar();
                                 break;
                             case '501':
                                 console.log("sessão expirada");
@@ -75,6 +75,9 @@
                         case '000':
                             console.log(data.body);
                             vm.pontos = data.body;
+                            break;
+                        case '301':
+                            alert("Usuário sem pontos neste evento");
                             break;
                         case '501':
                             console.log("sessão expirada");
@@ -121,6 +124,9 @@
                                 vm.listaPontos(alvo);
                             }
 
+                            break;
+                        case '301':
+                            alert("Usuário não cadastrado em nenhum evento");
                             break;
                         case '501':
                             console.log("sessão expirada");
