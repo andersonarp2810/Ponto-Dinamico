@@ -47,7 +47,7 @@
                             case '000':
                                 console.log(data.body);
                                 console.log("evento deletado");
-                                vm.listarEventos();
+                                listarEventos();
                                 break;
                             case '501':
                                 console.log("sessão expirada");
@@ -94,6 +94,9 @@
                             console.log(data.body);
                             vm.users = data.body;
                             vm.user_evento = evento.id;
+                            break;
+                        case '301':
+                            alert("Nenhum usuário cadastrado neste evento");
                             break;
                         case '501':
                             console.log("sessão expirada");
