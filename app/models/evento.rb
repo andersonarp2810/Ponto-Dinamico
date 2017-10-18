@@ -36,21 +36,23 @@ end
 def self.search(id)
     arr_usuarios = Array.new
     if id.present?
-        usuario_eventos = Usuario.joins(:usuario_eventos).order(:nome).where("evento_id = ? and hora_inicio IS NOT NULL", "#{id}").select(:nome).group(:nome).count
+        usuario_eventos = Usuario.joins(:usuario_eventos).order(:nome).where("evento_id = ? and hora_inicio IS NOT NULL", "#{id}").group(:id,:nome).count
         if usuario_eventos.present?
             usuario_eventos.keys.each do |key|
                 usuario_evento = Hash.new
-                usuario_evento["nome"] = key
+                usuario_evento["nome"] = key[1]
                 usuario_evento["presenca"] = usuario_eventos[key]
+                usuario_evento["id"] = key[0]
                 arr_usuarios.push(usuario_evento)
             end
         end
-        usuario_eventos_inscritos = Usuario.joins(:usuario_eventos).order(:nome).where("evento_id = ? and hora_inicio IS NULL", "#{id}").select(:nome).group(:nome).count        
+        usuario_eventos_inscritos = Usuario.joins(:usuario_eventos).order(:nome).where("evento_id = ? and hora_inicio IS NULL", "#{id}").group(:id,:nome).count        
         if usuario_eventos_inscritos.present?
             usuario_eventos_inscritos.keys.each do |key|
                 usuario_eventos_inscrito = Hash.new
-                usuario_eventos_inscrito["nome"] = key
+                usuario_eventos_inscrito["nome"] = key[1]
                 usuario_eventos_inscrito["presenca"] = 0
+                usuario_evento["id"] = key[0]
                 arr_usuarios.push(usuario_eventos_inscrito)
             end
         end
