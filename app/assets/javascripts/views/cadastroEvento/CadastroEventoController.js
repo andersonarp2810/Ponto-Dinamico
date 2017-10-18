@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('CadastroEventoController', CadastroEventoController);
 
-    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$window'];
+    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'FileUploader', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$window'];
 
-    function CadastroEventoController($scope, $log, EventoService, LoginService, GeoService, sessao, $Repostas, $window) {
+    function CadastroEventoController($scope, $log, EventoService, FileUploader, LoginService, GeoService, sessao, $Repostas, $window) {
         var vm = this; //view model
         vm.botao = false;
         vm.cadastrarEvento = cadastrarEvento;
@@ -15,31 +15,39 @@
         vm.horaInicio;
         vm.horaFim;
         vm.imprime = imprime;
-        vm.imagem;
         vm.local;
         vm.latitude = -7.205858600000001;
         vm.longitude = -39.311446;
+        vm.mapLoad = false;
         vm.mensagem;
         vm.nome;
         vm.QR = '';
+        vm.uploader = new FileUploader({
+            url: '/cadastrarevento',
+            alias: 'imagem',
+            removeAfterUpload: true,
+        });
         vm.tipo;
         vm.sessao = sessao;
 
-        vm.logzin = function(){
-            console.log(vm.imagem);
-        }
+        vm.uploader.onAfterAddingFile = function (item, filter, options) {
+            if (vm.uploader.queue.length > 1) {
+                vm.uploader.queue.splice(0, 1);
+            }
+        };
 
         function cadastrarEvento() {
+            console.log(vm.uploader);
             if (vm.form.$invalid) {
                 alert("Preencha os campos corretamente.");
             }
             else {
-                vm.botao = true;
+                //vm.botao = true;
                 vm.horaInicio.setFullYear(2000);
                 vm.horaFim.setFullYear(2000);
                 EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
-                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.imagem.file, vm.QR,
-                    vm.latitude, vm.longitude)
+                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
+                    vm.latitude, vm.longitude, vm.uploader)
                     .then(function (data) {
                         console.log(data);
                         vm.mensagem = '';
@@ -65,9 +73,16 @@
                                 break;
                         } // end switch
                         vm.botao = false;
-                    }); //end then
+                    },
+                    function (err) {
+                        console.error(err);
+                        vm.botao = false;
+                    }
+                    ); //end then
             }
         }
+
+
 
         function imprime() {
             window.print();
@@ -98,7 +113,6 @@
                 $window.location.href = "#!/login/";
             } else {
                 LoginService.checar();
-
                 console.log("geo");
                 GeoService.getPosicao()
                     .then(
@@ -110,10 +124,13 @@
                         iniciarMapa();
                     },
                     function (erro) {
-                        console.log(erro);
+                        console.error(erro);
+                        //alert("Erro de Geolocalização.");
                     }
                     );
             }
+
+
             //jquery do input pra mostrar qual arquivo escolhido
             $(function () {
 
@@ -249,6 +266,8 @@
             $scope.$on('$viewContentLoaded', function () { // faz o mapa carregar sem f5
                 google.maps.event.trigger(map, 'resize');
             });
+
+            vm.mapLoad = true;
         }
         //mapa
 

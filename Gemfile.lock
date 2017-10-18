@@ -42,7 +42,6 @@ GEM
       railties (>= 4.2, < 6)
       sprockets (>= 3.0, < 5)
       tilt
-    angularjs-file-upload-rails (2.4.1)
     arel (7.1.4)
     autoprefixer-rails (7.1.5)
       execjs
@@ -196,7 +195,6 @@ PLATFORMS
 
 DEPENDENCIES
   angular-rails-templates
-  angularjs-file-upload-rails
   bootstrap-sass (~> 3.3.6)
   byebug
   carrierwave

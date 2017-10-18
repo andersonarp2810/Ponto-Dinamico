@@ -21,6 +21,7 @@
     "angular": "^1.6.3",
     "bootstrap": "^3.3.7",
     "angular-cookies": "^1.6.4",
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "angular-file-upload": "^2.5.0"
   }
 }

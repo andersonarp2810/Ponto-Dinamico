@@ -3,9 +3,9 @@
         .module('pdApp')
         .service('EventoService', EventoService);
 
-    EventoService.$inject = ["Requisicoes", 'sessao', "$Rotas"];
+    EventoService.$inject = ["FileUploader", "Requisicoes", 'sessao', "$q", "$Rotas"];
 
-    function EventoService(Requisicoes, sessao, $Rotas) {
+    function EventoService(FileUploader, Requisicoes, sessao, $q, $Rotas) {
 
         this.deletEvento = deletEvento;
         this.editEvento = editEvento;
@@ -20,7 +20,9 @@
             return Requisicoes.destroy(url);
         }
 
-        function editEvento(evento) {
+        function editEvento(evento, uploader) {
+
+            var resposta = $q.defer();
 
             url = $Rotas.editEvento;
 
@@ -29,19 +31,38 @@
             ev.hora_fim = ev.hora_fim.toTimeString().substr(0, 8);
             ev.hora_inicio = ev.hora_inicio.toTimeString().substr(0, 8);
 
-            if ("file" in ev.imagem) {
-                ev.imagem = ev.imagem.file;
-            }
-
-            tipo = "evento";
-
             console.log(ev);
 
-            return Requisicoes.put(url, ev, tipo);
+            if (uploader.queue.length > 0) {
+                uploader.queue[0].formData[0] = evento;
+                uploader.queue[0].method = "PUT";
+                console.log(uploader.queue[0]);
+
+                uploader.queue[0].onSuccess = function (response, status, headers) {
+                    resposta.resolve(response.data);
+                }
+
+                uploader.queue[0].onError = function (response, status, headers) {
+                    resposta.reject(response);
+                }
+
+                uploader.queue[0].onComplete = function (response, status, headers) {
+                    resposta.resolve(response);
+                }
+
+                uploader.queue[0].upload();
+                return resposta.promise;
+            }
+            else {
+                return Requisicoes.putEvento(url, ev);
+            }
+
         }
 
-        function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, imagem, QR,
-            latitude, longitude) {
+        function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, QR,
+            latitude, longitude, uploader) {
+
+            var resposta = $q.defer();
 
             url = $Rotas.sendEvento;
             tipo = "evento";
@@ -55,8 +76,7 @@
                 hora_inicio: horaInicio,
                 hora_fim: horaFim,
                 descricao: descricao,
-                local: local,
-                imagem: imagem,
+                lugar: local,
                 qrcode: QR,
                 localizacao_lati: latitude,
                 localizacao_long: longitude
@@ -68,7 +88,27 @@
 
             console.log(evento);
 
-            return Requisicoes.post(url, evento, tipo);
+            //return Requisicoes.post(url, evento, tipo);
+
+            uploader.queue[0].formData[0] = evento;
+            console.log(uploader);
+            console.log(uploader.queue[0]);
+
+            uploader.queue[0].onSuccess = function (response, status, headers) {
+                resposta.resolve(response.data);
+            }
+
+            uploader.queue[0].onError = function (response, status, headers) {
+                resposta.reject(response);
+            }
+
+            uploader.queue[0].onComplete = function (response, status, headers) {
+                resposta.resolve(response);
+            }
+
+            uploader.queue[0].upload();
+            return resposta.promise;
+            //return uploader.queue[0].upload();
         }
 
         function listaEventos() {

@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('EditEventoController', EditEventoController);
 
-    EditEventoController.$inject = ['$scope', 'EventoService', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$stateParams', '$window'];
+    EditEventoController.$inject = ['$scope', 'EventoService', 'FileUploader', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$stateParams', '$window'];
 
-    function EditEventoController($scope, EventoService, GeoService, LoginService, sessao, $Respostas, $stateParams, $window) {
+    function EditEventoController($scope, EventoService, FileUploader, GeoService, LoginService, sessao, $Respostas, $stateParams, $window) {
         var vm = this;
         vm.botao = false;
         x = $stateParams.evento;
@@ -18,6 +18,12 @@
         vm.imprime = imprime;
         vm.mensagem;
         vm.sessao = sessao;
+        vm.uploader = new FileUploader({
+            url: '/eventos',
+            alias: 'imagem',
+            method: 'PUT',
+            removeAfterUpload: true,
+        });
 
         $scope.$watch('vm.evento.hora_fim', function (current, original) {
             console.info('vm.evento.hora_fim era %s', original);
@@ -30,7 +36,7 @@
             }
             else {
                 vm.botao = true;
-                EventoService.editEvento(vm.evento)
+                EventoService.editEvento(vm.evento, vm.uploader)
                     .then(function (data) {
                         console.log(data);
                         vm.mensagem = '';

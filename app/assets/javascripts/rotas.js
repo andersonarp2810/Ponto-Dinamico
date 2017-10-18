@@ -24,13 +24,20 @@
                 controllerAs: "vm"
             })
             .state($Estados.userEdit, {
-                url: '/editUser/{user: json}/',
+                url: '/editUser',
+                params: {
+                    user: null
+                },
                 templateUrl: "views/editUser/editUser.html",
                 controller: "EditUserController",
                 controllerAs: "vm"
             })
             .state($Estados.userLista, {
-                url: '/listaUser/',
+                url: '/listaUser',
+                params: {
+                    id_user: null,
+                    id_evento: null,
+                },
                 templateUrl: "views/listaUser/listaUser.html",
                 controller: "ListaUserController",
                 controllerAs: "vm"
@@ -42,7 +49,10 @@
                 controllerAs: "vm"
             })
             .state($Estados.eventoEdit, {
-                url: '/editEvento/{evento: json}/',
+                url: '/editEvento',
+                params: {
+                    evento: null
+                },
                 templateUrl: "views/editarEvento/editEvento.html",
                 controller: "EditEventoController",
                 controllerAs: "vm"
