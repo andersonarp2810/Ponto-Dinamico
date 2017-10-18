@@ -1,0 +1,160 @@
+<div class="naoimprimivel">
+  <div class="modal fade" id="informacoes" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header naoimprimivel">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Informações</h4>
+        </div>
+        <div class="modal-body">
+
+          <label for="nome">
+            <h4>Nome</h4>
+          </label>
+          <input disabled class="form-control" name="nome" type="text" ng-model="vm.info.nome">
+          <br>
+
+          <label for="tipo">
+            <h4>Tipo</h4>
+          </label>
+          <input disabled class="form-control" type="text" name="tipo" ng-model="vm.info.tipo">
+          <br>
+
+          <label for="data-inicio">
+            <h4>Data de inicio</h4>
+          </label>
+          <input disabled class="form-control" name="data-inicio" type="date" ng-model="vm.info.data_inicio">
+          <br>
+
+          <label for="data-termino">
+            <h4>Data de término</h4>
+          </label>
+          <input disabled class="form-control" name="data-termino" type="date" ng-model="vm.info.data_fim">
+          <br>
+
+          <label for="hora-inicio">
+            <h4>Hora de Inicio</h4>
+          </label>
+          <input disabled class="form-control" name="hora-inicio" type="time" ng-model="vm.info.hora_inicio">
+          <br>
+
+          <label for="hora-termino">
+            <h4>Hora de Término</h4>
+          </label>
+          <input disabled class="form-control" name="hora-termino" type="time" ng-model="vm.info.hora_fim">
+          <br>
+
+          <label for="local">
+            <h4>Local</h4>
+          </label>
+          <textarea disabled class="form-control" name="local" ng-model="vm.info.lugar"></textarea>
+          <br>
+
+          <label for="desc">
+            <h4>Descrição</h4>
+          </label>
+          <textarea disabled class="form-control" name="desc" ng-model="vm.info.descricao"></textarea>
+          <br>
+
+          <label for="qr">
+            <h4>Qrcode</h4>
+          </label>
+          <br>
+          <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.info.qrcode}}">
+          <br>
+
+          <label for="imagem">
+            <h4>Imagem</h4>
+          </label>
+          <br>
+          <img class="img-responsive" ng-src="{{vm.info.imagem.url}}">
+          <br>
+
+        </div>
+        <div class="modal-footer naoimprimivel">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container" style="background-color:#e3f2fd">
+  <div class="row">
+    <br>
+    <br>
+    <form name="vm.form" class="form-horizontal">
+      <div class="form-group">
+        <div class="col-xs-9" style="position:relative;transform: translate(20%, 0%)">
+          <input type="text" class="form-control" ng-change="vm.buscar()" ng-model="vm.busca" placeholder="Nome ou Data">
+          <br>
+          <label class="radio-inline">Buscar por </label>
+          <label class="radio-inline">
+            <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="nome" checked='checked'> Nome do evento
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="data"> Data
+          </label>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="container">
+  <h2>Resultado</h2>
+  <p>Informações :</p>
+  <table class="table" fixed-header table-height="100px">
+    <thead>
+      <tr class="info">
+        <th>Data</th>
+        <th>Nome do evento</th>
+        <th> </th>
+        <th> </th>
+        <th> </th>
+        <th> </th>
+      </tr>
+    </thead>
+    <tbody>
+      <div>
+        <tr ng-repeat="evento in vm.eventos | filter:vm.filtro:strict" ng-class="evento.classe">
+          <td>{{evento.data_inicio | date:"dd/MM/yyyy"}}</td>
+          <td>{{evento.nome}}</td>
+          <td>
+            <a ui-sref="editEvento({evento: evento})" type="button" class="btn btn-primary" style="color:white">Editar</a>
+          </td>
+          <td>
+            <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" style="color:white" ng-click="vm.informar(evento)">Informações</a>
+          </td>
+          <td>
+            <a ng-click="vm.relatorio(evento)" type="button" class="btn btn-primary" style="color:white">Relatório</a>
+          </td>
+          <td>
+            <a ng-click="vm.deletar(evento.id, evento.nome)" type="button" class="btn btn-danger" style="color:white">Excluir</a>
+          </td>
+        </tr>
+      </div>
+    </tbody>
+  </table>
+  <h2>Detalhes</h2>
+  <table class="table" fixed-header table-height="100px">
+    <thead>
+      <tr class="info">
+        <th>Nome:</th>
+        <th>Presenças:</th>
+        <th> </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="active" ng-repeat="user in vm.users">
+        <td>{{user.nome}}</td>
+        <td>{{user.presenca}}</td>
+        <td>
+          <a ui-sref="listaUser({id_user: user.id, id_evento: vm.user_evento})" type="button" class="btn btn-primary" style="color:white">Abrir pontos</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
