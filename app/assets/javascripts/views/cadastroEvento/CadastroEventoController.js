@@ -49,17 +49,17 @@
 
                 evento = {
                     usuario_id: sessao.id,
-                    nome: nome,
-                    tipo: tipo,
-                    data_inicio: dataInicio,
-                    data_fim: dataFim,
-                    hora_inicio: horaInicio.toTimeString().substr(0, 8),
-                    hora_fim: horaFim.toTimeString().substr(0, 8),
-                    descricao: descricao,
-                    lugar: local,
-                    qrcode: QR,
-                    localizacao_lati: latitude,
-                    localizacao_long: longitude
+                    nome: vm.nome,
+                    tipo: vm.tipo,
+                    data_inicio: vm.dataInicio,
+                    data_fim: vm.dataFim,
+                    hora_inicio: vm.horaInicio.toTimeString().substr(0, 8),
+                    hora_fim: vm.horaFim.toTimeString().substr(0, 8),
+                    descricao: vm.descricao,
+                    lugar: vm.local,
+                    qrcode: vm.QR,
+                    localizacao_lati: vm.latitude,
+                    localizacao_long: vm.longitude
                 }
                 console.log(evento);
 
