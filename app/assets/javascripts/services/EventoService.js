@@ -24,6 +24,13 @@
 
             url = $Rotas.editEvento;
 
+            ev = Object.assign({}, vm.evento);
+
+            ev.hora_fim = ev.hora_fim.toTimeString().substr(0, 8);
+            ev.hora_inicio = ev.hora_inicio.toTimeString().substr(0, 8);
+
+            console.log(ev);
+            
             return Requisicoes.putEvento(url, ev);
 
         }
