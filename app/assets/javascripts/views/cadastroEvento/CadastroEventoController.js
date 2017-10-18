@@ -47,98 +47,102 @@
                 vm.horaInicio.setFullYear(2000);
                 vm.horaFim.setFullYear(2000);
 
-                evento = {
-                    usuario_id: sessao.id,
-                    nome: vm.nome,
-                    tipo: vm.tipo,
-                    data_inicio: vm.dataInicio,
-                    data_fim: vm.dataFim,
-                    hora_inicio: vm.horaInicio.toTimeString().substr(0, 8),
-                    hora_fim: vm.horaFim.toTimeString().substr(0, 8),
-                    descricao: vm.descricao,
-                    lugar: vm.local,
-                    qrcode: vm.QR,
-                    localizacao_lati: vm.latitude,
-                    localizacao_long: vm.longitude
+                if (vm.uploader.queue.length > 0) { // com imagem
+
+                    evento = {
+                        usuario_id: sessao.id,
+                        nome: vm.nome,
+                        tipo: vm.tipo,
+                        data_inicio: vm.dataInicio,
+                        data_fim: vm.dataFim,
+                        hora_inicio: vm.horaInicio.toTimeString().substr(0, 8),
+                        hora_fim: vm.horaFim.toTimeString().substr(0, 8),
+                        descricao: vm.descricao,
+                        lugar: vm.local,
+                        qrcode: vm.QR,
+                        localizacao_lati: vm.latitude,
+                        localizacao_long: vm.longitude
+                    }
+                    console.log(evento);
+
+                    vm.uploader.queue[0].formData[0] = evento;
+                    console.log(vm.uploader);
+                    console.log(vm.uploader.queue[0]);
+
+                    vm.uploader.queue[0].onSuccess = function (data, status, headers) {
+                        console.log(data);
+                        vm.mensagem = '';
+                        switch (data.erro) { // definir erro pra cada campo
+                            case "000":
+                                console.log(data.body);
+                                vm.mensagem = "Evento criado";
+                                //limpar();
+                                $state.go($Estados.eventoLista);
+                                break;
+                            default:
+                                vm.mensagem = 'Erro: ' + $Repostas[data.erro];
+                                console.log(data.status);
+                                switch (data.erro) {
+                                    case "102":
+                                        vm.nome = '';
+                                    case "501":
+                                        console.log("faça login");
+                                        $state.go($Estados.login);
+                                        LoginService.apagar();
+                                    //deslogar
+                                }
+                                break;
+                        } // end switch
+                    }
+
+                    vm.uploader.queue[0].onError = function (response, status, headers) {
+                        console.error(response);
+                    }
+
+                    vm.uploader.queue[0].onComplete = function (response, status, headers) {
+                        vm.botao = false;
+                    }
+
+                    vm.uploader.queue[0].upload();
+
                 }
-                console.log(evento);
 
-                vm.uploader.queue[0].formData[0] = evento;
-                console.log(vm.uploader);
-                console.log(vm.uploader.queue[0]);
-
-                vm.uploader.queue[0].onSuccess = function (data, status, headers) {
-                    console.log(data);
-                    vm.mensagem = '';
-                    switch (data.erro) { // definir erro pra cada campo
-                        case "000":
-                            console.log(data.body);
-                            vm.mensagem = "Evento criado";
-                            //limpar();
-                            $state.go($Estados.eventoLista);
-                            break;
-                        default:
-                            vm.mensagem = 'Erro: ' + $Repostas[data.erro];
-                            console.log(data.status);
-                            switch (data.erro) {
-                                case "102":
-                                    vm.nome = '';
-                                case "501":
-                                    console.log("faça login");
-                                    $state.go($Estados.login);
-                                    LoginService.apagar();
-                                //deslogar
-                            }
-                            break;
-                    } // end switch
-                }
-
-                vm.uploader.queue[0].onError = function (response, status, headers) {
-                    console.error(response);
-                }
-
-                vm.uploader.queue[0].onComplete = function (response, status, headers) {
-                    vm.botao = false;
-                }
-
-                vm.uploader.queue[0].upload();
-
-                /* Como devia ser mas não é por causa do modulo de enviar imagem
-                                EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
-                                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
-                                    vm.latitude, vm.longitude, vm.uploader)
-                                    .then(function (data) {
-                                        console.log(data);
-                                        vm.mensagem = '';
-                                        switch (data.erro) { // definir erro pra cada campo
-                                            case "000":
-                                                console.log(data.body);
-                                                vm.mensagem = "Evento criado";
-                                                //limpar();
-                                                $state.go($Estados.eventoLista);
-                                                break;
-                                            default:
-                                                vm.mensagem = 'Erro: ' + $Repostas[data.erro];
-                                                console.log(data.status);
-                                                switch (data.erro) {
-                                                    case "102":
-                                                        vm.nome = '';
-                                                    case "501":
-                                                        console.log("faça login");
-                                                        $state.go($Estados.login);
-                                                        LoginService.apagar();
-                                                    //deslogar
-                                                }
-                                                break;
-                                        } // end switch
-                                        vm.botao = false;
-                                    },
-                                    function (err) {
-                                        console.error(err);
-                                        vm.botao = false;
+                else { // sem imagem
+                    EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
+                        vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
+                        vm.latitude, vm.longitude, vm.uploader)
+                        .then(function (data) {
+                            console.log(data);
+                            vm.mensagem = '';
+                            switch (data.erro) { // definir erro pra cada campo
+                                case "000":
+                                    console.log(data.body);
+                                    vm.mensagem = "Evento criado";
+                                    //limpar();
+                                    $state.go($Estados.eventoLista);
+                                    break;
+                                default:
+                                    vm.mensagem = 'Erro: ' + $Repostas[data.erro];
+                                    console.log(data.status);
+                                    switch (data.erro) {
+                                        case "102":
+                                            vm.nome = '';
+                                        case "501":
+                                            console.log("faça login");
+                                            $state.go($Estados.login);
+                                            LoginService.apagar();
+                                        //deslogar
                                     }
-                                    ); //end then
-                                    */
+                                    break;
+                            } // end switch
+                            vm.botao = false;
+                        },
+                        function (err) {
+                            console.error(err);
+                            vm.botao = false;
+                        }
+                        ); //end then
+                }   // sem imagem
             }
         }
 

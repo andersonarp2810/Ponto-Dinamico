@@ -23,14 +23,14 @@
         function editEvento(evento, uploader) {
 
             url = $Rotas.editEvento;
-            
+
             return Requisicoes.putEvento(url, ev);
 
         }
 
         function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, QR,
             latitude, longitude, uploader) {
-            //fora de uso por causa do módulo
+            // só entra aqui se o evento for sem imagem
             url = $Rotas.sendEvento;
             tipo = "evento";
 
