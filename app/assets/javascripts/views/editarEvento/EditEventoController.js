@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('EditEventoController', EditEventoController);
 
-    EditEventoController.$inject = ['$scope', 'EventoService', 'FileUploader', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$stateParams', '$window'];
+    EditEventoController.$inject = ['$scope', 'EventoService', 'FileUploader', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$Estados', '$state', '$stateParams'];
 
-    function EditEventoController($scope, EventoService, FileUploader, GeoService, LoginService, sessao, $Respostas, $stateParams, $window) {
+    function EditEventoController($scope, EventoService, FileUploader, GeoService, LoginService, sessao, $Respostas, $Estados, $state, $stateParams) {
         var vm = this;
         vm.botao = false;
         x = $stateParams.evento;
@@ -45,7 +45,7 @@
                                 console.log(data.body);
                                 vm.mensagem = "Evento criado";
                                 //limpar();
-                                $window.location.href = "#!/listaEvento/";
+                                $state.go($Estados.eventoLista);
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Respostas[data.erro];
@@ -56,7 +56,7 @@
                                     case "501":
                                         console.log("sessão expirada");
                                         LoginService.apagar();
-                                        $window.location.href = "#!/login";
+                                        $state.go($Estados.login);
                                     //deslogar
                                 }
                                 break;
@@ -85,7 +85,7 @@
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar();
 

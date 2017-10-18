@@ -18,7 +18,7 @@
             
             url = $Rotas.deletUser + "/" + id;
 
-            return Requisicoes.destroy(ur);
+            return Requisicoes.destroy(url);
         }
 
         function editUser(usuario) {
