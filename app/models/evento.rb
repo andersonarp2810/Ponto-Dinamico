@@ -52,7 +52,7 @@ def self.search(id)
                 usuario_eventos_inscrito = Hash.new
                 usuario_eventos_inscrito["nome"] = key[1]
                 usuario_eventos_inscrito["presenca"] = 0
-                usuario_evento["id"] = key[0]
+                usuario_eventos_inscrito["id"] = key[0]
                 arr_usuarios.push(usuario_eventos_inscrito)
             end
         end
