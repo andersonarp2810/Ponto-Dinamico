@@ -66,7 +66,7 @@ end
         render json: {erro: "301", body: ""}
       end
    else
-      @eventos = Evento.formate(Evento.order(:data_fim).all)
+      @eventos = Evento.formate(Evento.order(data_inicio: :desc).all)
       render json:{erro: "000", body: @eventos}
     end
 
