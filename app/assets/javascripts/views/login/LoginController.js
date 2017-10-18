@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['LoginService', 'sessao', '$cookies', '$Respostas', '$window'];
+    LoginController.$inject = ['LoginService', 'sessao', '$cookies', '$Respostas', '$Estados', '$state'];
 
-    function LoginController(LoginService, sessao, $cookies, $Respostas, $window) {
+    function LoginController(LoginService, sessao, $cookies, $Respostas, $Estados, $state) {
 
         vm = this;
 
@@ -36,7 +36,7 @@
                                 $cookies.put('sessao_pd_id', vm.sessao.id);
                                 vm.sessao.nome = data.body.nome;
                                 $cookies.put('sessao_pd_nome', vm.sessao.nome);
-                                $window.location.href = "#!/home/";
+                                $state.go($Estados.home);
                                 break;
                             case "202":
                                 vm.senha = '';
@@ -60,7 +60,7 @@
         var init = function () {
             vm.sessao.id = $cookies.get('sessao_pd_id');
             if ("undefined" != typeof vm.sessao.id) {
-                $window.location.href = "#!/home/";
+                $state.go($Estados.home);
             }
         }
 

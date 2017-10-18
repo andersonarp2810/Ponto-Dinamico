@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('CadastroEventoController', CadastroEventoController);
 
-    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'FileUploader', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$window'];
+    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'FileUploader', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$Estados', '$state'];
 
-    function CadastroEventoController($scope, $log, EventoService, FileUploader, LoginService, GeoService, sessao, $Repostas, $window) {
+    function CadastroEventoController($scope, $log, EventoService, FileUploader, LoginService, GeoService, sessao, $Repostas, $Estados, $state) {
         var vm = this; //view model
         vm.botao = false;
         vm.cadastrarEvento = cadastrarEvento;
@@ -56,7 +56,7 @@
                                 console.log(data.body);
                                 vm.mensagem = "Evento criado";
                                 //limpar();
-                                $window.location.href = "#!/listaEvento/";
+                                $state.go($Estados.eventoLista);
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Repostas[data.erro];
@@ -66,7 +66,7 @@
                                         vm.nome = '';
                                     case "501":
                                         console.log("faça login");
-                                        $window.location.href = "#!/login";
+                                        $state.go($Estados.login);
                                         LoginService.apagar();
                                     //deslogar
                                 }
@@ -110,7 +110,7 @@
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar();
                 console.log("geo");

@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('ListaEventoController', ListaEventoController);
 
-    ListaEventoController.$inject = ['LoginService', 'EventoService', 'sessao', '$Respostas', '$window'];
+    ListaEventoController.$inject = ['LoginService', 'EventoService', 'sessao', '$Respostas', '$Estados', '$state'];
 
-    function ListaEventoController(LoginService, EventoService, sessao, $Respostas, $window) {
+    function ListaEventoController(LoginService, EventoService, sessao, $Respostas, $Estados, $state) {
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
@@ -52,7 +52,7 @@
                             case '501':
                                 console.log("sessão expirada");
                                 LoginService.apagar();
-                                $window.location.href = "#!/login";
+                                $state.go($Estados.login);
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Respostas[data.erro];
@@ -98,7 +98,7 @@
                         case '501':
                             console.log("sessão expirada");
                             LoginService.apagar();
-                            $window.location.href = "#!/login";
+                            $state.go($Estados.login);
                             break;
                         default:
                             vm.mensagem = 'Erro: ' + $Respostas[data.erro];
@@ -136,7 +136,7 @@
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar()
                     .then(function (data) {

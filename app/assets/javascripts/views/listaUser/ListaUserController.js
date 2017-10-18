@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('ListaUserController', ListaUserController);
 
-    ListaUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$stateParams', '$window'];
+    ListaUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$Estados', '$state', '$stateParams'];
 
-    function ListaUserController(LoginService, UserService, sessao, $Respostas, $stateParams, $window) {
+    function ListaUserController(LoginService, UserService, sessao, $Respostas, $Estados, $state, $stateParams) {
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
@@ -50,7 +50,7 @@
                             case '501':
                                 console.log("sessão expirada");
                                 LoginService.apagar();
-                                $window.location.href = "#!/login";
+                                $state.go($Estados.login);
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Respostas[data.erro];
@@ -79,7 +79,7 @@
                         case '501':
                             console.log("sessão expirada");
                             LoginService.apagar();
-                            $window.location.href = "#!/login";
+                            $state.go($Estados.login);
                             break;
                         default:
                             vm.mensagem = 'Erro' + $Respostas[data.erro];
@@ -125,7 +125,7 @@
                         case '501':
                             console.log("sessão expirada");
                             LoginService.apagar();
-                            $window.location.href = "#!/login";
+                            $state.go($Estados.login);
                             break;
                         default:
                             vm.mensagem = 'Erro' + $Respostas[data.erro];
@@ -166,7 +166,7 @@
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar()
                     .then(function (data) {

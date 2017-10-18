@@ -6,19 +6,19 @@
 
         $stateProvider
             .state($Estados.home, {
-                url: '/home/',
+                url: '/home',
                 templateUrl: 'views/home/home.html',
                 controller: 'HomeController',
                 controllerAs: 'vm'
             })
             .state($Estados.login, {
-                url: '/login/',
+                url: '/login',
                 templateUrl: 'views/login/login.html',
                 controller: 'LoginController',
                 controllerAs: 'vm'
             })
             .state($Estados.userCadastro, {
-                url: '/cadastrarUser/',
+                url: '/cadastrarUser',
                 templateUrl: "views/cadastroUser/cadastroUser.html",
                 controller: "CadastroUserController",
                 controllerAs: "vm"
@@ -43,7 +43,7 @@
                 controllerAs: "vm"
             })
             .state($Estados.eventoCadastro, {
-                url: '/cadastrarEvento/',
+                url: '/cadastrarEvento',
                 templateUrl: "views/cadastroEvento/CadastrodeEventos.html",
                 controller: "CadastroEventoController",
                 controllerAs: "vm"
@@ -58,7 +58,7 @@
                 controllerAs: "vm"
             })
             .state($Estados.eventoLista, {
-                url: '/listaEvento/',
+                url: '/listaEvento',
                 templateUrl: "views/listaEvento/listaEvento.html",
                 controller: "ListaEventoController",
                 controllerAs: "vm"
