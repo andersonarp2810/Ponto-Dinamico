@@ -45,7 +45,7 @@
                             case '000':
                                 console.log(data.body);
                                 console.log("usuário deletado");
-                                vm.listaEventos();
+                                vm.listar();
                                 break;
                             case '501':
                                 console.log("sessão expirada");
