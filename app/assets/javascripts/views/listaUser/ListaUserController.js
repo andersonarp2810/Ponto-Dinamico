@@ -121,6 +121,7 @@
                                         alvo = ev;
                                     }
                                 });
+                                $stateParams.id_user = null;
                                 vm.listaPontos(alvo);
                             }
 
