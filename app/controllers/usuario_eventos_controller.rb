@@ -33,11 +33,11 @@ class UsuarioEventosController < ApplicationController
 
   #GET /datarelatorioevento/data/usuario_id
   def data_relatorio_evento
+    mensagem = {erro: "301", body: ""}
     usuario_evento = UsuarioEvento.search(params[:usuario_id], "",params[:data])
     if usuario_evento.present?
-      render json: {erro: "000", body: usuario_evento}
-    else
-      render json: {erro: "301", body: ""}
+      mensagem = {erro: "000", body: usuario_evento}
     end
+    render json: mensagem
   end
 end
