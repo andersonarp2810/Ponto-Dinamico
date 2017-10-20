@@ -7,9 +7,9 @@ class UsuarioEvento < ApplicationRecord
   def self.search(usuario,evento,data)
     
     if data.present?
-      pontos = Evento.joins(:usuario_eventos).where("usuario_id = ? and data = ? and hora_inicio IS NOT NULL", usuario,data).select("eventos.nome, usuario_eventos.data, usuario_eventos.hora_inicio, usuario_eventos.hora_fim, usuario_eventos.mensagem").order("data DESC")
+      pontos = Evento.joins(:usuario_eventos).where("usuario_id = ? and data = ? and usuario_eventos.hora_inicio IS NOT NULL", usuario,data).select("eventos.nome, usuario_eventos.data, usuario_eventos.hora_inicio, usuario_eventos.hora_fim, usuario_eventos.mensagem").order("data DESC")
     else
-      pontos = Evento.joins(:usuario_eventos).where("usuario_id = ? and evento_id= ? and hora_inicio IS NOT NULL", usuario, evento).select("eventos.nome, usuario_eventos.data, usuario_eventos.hora_inicio, usuario_eventos.hora_fim, usuario_eventos.mensagem").order("data DESC")
+      pontos = Evento.joins(:usuario_eventos).where("usuario_id = ? and evento_id= ? and usuario_eventos.hora_inicio IS NOT NULL", usuario, evento).select("eventos.nome, usuario_eventos.data, usuario_eventos.hora_inicio, usuario_eventos.hora_fim, usuario_eventos.mensagem").order("data DESC")
     end
 
     if pontos.present?
