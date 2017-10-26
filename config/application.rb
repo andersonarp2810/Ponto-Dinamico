@@ -26,5 +26,7 @@ module Ponto
 
     config.active_record.time_zone_aware_types = [:datetime]
     config.active_record.time_zone_aware_types = [:datetime, :time]
+
+    config.serve_static_assets = true
   end
 end
