@@ -26,7 +26,7 @@
         });
 
         function editEvento() {
-            if (vm.form.$invalid || vm.evento.data_inicio > vm.evento.data_fim) {
+            if (vm.form.$invalid || vm.evento.data_inicio > vm.evento.data_fim || vm.evento.hora_inicio > vm.evento.hora_fim) {
                 alert("Preencha os campos corretamente.");
             }
             else {
@@ -83,7 +83,7 @@
                 }
 
                 else { // caso não mude a imagem
-                    EventoService.editEvento(vm.evento)
+                    EventoService.editEvento(ev)
                         .then(function (data) {
                             console.log(data);
                             vm.mensagem = '';

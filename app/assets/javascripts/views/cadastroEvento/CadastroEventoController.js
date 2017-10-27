@@ -39,7 +39,7 @@
 
         function cadastrarEvento() {
             console.log(vm.uploader);
-            if (vm.form.$invalid || vm.dataInicio > vm.dataFim) {
+            if (vm.form.$invalid || vm.dataInicio > vm.dataFim || vm.horaInicio > vm.horaFim) {
                 alert("Preencha os campos corretamente.");
             }
             else {

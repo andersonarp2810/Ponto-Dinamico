@@ -33,6 +33,9 @@
             } else if (vm.radio == 'matricula') {
                 vm.filtro.nome = '';
                 vm.filtro.matricula = vm.busca;
+            } else {
+                vm.filtro.nome = '';
+                vm.filtro.matricula = '';
             }
         }
 
@@ -78,6 +81,7 @@
                             break;
                         case '301':
                             alert("Usuário sem pontos neste evento");
+                            vm.pontos = null;
                             break;
                         case '501':
                             console.log("sessão expirada");
@@ -128,6 +132,7 @@
                             break;
                         case '301':
                             alert("Usuário não cadastrado em nenhum evento");
+                            vm.eventos = null;
                             break;
                         case '501':
                             console.log("sessão expirada");
