@@ -17,6 +17,7 @@
         vm.eventos = [];
         vm.mensagem;
         vm.radio = "nome";
+        vm.relato = null;
         vm.relatorio = relatorio;
         vm.sessao = sessao;
         vm.user_evento;
@@ -34,6 +35,9 @@
             } else if (vm.radio == 'data') {
                 vm.filtro.nome = '';
                 vm.filtro.data_inicio = vm.busca;
+            } else {
+                vm.filtro.nome = '';
+                vm.filtro.data_inicio = '';
             }
         }
 
@@ -57,6 +61,7 @@
                             default:
                                 vm.mensagem = 'Erro: ' + $Respostas[data.erro];
                                 vm.users = null;
+                                vm.relato = null;
                                 break;
                         }
                     }
@@ -92,11 +97,14 @@
                     switch (data.erro) {
                         case '000':
                             console.log(data.body);
-                            vm.users = data.body;
+                            vm.users = data.body.users;
+                            vm.relato = data.body.relato;
                             vm.user_evento = evento.id;
                             break;
                         case '301':
                             alert("Nenhum usuário cadastrado neste evento");
+                            vm.users = null;
+                            vm.relato = null;
                             break;
                         case '501':
                             console.log("sessão expirada");
@@ -106,6 +114,7 @@
                         default:
                             vm.mensagem = 'Erro: ' + $Respostas[data.erro];
                             vm.users = null;
+                            vm.relato = null;
                             break;
                     }
                 });
