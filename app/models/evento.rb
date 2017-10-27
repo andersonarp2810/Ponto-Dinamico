@@ -88,7 +88,7 @@ private
     def self.valida_coodernada(coordenada)
         #deve retornar true
         distancia = 6371 * Math.acos(Math.cos(Math::PI * (90 - coordenada [:LatB]) / 180) * Math.cos((90 - coordenada [:LatA]) * Math::PI / 180) + Math.sin((90 - coordenada [:LatB]) * Math::PI / 180) * Math.sin((90 - coordenada [:LatA])*Math::PI/180)*Math.cos(( coordenada [:LngA] - coordenada [:LngB])*Math::PI / 180))
-        distancia < 0.5
+        distancia < 0.05
     end
 
     #verifica as condições para salvar o ponto
