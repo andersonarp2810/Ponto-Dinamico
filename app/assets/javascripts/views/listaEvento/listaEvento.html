@@ -109,7 +109,7 @@
 <div class="container">
   <h2>Resultado</h2>
   <p>Informações :</p>
-  <table class="table" fixed-header table-height="100px">
+  <table class="table" fixed-header table-height="200px">
     <thead>
       <tr class="info">
         <th>Data de início</th>
@@ -142,9 +142,9 @@
     </tbody>
   </table>
   <div ng-if="vm.users!=null">
-    <h2>Detalhes</h2>
+    <h2>Detalhes: {{vm.detalhado}}</h2>
 
-    <table class="table">
+    <table class="table" fixed-header table-height="200px">
       <thead>
         <tr class="info">
           <th>
@@ -160,11 +160,6 @@
             Ausentes: {{vm.relato.ausentes}}
           </th>
         </tr>
-      </thead>
-    </table>
-
-    <table class="table" fixed-header table-height="100px">
-      <thead>
         <tr class="info">
           <th>Nome:</th>
           <th>Presenças:</th>
@@ -173,8 +168,8 @@
       </thead>
       <tbody>
         <tr class="active" ng-repeat="user in vm.users">
-          <td>{{user.nome}}</td>
-          <td>{{user.presenca}}</td>
+          <td> {{user.nome}}</td>
+          <td> {{user.presenca}}</td>
           <td>
             <a ui-sref="listaUser({id_user: user.id, id_evento: vm.user_evento})" type="button" class="btn btn-primary" style="color:white">Abrir pontos</a>
           </td>

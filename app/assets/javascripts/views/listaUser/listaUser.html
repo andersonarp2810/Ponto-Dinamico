@@ -105,7 +105,7 @@
   </table>
 
   <div ng-if="vm.eventos!=null">
-    <h2>Relatório:</h2>
+    <h2>Relatório: {{vm.usu_nome}}</h2>
     <table class="table" fixed-header table-height="200px">
       <thead>
         <tr class="info">
@@ -160,10 +160,10 @@
 
               <tbody>
                 <tr class="active" ng-repeat="ponto in vm.pontos">
-                  <td>{{ponto.data | date:"dd/MM/yyyy"}}</td>
-                  <td>{{ponto.hora_inicio}}</td>
-                  <td>{{ponto.hora_fim}}</td>
-                  <td>{{ponto.mensagem}}</td>
+                  <td> {{ponto.data | date:"dd/MM/yyyy"}}</td>
+                  <td> {{ponto.hora_inicio}}</td>
+                  <td> {{ponto.hora_fim}}</td>
+                  <td> {{ponto.mensagem}}</td>
                 </tr>
               </tbody>
             </table>
