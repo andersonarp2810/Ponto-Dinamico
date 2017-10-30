@@ -17,7 +17,7 @@
         vm.info;
         vm.informar = informar;
         vm.pontos = null;
-        vm.radio = 'nome';
+        vm.radio = 'nada';
         vm.relatorio = relatorio;
         vm.sessao = sessao;
         vm.users = [];

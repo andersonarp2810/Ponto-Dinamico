@@ -17,7 +17,7 @@
         vm.informar = informar;
         vm.eventos = [];
         vm.mensagem;
-        vm.radio = "nome";
+        vm.radio = "nada";
         vm.relato = null;
         vm.relatorio = relatorio;
         vm.sessao = sessao;
