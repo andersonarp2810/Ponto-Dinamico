@@ -202,8 +202,8 @@
                 console.log(event.latLng.lat());
                 console.log(event.latLng.lng());
                 $scope.$apply(function () {
-                    vm.latitude = event.latLng.lat();
-                    vm.longitude = event.latLng.lng();
+                    vm.evento.localizacao_lati = event.latLng.lat();
+                    vm.evento.localizacao_long = event.latLng.lng();
                 });
             });
 
