@@ -6,6 +6,9 @@ git_source(:github) do |repo_name|
 end
 
 
+#gem para carregamento de ativos staticos em produção
+gem 'rails_12factor', group: :production
+#gem para imagem
 gem "rmagick"
 #gem para trabalhar com imagem no rails
 gem 'carrierwave'
