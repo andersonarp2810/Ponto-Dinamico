@@ -11,6 +11,7 @@
         vm.buscar = buscar;
         vm.data;
         vm.deletar = deletar;
+        vm.detalhado = '';
         vm.formatar = formatar;
         vm.info;
         vm.informar = informar;
@@ -42,7 +43,7 @@
         }
 
         function deletar(id, nome) {
-            if (confirm("Tem certeza que deseja deletar evento " + nome + "?")) {
+            if (confirm("Tem certeza que deseja deletar o evento " + nome + "?")) {
                 EventoService.deletEvento(id)
                     .then(
                     function (data) {
@@ -100,11 +101,13 @@
                             vm.users = data.body.users;
                             vm.relato = data.body.relato;
                             vm.user_evento = evento.id;
+                            vm.detalhado = evento.nome;
                             break;
                         case '301':
                             alert("Nenhum usuário cadastrado neste evento");
                             vm.users = null;
                             vm.relato = null;
+                            vm.detalhado = '';
                             break;
                         case '501':
                             console.log("sessão expirada");
@@ -115,6 +118,7 @@
                             vm.mensagem = 'Erro: ' + $Respostas[data.erro];
                             vm.users = null;
                             vm.relato = null;
+                            vm.detalhado = '';
                             break;
                     }
                 });

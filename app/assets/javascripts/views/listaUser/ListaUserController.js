@@ -12,6 +12,7 @@
         vm.deletar = deletar;
         vm.eventos = null;
         vm.usu_id = null;
+        vm.usu_nome = '';
         vm.listaPontos = listaPontos;
         vm.info;
         vm.informar = informar;
@@ -107,6 +108,7 @@
             id = user.id;
             vm.eventos = null;
             vm.usu_id = null;
+            vm.usu_nome = '';
             UserService.relatorio(id)
                 .then(function (data) {
                     console.log(data);
@@ -118,6 +120,7 @@
                                 ev.classe = 'active';
                             });
                             vm.usu_id = id;
+                            vm.usu_nome = user.nome;
                             if ($stateParams.id_evento != null) {
                                 let alvo;
                                 vm.eventos.forEach(function (ev) {
