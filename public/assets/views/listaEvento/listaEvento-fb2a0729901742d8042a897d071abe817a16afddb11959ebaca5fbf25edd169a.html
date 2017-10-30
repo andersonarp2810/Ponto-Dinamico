@@ -98,9 +98,6 @@
           <label class="radio-inline">
             <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="data"> Data
           </label>
-          <label class="radio-inline">
-            <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="nada"> Sem filtro
-          </label>
         </div>
       </div>
     </form>
@@ -141,45 +138,23 @@
       </div>
     </tbody>
   </table>
-  <div ng-if="vm.users!=null">
-    <h2>Detalhes</h2>
-
-    <table class="table">
-      <thead>
-        <tr class="info">
-          <th>
-            Inscritos: {{vm.users.length}}
-          </th>
-          <th>
-            Regulares: {{vm.relato.regulares}}
-          </th>
-          <th>
-            Irregulares: {{vm.relato.irregulares}}
-          </th>
-          <th>
-            Ausentes: {{vm.relato.ausentes}}
-          </th>
-        </tr>
-      </thead>
-    </table>
-
-    <table class="table" fixed-header table-height="100px">
-      <thead>
-        <tr class="info">
-          <th>Nome:</th>
-          <th>Presenças:</th>
-          <th> </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="active" ng-repeat="user in vm.users">
-          <td>{{user.nome}}</td>
-          <td>{{user.presenca}}</td>
-          <td>
-            <a ui-sref="listaUser({id_user: user.id, id_evento: vm.user_evento})" type="button" class="btn btn-primary" style="color:white">Abrir pontos</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>Detalhes</h2>
+  <table class="table" fixed-header table-height="100px">
+    <thead>
+      <tr class="info">
+        <th>Nome:</th>
+        <th>Presenças:</th>
+        <th> </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="active" ng-repeat="user in vm.users">
+        <td>{{user.nome}}</td>
+        <td>{{user.presenca}}</td>
+        <td>
+          <a ui-sref="listaUser({id_user: user.id, id_evento: vm.user_evento})" type="button" class="btn btn-primary" style="color:white">Abrir pontos</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

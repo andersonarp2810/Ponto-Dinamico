@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('CadastroEventoController', CadastroEventoController);
 
-    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'FileUploader', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$window'];
+    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'FileUploader', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$Estados', '$state'];
 
-    function CadastroEventoController($scope, $log, EventoService, FileUploader, LoginService, GeoService, sessao, $Repostas, $window) {
+    function CadastroEventoController($scope, $log, EventoService, FileUploader, LoginService, GeoService, sessao, $Repostas, $Estados, $state) {
         var vm = this; //view model
         vm.botao = false;
         vm.cadastrarEvento = cadastrarEvento;
@@ -25,6 +25,7 @@
         vm.uploader = new FileUploader({
             url: '/cadastrarevento',
             alias: 'imagem',
+            method: 'POST',
             removeAfterUpload: true,
         });
         vm.tipo;
@@ -38,17 +39,37 @@
 
         function cadastrarEvento() {
             console.log(vm.uploader);
-            if (vm.form.$invalid) {
+            if (vm.form.$invalid || vm.dataInicio > vm.dataFim || vm.horaInicio > vm.horaFim) {
                 alert("Preencha os campos corretamente.");
             }
             else {
-                //vm.botao = true;
+                vm.botao = true;
                 vm.horaInicio.setFullYear(2000);
                 vm.horaFim.setFullYear(2000);
-                EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
-                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
-                    vm.latitude, vm.longitude, vm.uploader)
-                    .then(function (data) {
+
+                if (vm.uploader.queue.length > 0) { // com imagem
+
+                    evento = {
+                        usuario_id: sessao.id,
+                        nome: vm.nome,
+                        tipo: vm.tipo,
+                        data_inicio: vm.dataInicio,
+                        data_fim: vm.dataFim,
+                        hora_inicio: vm.horaInicio.toTimeString().substr(0, 8),
+                        hora_fim: vm.horaFim.toTimeString().substr(0, 8),
+                        descricao: vm.descricao,
+                        lugar: vm.local,
+                        qrcode: vm.QR,
+                        localizacao_lati: vm.latitude,
+                        localizacao_long: vm.longitude
+                    }
+                    console.log(evento);
+
+                    vm.uploader.queue[0].formData[0] = evento;
+                    console.log(vm.uploader);
+                    console.log(vm.uploader.queue[0]);
+
+                    vm.uploader.queue[0].onSuccess = function (data, status, headers) {
                         console.log(data);
                         vm.mensagem = '';
                         switch (data.erro) { // definir erro pra cada campo
@@ -56,7 +77,7 @@
                                 console.log(data.body);
                                 vm.mensagem = "Evento criado";
                                 //limpar();
-                                $window.location.href = "#!/listaEvento/";
+                                $state.go($Estados.eventoLista);
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Repostas[data.erro];
@@ -66,19 +87,62 @@
                                         vm.nome = '';
                                     case "501":
                                         console.log("faça login");
-                                        $window.location.href = "#!/login";
+                                        $state.go($Estados.login);
                                         LoginService.apagar();
                                     //deslogar
                                 }
                                 break;
                         } // end switch
-                        vm.botao = false;
-                    },
-                    function (err) {
-                        console.error(err);
+                    }
+
+                    vm.uploader.queue[0].onError = function (response, status, headers) {
+                        console.error(response);
+                    }
+
+                    vm.uploader.queue[0].onComplete = function (response, status, headers) {
                         vm.botao = false;
                     }
-                    ); //end then
+
+                    vm.uploader.queue[0].upload();
+
+                }
+
+                else { // sem imagem
+                    EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
+                        vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
+                        vm.latitude, vm.longitude, vm.uploader)
+                        .then(function (data) {
+                            console.log(data);
+                            vm.mensagem = '';
+                            switch (data.erro) { // definir erro pra cada campo
+                                case "000":
+                                    console.log(data.body);
+                                    vm.mensagem = "Evento criado";
+                                    //limpar();
+                                    $state.go($Estados.eventoLista);
+                                    break;
+                                default:
+                                    vm.mensagem = 'Erro: ' + $Repostas[data.erro];
+                                    console.log(data.status);
+                                    switch (data.erro) {
+                                        case "102":
+                                            vm.nome = '';
+                                        case "501":
+                                            console.log("faça login");
+                                            $state.go($Estados.login);
+                                            LoginService.apagar();
+                                        //deslogar
+                                    }
+                                    break;
+                            } // end switch
+                            vm.botao = false;
+                        },
+                        function (err) {
+                            console.error(err);
+                            vm.botao = false;
+                        }
+                        ); //end then
+                }   // sem imagem
             }
         }
 
@@ -101,16 +165,10 @@
             vm.tipo = '';
         }
 
-        //isso é apenas um teste de observador - remover em versão final
-        $scope.$watch('vm.horaFim', function (current, original) {
-            $log.info('vm.horaFim was %s', original);
-            $log.info('vm.horaFim is now %s', current);
-        });
-
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar();
                 console.log("geo");

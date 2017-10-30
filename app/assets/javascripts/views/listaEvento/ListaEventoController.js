@@ -3,9 +3,9 @@
         .module('pdApp')
         .controller('ListaEventoController', ListaEventoController);
 
-    ListaEventoController.$inject = ['LoginService', 'EventoService', 'sessao', '$Respostas', '$window'];
+    ListaEventoController.$inject = ['LoginService', 'EventoService', 'sessao', '$Respostas', '$Estados', '$state'];
 
-    function ListaEventoController(LoginService, EventoService, sessao, $Respostas, $window) {
+    function ListaEventoController(LoginService, EventoService, sessao, $Respostas, $Estados, $state) {
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
@@ -17,6 +17,7 @@
         vm.eventos = [];
         vm.mensagem;
         vm.radio = "nome";
+        vm.relato = null;
         vm.relatorio = relatorio;
         vm.sessao = sessao;
         vm.user_evento;
@@ -34,6 +35,9 @@
             } else if (vm.radio == 'data') {
                 vm.filtro.nome = '';
                 vm.filtro.data_inicio = vm.busca;
+            } else {
+                vm.filtro.nome = '';
+                vm.filtro.data_inicio = '';
             }
         }
 
@@ -47,16 +51,17 @@
                             case '000':
                                 console.log(data.body);
                                 console.log("evento deletado");
-                                vm.listarEventos();
+                                listarEventos();
                                 break;
                             case '501':
                                 console.log("sessão expirada");
                                 LoginService.apagar();
-                                $window.location.href = "#!/login";
+                                $state.go($Estados.login);
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Respostas[data.erro];
                                 vm.users = null;
+                                vm.relato = null;
                                 break;
                         }
                     }
@@ -92,17 +97,24 @@
                     switch (data.erro) {
                         case '000':
                             console.log(data.body);
-                            vm.users = data.body;
+                            vm.users = data.body.users;
+                            vm.relato = data.body.relato;
                             vm.user_evento = evento.id;
+                            break;
+                        case '301':
+                            alert("Nenhum usuário cadastrado neste evento");
+                            vm.users = null;
+                            vm.relato = null;
                             break;
                         case '501':
                             console.log("sessão expirada");
                             LoginService.apagar();
-                            $window.location.href = "#!/login";
+                            $state.go($Estados.login);
                             break;
                         default:
                             vm.mensagem = 'Erro: ' + $Respostas[data.erro];
                             vm.users = null;
+                            vm.relato = null;
                             break;
                     }
                 });
@@ -136,7 +148,7 @@
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar()
                     .then(function (data) {

@@ -20,50 +20,17 @@
             return Requisicoes.destroy(url);
         }
 
-        function editEvento(evento, uploader) {
-
-            var resposta = $q.defer();
+        function editEvento(evento) {
 
             url = $Rotas.editEvento;
 
-            ev = Object.assign({}, evento);
-
-            ev.hora_fim = ev.hora_fim.toTimeString().substr(0, 8);
-            ev.hora_inicio = ev.hora_inicio.toTimeString().substr(0, 8);
-
-            console.log(ev);
-
-            if (uploader.queue.length > 0) {
-                uploader.queue[0].formData[0] = evento;
-                uploader.queue[0].method = "PUT";
-                console.log(uploader.queue[0]);
-
-                uploader.queue[0].onSuccess = function (response, status, headers) {
-                    resposta.resolve(response.data);
-                }
-
-                uploader.queue[0].onError = function (response, status, headers) {
-                    resposta.reject(response);
-                }
-
-                uploader.queue[0].onComplete = function (response, status, headers) {
-                    resposta.resolve(response);
-                }
-
-                uploader.queue[0].upload();
-                return resposta.promise;
-            }
-            else {
-                return Requisicoes.putEvento(url, ev);
-            }
+            return Requisicoes.putEvento(url, evento);
 
         }
 
         function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, QR,
             latitude, longitude, uploader) {
-
-            var resposta = $q.defer();
-
+            // só entra aqui se o evento for sem imagem
             url = $Rotas.sendEvento;
             tipo = "evento";
 
@@ -88,27 +55,7 @@
 
             console.log(evento);
 
-            //return Requisicoes.post(url, evento, tipo);
-
-            uploader.queue[0].formData[0] = evento;
-            console.log(uploader);
-            console.log(uploader.queue[0]);
-
-            uploader.queue[0].onSuccess = function (response, status, headers) {
-                resposta.resolve(response.data);
-            }
-
-            uploader.queue[0].onError = function (response, status, headers) {
-                resposta.reject(response);
-            }
-
-            uploader.queue[0].onComplete = function (response, status, headers) {
-                resposta.resolve(response);
-            }
-
-            uploader.queue[0].upload();
-            return resposta.promise;
-            //return uploader.queue[0].upload();
+            return Requisicoes.post(url, evento, tipo);
         }
 
         function listaEventos() {

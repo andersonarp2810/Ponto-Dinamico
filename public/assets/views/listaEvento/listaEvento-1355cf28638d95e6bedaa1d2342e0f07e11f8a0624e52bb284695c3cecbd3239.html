@@ -13,7 +13,7 @@
           <label for="nome">
             <h4>Nome</h4>
           </label>
-          <input disabled class="form-control" name="nome" type="text" ng-model="vm.info.nome"> -
+          <input disabled class="form-control" name="nome" type="text" ng-model="vm.info.nome">
           <br>
 
           <label for="tipo">
@@ -49,7 +49,7 @@
           <label for="local">
             <h4>Local</h4>
           </label>
-          <textarea disabled class="form-control" name="local" ng-model="vm.info.local"></textarea>
+          <textarea disabled class="form-control" name="local" ng-model="vm.info.lugar"></textarea>
           <br>
 
           <label for="desc">
@@ -61,19 +61,15 @@
           <label for="qr">
             <h4>Qrcode</h4>
           </label>
-          <input disabled class="form-control" type="text" name="qr" ng-model="vm.info.qrcode">
+          <br>
+          <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.info.qrcode}}">
           <br>
 
-          <label for="latitude">
-            <h4>Latitude</h4>
+          <label for="imagem">
+            <h4>Imagem</h4>
           </label>
-          <input disabled class="form-control" type="text" disabled ng-model="vm.info.localizacao_lati">
           <br>
-
-          <label for="longitude">
-            <h4>Longitude</h4>
-          </label>
-          <input disabled class="form-control" type="text" disabled ng-model="vm.info.localizacao_long">
+          <img class="img-responsive" ng-src="{{vm.info.imagem.url}}">
           <br>
 
         </div>
@@ -102,18 +98,21 @@
           <label class="radio-inline">
             <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="data"> Data
           </label>
+          <label class="radio-inline">
+            <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="nada"> Sem filtro
+          </label>
         </div>
       </div>
     </form>
   </div>
 </div>
-<div class="container" >
+<div class="container">
   <h2>Resultado</h2>
   <p>Informações :</p>
   <table class="table" fixed-header table-height="100px">
     <thead>
       <tr class="info">
-        <th>Data</th>
+        <th>Data de início</th>
         <th>Nome do evento</th>
         <th> </th>
         <th> </th>
@@ -127,13 +126,13 @@
           <td>{{evento.data_inicio | date:"dd/MM/yyyy"}}</td>
           <td>{{evento.nome}}</td>
           <td>
-            <a ui-sref="editEvento({evento: evento})" type="button" class="btn btn-primary" style="color:white">editar</a>
+            <a ui-sref="editEvento({evento: evento})" type="button" class="btn btn-primary" style="color:white">Editar</a>
           </td>
           <td>
-            <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" style="color:white" ng-click="vm.informar(evento)">informações</a>
+            <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" style="color:white" ng-click="vm.informar(evento)">Informações</a>
           </td>
           <td>
-            <a ng-click="vm.relatorio(evento)" type="button" class="btn btn-primary" style="color:white">relatório</a>
+            <a ng-click="vm.relatorio(evento)" type="button" class="btn btn-primary" style="color:white">Relatório</a>
           </td>
           <td>
             <a ng-click="vm.deletar(evento.id, evento.nome)" type="button" class="btn btn-danger" style="color:white">Excluir</a>
@@ -142,19 +141,45 @@
       </div>
     </tbody>
   </table>
-  <h2>Detalhes</h2>
-  <table class="table" fixed-header table-height="100px">
-    <thead>
-      <tr class="info">
-        <th>Nome:</th>
-        <th>Presenças:</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="active" ng-repeat="user in vm.users">
-        <td>{{user.nome}}</td>
-        <td>{{user.presenca}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div ng-if="vm.users!=null">
+    <h2>Detalhes</h2>
+
+    <table class="table">
+      <thead>
+        <tr class="info">
+          <th>
+            Inscritos: {{vm.users.length}}
+          </th>
+          <th>
+            Regulares: {{vm.relato.regulares}}
+          </th>
+          <th>
+            Irregulares: {{vm.relato.irregulares}}
+          </th>
+          <th>
+            Ausentes: {{vm.relato.ausentes}}
+          </th>
+        </tr>
+      </thead>
+    </table>
+
+    <table class="table" fixed-header table-height="100px">
+      <thead>
+        <tr class="info">
+          <th>Nome:</th>
+          <th>Presenças:</th>
+          <th> </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="active" ng-repeat="user in vm.users">
+          <td>{{user.nome}}</td>
+          <td>{{user.presenca}}</td>
+          <td>
+            <a ui-sref="listaUser({id_user: user.id, id_evento: vm.user_evento})" type="button" class="btn btn-primary" style="color:white">Abrir pontos</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

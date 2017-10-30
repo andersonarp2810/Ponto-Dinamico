@@ -67,11 +67,12 @@ class UsuariosController < ApplicationController
   # DELETE /usuarios/1
   # DELETE /usuarios/1.json
   def destroy
+    usuario_eventos = UsuarioEvento.where(usuario_id: @usuario.id)
+    usuario_eventos.each do |usuario_evento|
+      usuario_evento.destroy
+    end 
     @usuario.destroy
-    respond_to do |format|
-      format.html { redirect_to usuarios_url, notice: 'Usuario was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json: {erro: "000", body: ""}   
   end
 
   private

@@ -51606,7 +51606,6 @@ angular.module('pdApp', [
     'ngCookies',
     'ui.router',
     'templates',
-    'appFilereader'
 ]);
 
 (function() {
@@ -52335,67 +52334,6 @@ angular.module('pdApp', [
         }
     }
 })();
-(function () {
-    angular
-        .module('appFilereader', [])
-        .directive('appFilereader', function (
-            $q
-        ) {
-            /*
-            made by elmerbulthuis@gmail.com WTFPL licensed
-            */
-            var slice = Array.prototype.slice;
-
-            return {
-                restrict: 'A',
-                require: '?ngModel',
-                link: function (scope, element, attrs, ngModel) {
-                    if (!ngModel) return;
-
-                    ngModel.$render = function () { }
-
-                    element.bind('change', function (e) {
-                        var element = e.target;
-                        if (!element.value) return;
-
-                        element.disabled = true;
-                        $q.all(slice.call(element.files, 0).map(readFile))
-                            .then(function (values) {
-                                if (element.multiple) ngModel.$setViewValue(values);
-                                else ngModel.$setViewValue(values.length ? values[0] : null);
-                                //element.value = null; // isso faz com que o nome da imagem suma
-                                element.disabled = false;
-                            });
-
-                        function readFile(file) {
-                            var deferred = $q.defer();
-
-                            var reader = new FileReader()
-                            reader.onload = function (e) {
-                                deferred.resolve(
-                                    {
-                                        url: e.target.result,
-                                        file: file
-                                    }
-                                );
-                            }
-                            reader.onerror = function (e) {
-                                deferred.reject(e);
-                            }
-                            reader.readAsDataURL(file);
-
-                            return deferred.promise;
-                        }
-
-                    }); //change
-
-                } //link
-
-            }; //return
-
-        }) //appFilereader
-        ;
-})();
 (function() {
 
 
@@ -52455,49 +52393,59 @@ angular.module('pdApp', [
 
         $stateProvider
             .state($Estados.home, {
-                url: '/home/',
+                url: '/home',
                 templateUrl: 'views/home/home.html',
                 controller: 'HomeController',
                 controllerAs: 'vm'
             })
             .state($Estados.login, {
-                url: '/login/',
+                url: '/login',
                 templateUrl: 'views/login/login.html',
                 controller: 'LoginController',
                 controllerAs: 'vm'
             })
             .state($Estados.userCadastro, {
-                url: '/cadastrarUser/',
+                url: '/cadastrarUser',
                 templateUrl: "views/cadastroUser/cadastroUser.html",
                 controller: "CadastroUserController",
                 controllerAs: "vm"
             })
             .state($Estados.userEdit, {
-                url: '/editUser/{user: json}/',
+                url: '/editUser',
+                params: {
+                    user: null
+                },
                 templateUrl: "views/editUser/editUser.html",
                 controller: "EditUserController",
                 controllerAs: "vm"
             })
             .state($Estados.userLista, {
-                url: '/listaUser/',
+                url: '/listaUser',
+                params: {
+                    id_user: null,
+                    id_evento: null,
+                },
                 templateUrl: "views/listaUser/listaUser.html",
                 controller: "ListaUserController",
                 controllerAs: "vm"
             })
             .state($Estados.eventoCadastro, {
-                url: '/cadastrarEvento/',
+                url: '/cadastrarEvento',
                 templateUrl: "views/cadastroEvento/CadastrodeEventos.html",
                 controller: "CadastroEventoController",
                 controllerAs: "vm"
             })
             .state($Estados.eventoEdit, {
-                url: '/editEvento/{evento: json}/',
+                url: '/editEvento',
+                params: {
+                    evento: null
+                },
                 templateUrl: "views/editarEvento/editEvento.html",
                 controller: "EditEventoController",
                 controllerAs: "vm"
             })
             .state($Estados.eventoLista, {
-                url: '/listaEvento/',
+                url: '/listaEvento',
                 templateUrl: "views/listaEvento/listaEvento.html",
                 controller: "ListaEventoController",
                 controllerAs: "vm"
@@ -52510,9 +52458,9 @@ angular.module('pdApp', [
         .module('pdApp')
         .service('EventoService', EventoService);
 
-    EventoService.$inject = ["FileUploader", "Requisicoes", 'sessao', "$Rotas"];
+    EventoService.$inject = ["FileUploader", "Requisicoes", 'sessao', "$q", "$Rotas"];
 
-    function EventoService(FileUploader, Requisicoes, sessao, $Rotas) {
+    function EventoService(FileUploader, Requisicoes, sessao, $q, $Rotas) {
 
         this.deletEvento = deletEvento;
         this.editEvento = editEvento;
@@ -52527,29 +52475,17 @@ angular.module('pdApp', [
             return Requisicoes.destroy(url);
         }
 
-        function editEvento(evento) {
+        function editEvento(evento, uploader) {
 
             url = $Rotas.editEvento;
+            
+            return Requisicoes.putEvento(url, ev);
 
-            ev = Object.assign({}, evento);
-
-            ev.hora_fim = ev.hora_fim.toTimeString().substr(0, 8);
-            ev.hora_inicio = ev.hora_inicio.toTimeString().substr(0, 8);
-
-            if ("file" in ev.imagem) {
-                ev.imagem = ev.imagem.file;
-            }
-
-            tipo = "evento";
-
-            console.log(ev);
-
-            return Requisicoes.put(url, ev, tipo);
         }
 
         function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, QR,
             latitude, longitude, uploader) {
-
+            //fora de uso por causa do módulo
             url = $Rotas.sendEvento;
             tipo = "evento";
 
@@ -52563,7 +52499,6 @@ angular.module('pdApp', [
                 hora_fim: horaFim,
                 descricao: descricao,
                 lugar: local,
-                //imagem: imagem,
                 qrcode: QR,
                 localizacao_lati: latitude,
                 localizacao_long: longitude
@@ -52575,18 +52510,7 @@ angular.module('pdApp', [
 
             console.log(evento);
 
-            //return Requisicoes.post(url, evento, tipo);
-
-            uploader.queue[0].formData[0] = evento;
-            console.log(uploader);
-            console.log(uploader.queue[0]);
-
-            uploader.queue[0].onComplete = function (response, status, headers) {
-                return response;
-            }
-
-            uploader.queue[0].upload();
-            //return uploader.queue[0].upload();
+            return Requisicoes.post(url, evento, tipo);
         }
 
         function listaEventos() {
@@ -52760,9 +52684,10 @@ angular.module('pdApp', [
         this.relatorio = relatorio;
 
         function deletUser(id) {
-            url = $Rotas.deletUser;
+            
+            url = $Rotas.deletUser + "/" + id;
 
-            return Requisicoes.destroy(url, id);
+            return Requisicoes.destroy(url);
         }
 
         function editUser(usuario) {
@@ -52828,6 +52753,7 @@ angular.module('pdApp', [
         escopo.get = get;
         escopo.post = post;
         escopo.put = put;
+        escopo.putEvento = putEvento;
         escopo.sessao = sessao;
 
         function destroy(url) {
@@ -52899,6 +52825,29 @@ angular.module('pdApp', [
                 method: "PUT",
                 url: url + "/" + da[tipo].id,
                 data: da,  // um objeto
+                headers: { 'Content-Type': 'application/json' }
+            }).then(
+                function sucesso(response) {
+                    console.log("resolve")
+                    resposta.resolve(response.data);
+                }, function falha(erro) {
+                    response = { erro: erro.data, status: erro.status };
+                    console.log("reject")
+                    resposta.reject(response);
+                }
+                );
+            console.log('resposta.promise');
+            console.log(resposta.promise);
+            return resposta.promise;
+        };
+
+        function putEvento(url, dados) {
+            console.log(url);
+            resposta = $q.defer();
+            $http({
+                method: "PUT",
+                url: url + "/" + da[tipo].id,
+                data: dados,  // um objeto
                 headers: { 'Content-Type': 'application/json' }
             }).then(
                 function sucesso(response) {
@@ -53309,9 +53258,9 @@ function SHA2_512_256(sData) {
         .module('pdApp')
         .controller('CadastroEventoController', CadastroEventoController);
 
-    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'FileUploader', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$window'];
+    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'FileUploader', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$Estados', '$state'];
 
-    function CadastroEventoController($scope, $log, EventoService, FileUploader, LoginService, GeoService, sessao, $Repostas, $window) {
+    function CadastroEventoController($scope, $log, EventoService, FileUploader, LoginService, GeoService, sessao, $Repostas, $Estados, $state) {
         var vm = this; //view model
         vm.botao = false;
         vm.cadastrarEvento = cadastrarEvento;
@@ -53321,25 +53270,21 @@ function SHA2_512_256(sData) {
         vm.horaInicio;
         vm.horaFim;
         vm.imprime = imprime;
-        vm.imagem;
         vm.local;
         vm.latitude = -7.205858600000001;
         vm.longitude = -39.311446;
+        vm.mapLoad = false;
         vm.mensagem;
         vm.nome;
         vm.QR = '';
         vm.uploader = new FileUploader({
             url: '/cadastrarevento',
             alias: 'imagem',
+            method: 'POST',
             removeAfterUpload: true,
         });
         vm.tipo;
         vm.sessao = sessao;
-
-        vm.logzin = function () {
-            console.log(vm.imagem);
-            console.log(vm.uploader);
-        }
 
         vm.uploader.onAfterAddingFile = function (item, filter, options) {
             if (vm.uploader.queue.length > 1) {
@@ -53348,47 +53293,107 @@ function SHA2_512_256(sData) {
         };
 
         function cadastrarEvento() {
-            if (vm.form.$invalid) {
+            console.log(vm.uploader);
+            if (vm.form.$invalid || vm.dataInicio > vm.dataFim) {
                 alert("Preencha os campos corretamente.");
             }
             else {
-                //vm.botao = true;
+                vm.botao = true;
                 vm.horaInicio.setFullYear(2000);
                 vm.horaFim.setFullYear(2000);
-                EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
-                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
-                    vm.latitude, vm.longitude, vm.uploader)
-                    .then(function (data) {
-                        console.log(data);
-                        vm.mensagem = '';
-                        switch (data.erro) { // definir erro pra cada campo
-                            case "000":
-                                console.log(data.body);
-                                vm.mensagem = "Evento criado";
-                                //limpar();
-                                $window.location.href = "#!/listaEvento/";
-                                break;
-                            default:
-                                vm.mensagem = 'Erro: ' + $Repostas[data.erro];
-                                console.log(data.status);
-                                switch (data.erro) {
-                                    case "102":
-                                        vm.nome = '';
-                                    case "501":
-                                        console.log("faça login");
-                                        $window.location.href = "#!/login";
-                                        LoginService.apagar();
-                                    //deslogar
-                                }
-                                break;
-                        } // end switch
-                        vm.botao = false;
-                    },
-                    function (err) {
-                        console.error(err);
-                        vm.botao = false;
-                    }
-                    ); //end then
+
+                evento = {
+                    usuario_id: sessao.id,
+                    nome: vm.nome,
+                    tipo: vm.tipo,
+                    data_inicio: vm.dataInicio,
+                    data_fim: vm.dataFim,
+                    hora_inicio: vm.horaInicio.toTimeString().substr(0, 8),
+                    hora_fim: vm.horaFim.toTimeString().substr(0, 8),
+                    descricao: vm.descricao,
+                    lugar: vm.local,
+                    qrcode: vm.QR,
+                    localizacao_lati: vm.latitude,
+                    localizacao_long: vm.longitude
+                }
+                console.log(evento);
+
+                vm.uploader.queue[0].formData[0] = evento;
+                console.log(vm.uploader);
+                console.log(vm.uploader.queue[0]);
+
+                vm.uploader.queue[0].onSuccess = function (data, status, headers) {
+                    console.log(data);
+                    vm.mensagem = '';
+                    switch (data.erro) { // definir erro pra cada campo
+                        case "000":
+                            console.log(data.body);
+                            vm.mensagem = "Evento criado";
+                            //limpar();
+                            $state.go($Estados.eventoLista);
+                            break;
+                        default:
+                            vm.mensagem = 'Erro: ' + $Repostas[data.erro];
+                            console.log(data.status);
+                            switch (data.erro) {
+                                case "102":
+                                    vm.nome = '';
+                                case "501":
+                                    console.log("faça login");
+                                    $state.go($Estados.login);
+                                    LoginService.apagar();
+                                //deslogar
+                            }
+                            break;
+                    } // end switch
+                }
+
+                vm.uploader.queue[0].onError = function (response, status, headers) {
+                    console.error(response);
+                }
+
+                vm.uploader.queue[0].onComplete = function (response, status, headers) {
+                    vm.botao = false;
+                }
+
+                vm.uploader.queue[0].upload();
+
+                /* Como devia ser mas não é por causa do modulo de enviar imagem
+                                EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
+                                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
+                                    vm.latitude, vm.longitude, vm.uploader)
+                                    .then(function (data) {
+                                        console.log(data);
+                                        vm.mensagem = '';
+                                        switch (data.erro) { // definir erro pra cada campo
+                                            case "000":
+                                                console.log(data.body);
+                                                vm.mensagem = "Evento criado";
+                                                //limpar();
+                                                $state.go($Estados.eventoLista);
+                                                break;
+                                            default:
+                                                vm.mensagem = 'Erro: ' + $Repostas[data.erro];
+                                                console.log(data.status);
+                                                switch (data.erro) {
+                                                    case "102":
+                                                        vm.nome = '';
+                                                    case "501":
+                                                        console.log("faça login");
+                                                        $state.go($Estados.login);
+                                                        LoginService.apagar();
+                                                    //deslogar
+                                                }
+                                                break;
+                                        } // end switch
+                                        vm.botao = false;
+                                    },
+                                    function (err) {
+                                        console.error(err);
+                                        vm.botao = false;
+                                    }
+                                    ); //end then
+                                    */
             }
         }
 
@@ -53411,16 +53416,10 @@ function SHA2_512_256(sData) {
             vm.tipo = '';
         }
 
-        //isso é apenas um teste de observador - remover em versão final
-        $scope.$watch('vm.horaFim', function (current, original) {
-            $log.info('vm.horaFim was %s', original);
-            $log.info('vm.horaFim is now %s', current);
-        });
-
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar();
                 console.log("geo");
@@ -53434,7 +53433,8 @@ function SHA2_512_256(sData) {
                         iniciarMapa();
                     },
                     function (erro) {
-                        console.log(erro);
+                        console.error(erro);
+                        //alert("Erro de Geolocalização.");
                     }
                     );
             }
@@ -53575,6 +53575,8 @@ function SHA2_512_256(sData) {
             $scope.$on('$viewContentLoaded', function () { // faz o mapa carregar sem f5
                 google.maps.event.trigger(map, 'resize');
             });
+
+            vm.mapLoad = true;
         }
         //mapa
 
@@ -53589,7 +53591,7 @@ function SHA2_512_256(sData) {
 // source: app/assets/javascripts/views/cadastroEvento/CadastrodeEventos.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/cadastroEvento/CadastrodeEventos.html", '<div class="imprimivel">\n  <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Código QR</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n            <h1>{{vm.nome}}</h1>\n            <br>\n            <span ng-if="vm.QR==undefined || vm.QR.trim().length>0">\n              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.QR}}">\n            </span>\n          </div>\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="naoimprimivel">\n  <div class="modal fade" id="modalimage" role="dialog" aria-labelledby="modalimageLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="modalimageLabel" ng-click="vm.logzin()">Imagem</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n\n            <img ng-src="{{vm.imagem.url}}" width="100%" height="100%" ng-click="vm.logzin()">\n\n          </div>\n        </div>\n        <div class="modal-footer">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n<div class="container naoimprimivel" style="position:relative;transform: translate(0%, 0%); width:50%;top:0%;background-color:#fafafa">\n  <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">\n\n\n  <form name="vm.form">\n    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n    <div>\n      <label for="nome">\n        <h4>Nome</h4>\n      </label>\n      <input class="form-control" name="nome" type="text" ng-model="vm.nome" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.nome.$dirty && vm.form.nome.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="tipo">\n        <h4>Tipo</h4>\n      </label>\n      <input class="form-control" type="text" name="tipo" ng-model="vm.tipo" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.tipo.$dirty && vm.form.tipo.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="data-inicio">\n        <h4>Data de inicio</h4>\n      </label>\n      <input class="form-control" name="data-inicio" type="date" ng-model="vm.dataInicio" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.data-inicio.$dirty && vm.form.data-inicio.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="data-termino">\n        <h4>Data de término</h4>\n      </label>\n      <input class="form-control" name="data-termino" type="date" ng-model="vm.dataFim" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.data-termino.$dirty && vm.form.data-termino.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="hora-inicio">\n        <h4>Hora de Inicio</h4>\n      </label>\n      <input class="form-control" name="hora-inicio" type="time" ng-model="vm.horaInicio" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.hora-inicio.$dirty && vm.form.hora-inicio.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="hora-termino">\n        <h4>Hora de Término</h4>\n      </label>\n      <input class="form-control" name="hora-termino" type="time" ng-model="vm.horaFim" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.hora-termino.$dirty && vm.form.hora-termino.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="local">\n        <h4>Local</h4>\n      </label>\n      <textarea class="form-control" name="local" ng-model="vm.local" required></textarea>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.local.$dirty && vm.form.local.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="desc">\n        <h4>Descrição</h4>\n      </label>\n      <textarea class="form-control" name="desc" ng-model="vm.descricao" required></textarea>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.desc.$dirty && vm.form.desc.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Qrcode</h4>\n      </label>\n      <br>\n      <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-responsive" style="width: auto">\n        <span class="	glyphicon glyphicon-qrcode" style="width:auto"></span> Gerar Qrcode </button>\n      <input class="form-control" type="text" name="qr" ng-model="vm.QR" required style="width:60%">\n      <div role="alert">\n        <span class="error" ng-show="vm.form.qr.$dirty && vm.form.qr.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Imagem</h4>\n      </label>\n      <br>\n      <div class="input-group" style="width: 100%;">\n        <label class="input-group-btn" style="width: 20%">\n          <span class="btn btn-primary">\n            <span class="glyphicon glyphicon-camera"></span> Escolher Imagem\n            <!--\n            <input type="file" name="img" ng-model="vm.imagem" required accept="image/*" style="display: none !important;" app-filereader>\n            -->\n            <input type="file" name="img" nv-file-select uploader="vm.uploader" ng-model="vm.imagem" accept="image/*" style="display: none !important;">\n          </span>\n        </label>\n        <input type="text" class="form-control" style="width: 75%" readonly>\n        <button type="button" data-toggle="modal" data-target="#modalimage" class="btn btn-primary btn-responsive" style="width: 25%">\n          Ver imagem</button>\n      </div>\n    </div>\n\n    <div role="alert">\n      <span class="error" ng-show="vm.form.img.$dirty && vm.form.img.$error.required">\n        (Campo obrigatório)\n      </span>\n    </div>\n\n    <div>\n      <label for="latitude">\n        <h4>Latitude</h4>\n      </label>\n      <input class="form-control" disabled type="text" ng-model="vm.latitude" name="lat">\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.lat.$dirty && vm.form.lat.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="longitude">\n        <h4>Longitude</h4>\n      </label>\n      <input class="form-control" disabled type="text" ng-model="vm.longitude" name="long">\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.long.$dirty && vm.form.long.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <br>\n    <button class="btn btn-info btn-responsive" ng-click="vm.cadastrarEvento()" ng-disabled="vm.botao" style="background-color:#007db7">\n      <span class="	glyphicon glyphicon-ok"></span> OK</button>\n\n  </form>\n\n\n\n  <br>\n  <br>\n</div>\n\n<input id="pac-input" class="controls" type="text" placeholder="Busca">\n<div class="naoimprimivel" id="map"></div>')
+  $templateCache.put("views/cadastroEvento/CadastrodeEventos.html", '<div class="imprimivel">\n  <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Código QR</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n            <h1>{{vm.nome}}</h1>\n            <br>\n            <span ng-if="vm.QR==undefined || vm.QR.trim().length>0">\n              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.QR}}">\n            </span>\n          </div>\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="container naoimprimivel" style="position:relative;transform: translate(0%, 0%); width:50%;top:0%;background-color:#fafafa">\n  <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">\n\n\n  <form name="vm.form">\n    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n    <div>\n      <label for="nome">\n        <h4>Nome</h4>\n      </label>\n      <input class="form-control" name="nome" type="text" ng-model="vm.nome" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.nome.$dirty && vm.form.nome.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="tipo">\n        <h4>Tipo</h4>\n      </label>\n      <input class="form-control" type="text" name="tipo" ng-model="vm.tipo" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.tipo.$dirty && vm.form.tipo.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="data-inicio">\n        <h4>Data de inicio</h4>\n      </label>\n      <input class="form-control" name="data-inicio" type="date" ng-model="vm.dataInicio" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.data-inicio.$dirty && vm.form.data-inicio.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="data-termino">\n        <h4>Data de término</h4>\n      </label>\n      <input class="form-control" name="data-termino" type="date" ng-model="vm.dataFim" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.data-termino.$dirty && vm.form.data-termino.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="hora-inicio">\n        <h4>Hora de Inicio</h4>\n      </label>\n      <input class="form-control" name="hora-inicio" type="time" ng-model="vm.horaInicio" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.hora-inicio.$dirty && vm.form.hora-inicio.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="hora-termino">\n        <h4>Hora de Término</h4>\n      </label>\n      <input class="form-control" name="hora-termino" type="time" ng-model="vm.horaFim" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.hora-termino.$dirty && vm.form.hora-termino.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="local">\n        <h4>Local</h4>\n      </label>\n      <textarea class="form-control" name="local" ng-model="vm.local" required></textarea>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.local.$dirty && vm.form.local.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="desc">\n        <h4>Descrição</h4>\n      </label>\n      <textarea class="form-control" name="desc" ng-model="vm.descricao" required></textarea>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.desc.$dirty && vm.form.desc.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Qrcode</h4>\n      </label>\n      <br>\n      <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-responsive" style="width: auto">\n        <span class="	glyphicon glyphicon-qrcode" style="width:auto"></span> Gerar Qrcode </button>\n      <input class="form-control" type="text" name="qr" ng-model="vm.QR" required style="width:60%">\n      <div role="alert">\n        <span class="error" ng-show="vm.form.qr.$dirty && vm.form.qr.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Imagem</h4>\n      </label>\n      <br>\n      <div class="input-group" style="width: 100%;">\n        <label class="input-group-btn" style="width: 20%">\n          <span class="btn btn-primary">\n            <span class="glyphicon glyphicon-camera"></span> Escolher Imagem\n            <input type="file" name="img" nv-file-select uploader="vm.uploader" accept="image/*" style="display: none !important;">\n          </span>\n        </label>\n        <input type="text" class="form-control" style="width: 75%" readonly placeholder="Nenhuma escolhida">\n      </div>\n    </div>\n\n    <div role="alert">\n      <span class="error" ng-show="vm.form.img.$dirty && vm.form.img.$error.required">\n        (Campo obrigatório)\n      </span>\n    </div>\n\n    <div>\n      <label for="latitude">\n        <h4>Latitude</h4>\n      </label>\n      <input class="form-control" disabled type="text" ng-model="vm.latitude" name="lat">\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.lat.$dirty && vm.form.lat.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="longitude">\n        <h4>Longitude</h4>\n      </label>\n      <input class="form-control" disabled type="text" ng-model="vm.longitude" name="long">\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.long.$dirty && vm.form.long.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <br>\n    <button class="btn btn-info btn-responsive" ng-click="vm.cadastrarEvento()" ng-disabled="vm.botao" style="background-color:#007db7">\n      <span class="	glyphicon glyphicon-ok"></span> OK</button>\n\n  </form>\n\n  <br>\n  <br>\n</div>\n\n<input ng-show="vm.mapLoad" id="pac-input" class="controls" type="text" placeholder="Busca">\n<div ng-show="vm.mapLoad" class="naoimprimivel" id="map"></div>')
 }]);
 
 (function () {
@@ -53597,9 +53599,9 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 		.module('pdApp')
 		.controller("CadastroUserController", CadastroUserController);
 
-	CadastroUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$window'];
+	CadastroUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$Estados', '$state'];
 
-	function CadastroUserController(LoginService, UserService, sessao, $Respostas, $window) {
+	function CadastroUserController(LoginService, UserService, sessao, $Respostas, $Estados, $state) {
 
 		var vm = this;
 
@@ -53627,7 +53629,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 								console.log(data.body);
 								vm.mensagem = "Usuário criado";
 								//limpar();
-								$window.location.href = "#!/listaUser/";
+								$state.go($Estados.userLista);
 								break;
 							default:
 								vm.mensagem = "Erro: " + $Respostas[data.erro];
@@ -53650,7 +53652,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 										break;
 									case "501":
 										console.log("Sessão expirada.");
-										$window.location.href = "#!/login/";
+										$state.go($Estados.login);
 										LoginService.apagar();
 										break;
 								}
@@ -53670,7 +53672,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 		var init = function () {
 			if (vm.sessao.nome == '') {
 				console.log("faça login");
-				$window.location.href = "#!/login/";
+				$state.go($Estados.login);
 			}
 			else {
 				LoginService.checar();
@@ -53760,9 +53762,9 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         .module('pdApp')
         .controller('EditEventoController', EditEventoController);
 
-    EditEventoController.$inject = ['$scope', 'EventoService', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$stateParams', '$window'];
+    EditEventoController.$inject = ['$scope', 'EventoService', 'FileUploader', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$Estados', '$state', '$stateParams'];
 
-    function EditEventoController($scope, EventoService, GeoService, LoginService, sessao, $Respostas, $stateParams, $window) {
+    function EditEventoController($scope, EventoService, FileUploader, GeoService, LoginService, sessao, $Respostas, $Estados, $state, $stateParams) {
         var vm = this;
         vm.botao = false;
         x = $stateParams.evento;
@@ -53775,20 +53777,34 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         vm.imprime = imprime;
         vm.mensagem;
         vm.sessao = sessao;
-
-        $scope.$watch('vm.evento.hora_fim', function (current, original) {
-            console.info('vm.evento.hora_fim era %s', original);
-            console.info('vm.evento.hora_fim é %s', current);
+        vm.uploader = new FileUploader({
+            url: '/eventos',
+            alias: 'imagem',
+            method: 'PUT',
+            removeAfterUpload: true,
         });
 
         function editEvento() {
-            if (vm.form.$invalid) {
+            if (vm.form.$invalid || vm.evento.data_inicio > vm.evento.data_fim) {
                 alert("Preencha os campos corretamente.");
             }
             else {
                 vm.botao = true;
-                EventoService.editEvento(vm.evento)
-                    .then(function (data) {
+
+                ev = Object.assign({}, vm.evento);
+
+                ev.hora_fim = ev.hora_fim.toTimeString().substr(0, 8);
+                ev.hora_inicio = ev.hora_inicio.toTimeString().substr(0, 8);
+
+                console.log(ev);
+
+                if (vm.uploader.queue.length > 0) {
+                    vm.uploader.queue[0].url = 'eventos/' + ev.id;
+                    vm.uploader.queue[0].formData[0] = ev;
+                    vm.uploader.queue[0].method = "PUT";
+                    console.log(vm.uploader.queue[0]);
+
+                    vm.uploader.queue[0].onSuccess = function (data, status, headers) {
                         console.log(data);
                         vm.mensagem = '';
                         switch (data.erro) { // definir erro pra cada campo
@@ -53796,7 +53812,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                                 console.log(data.body);
                                 vm.mensagem = "Evento criado";
                                 //limpar();
-                                $window.location.href = "#!/listaEvento/";
+                                $state.go($Estados.eventoLista);
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Respostas[data.erro];
@@ -53807,13 +53823,53 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                                     case "501":
                                         console.log("sessão expirada");
                                         LoginService.apagar();
-                                        $window.location.href = "#!/login";
+                                        $state.go($Estados.login);
                                     //deslogar
                                 }
                                 break;
                         } // end switch
+                    }
+
+                    vm.uploader.queue[0].onError = function (response, status, headers) {
+                        console.error(response);
+                    }
+
+                    vm.uploader.queue[0].onComplete = function (response, status, headers) {
                         vm.botao = false;
-                    }); //end then
+                    }
+
+                    vm.uploader.queue[0].upload();
+                }
+
+                else { // caso não mude a imagem
+                    EventoService.editEvento(vm.evento, vm.uploader)
+                        .then(function (data) {
+                            console.log(data);
+                            vm.mensagem = '';
+                            switch (data.erro) { // definir erro pra cada campo
+                                case "000":
+                                    console.log(data.body);
+                                    vm.mensagem = "Evento criado";
+                                    //limpar();
+                                    $state.go($Estados.eventoLista);
+                                    break;
+                                default:
+                                    vm.mensagem = 'Erro: ' + $Respostas[data.erro];
+                                    console.log(data.status);
+                                    switch (data.erro) {
+                                        case "102":
+                                            vm.nome = '';
+                                        case "501":
+                                            console.log("sessão expirada");
+                                            LoginService.apagar();
+                                            $state.go($Estados.login);
+                                        //deslogar
+                                    }
+                                    break;
+                            } // end switch
+                            vm.botao = false;
+                        }); //end then
+                }   // fim do else não mude imagem
             }
         }
 
@@ -53836,7 +53892,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar();
 
@@ -53992,7 +54048,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // source: app/assets/javascripts/views/editarEvento/editEvento.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/editarEvento/editEvento.html", '<div class="imprimivel">\n  <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Código QR</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n            {{vm.evento.nome}}\n            <span ng-if="vm.evento.qrcode==undefined || vm.evento.qrcode.trim().length>0">\n              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.evento.qrcode}}">\n            </span>\n          </div>\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="naoimprimivel">\n  <div class="modal fade" id="modalimage" role="dialog" aria-labelledby="modalimageLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="modalimageLabel">Imagem</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n\n            <img ng-src="{{vm.evento.imagem.url}}" width="100%" height="100%">\n\n          </div>\n        </div>\n        <div class="modal-footer">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="container" style="position:relative;transform: translate(0%, 5%); width:50%;top:0%;background-color:#fafafa">\n  <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">\n\n  <form name="vm.form">\n    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n\n    <label for="nome">\n      <h4>Nome</h4>\n    </label>\n    <input class="form-control" name="nome" type="text" ng-model="vm.evento.nome">\n    <br>\n\n    <label for="tipo">\n      <h4>Tipo</h4>\n    </label>\n    <input class="form-control" type="text" name="tipo" ng-model="vm.evento.tipo">\n    <br>\n\n    <label for="data-inicio">\n      <h4>Data de inicio</h4>\n    </label>\n    <input class="form-control" name="data-inicio" type="date" ng-model="vm.evento.data_inicio">\n    <br>\n\n    <label for="data-termino">\n      <h4>Data de término</h4>\n    </label>\n    <input class="form-control" name="data-termino" type="date" ng-model="vm.evento.data_fim">\n    <br>\n\n    <label for="hora-inicio">\n      <h4>Hora de Inicio</h4>\n    </label>\n    <input class="form-control" name="hora-inicio" type="time" ng-model="vm.evento.hora_inicio">\n    <br>\n\n    <label for="hora-termino">\n      <h4>Hora de Término</h4>\n    </label>\n    <input class="form-control" name="hora-termino" type="time" ng-model="vm.evento.hora_fim">\n    <br>\n\n    <label for="local">\n      <h4>Local</h4>\n    </label>\n    <textarea class="form-control" name="local" ng-model="vm.evento.lugar"></textarea>\n    <br>\n\n    <label for="desc">\n      <h4>Descrição</h4>\n    </label>\n    <textarea class="form-control" name="desc" ng-model="vm.evento.descricao"></textarea>\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Qrcode</h4>\n      </label>\n      <br>\n      <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-responsive" style="width: auto">\n        <span class="	glyphicon glyphicon-qrcode" style="width:auto"></span> Gerar Qrcode </button>\n      <input class="form-control" type="text" name="qr" ng-model="vm.evento.qrcode" style="width:60%">\n    </div>\n\n\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Imagem</h4>\n      </label>\n      <br>\n      <div class="input-group" style="width: 100%;">\n        <label class="input-group-btn" style="width: 20%">\n          <span class="btn btn-primary">\n            <span class="glyphicon glyphicon-camera"></span> Escolher Imagem\n            <input type="file" name="img" ng-model="vm.evento.imagem" accept="image/*" style="display: none !important;" app-filereader>\n          </span>\n        </label>\n        <input type="text" class="form-control" style="width: 75%" readonly>\n        <button type="button" data-toggle="modal" data-target="#modalimage" class="btn btn-primary" style="width: 25%">\n          Ver imagem</button>\n      </div>\n    </div>\n\n    <label for="latitude">\n      <h4>Latitude</h4>\n    </label>\n    <input class="form-control" type="text" disabled ng-model="vm.evento.localizacao_lati">\n    <br>\n\n    <label for="longitude">\n      <h4>Longitude</h4>\n    </label>\n    <input class="form-control" type="text" disabled ng-model="vm.evento.localizacao_long">\n    <br>\n\n    <br>\n    <button class="btn btn-info" ng-click="vm.editEvento()" ng-disabled="vm.botao" style="background-color:#007db7">OK</button>\n\n  </form>\n  <br>\n  <br>\n</div>\n\n<input id="pac-input" class="controls" type="text" placeholder="Busca">\n<div class="naoimprimivel" id="map"></div>')
+  $templateCache.put("views/editarEvento/editEvento.html", '<div class="imprimivel">\n  <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Código QR</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n            {{vm.evento.nome}}\n            <br>\n            <span ng-if="vm.evento.qrcode==undefined || vm.evento.qrcode.trim().length>0">\n              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.evento.qrcode}}">\n            </span>\n          </div>\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="container naoimprimivel" style="position:relative;transform: translate(0%, 5%); width:50%;top:0%;background-color:#fafafa">\n  <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">\n\n  <form name="vm.form">\n    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n\n    <label for="nome">\n      <h4>Nome</h4>\n    </label>\n    <input class="form-control" name="nome" type="text" ng-model="vm.evento.nome">\n    <br>\n\n    <label for="tipo">\n      <h4>Tipo</h4>\n    </label>\n    <input class="form-control" type="text" name="tipo" ng-model="vm.evento.tipo">\n    <br>\n\n    <label for="data-inicio">\n      <h4>Data de inicio</h4>\n    </label>\n    <input class="form-control" name="data-inicio" type="date" ng-model="vm.evento.data_inicio">\n    <br>\n\n    <label for="data-termino">\n      <h4>Data de término</h4>\n    </label>\n    <input class="form-control" name="data-termino" type="date" ng-model="vm.evento.data_fim">\n    <br>\n\n    <label for="hora-inicio">\n      <h4>Hora de Inicio</h4>\n    </label>\n    <input class="form-control" name="hora-inicio" type="time" ng-model="vm.evento.hora_inicio">\n    <br>\n\n    <label for="hora-termino">\n      <h4>Hora de Término</h4>\n    </label>\n    <input class="form-control" name="hora-termino" type="time" ng-model="vm.evento.hora_fim">\n    <br>\n\n    <label for="local">\n      <h4>Local</h4>\n    </label>\n    <textarea class="form-control" name="local" ng-model="vm.evento.lugar"></textarea>\n    <br>\n\n    <label for="desc">\n      <h4>Descrição</h4>\n    </label>\n    <textarea class="form-control" name="desc" ng-model="vm.evento.descricao"></textarea>\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Qrcode</h4>\n      </label>\n      <br>\n      <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-responsive" style="width: auto">\n        <span class="	glyphicon glyphicon-qrcode" style="width:auto"></span> Gerar Qrcode </button>\n      <input class="form-control" type="text" name="qr" ng-model="vm.evento.qrcode" style="width:60%">\n    </div>\n\n\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Imagem</h4>\n      </label>\n      <br>\n      <div class="input-group" style="width: 100%;">\n        <label class="input-group-btn" style="width: 20%">\n          <span class="btn btn-primary">\n            <span class="glyphicon glyphicon-camera"></span> Escolher Imagem\n            <input type="file" name="img" nv-file-select uploader="vm.uploader" accept="image/*" style="display: none !important;">\n          </span>\n        </label>\n        <input type="text" class="form-control" style="width: 75%" readonly placeholder="Não será mudada caso não escolha uma nova">\n      </div>\n    </div>\n\n    <label for="latitude">\n      <h4>Latitude</h4>\n    </label>\n    <input class="form-control" type="text" disabled ng-model="vm.evento.localizacao_lati">\n    <br>\n\n    <label for="longitude">\n      <h4>Longitude</h4>\n    </label>\n    <input class="form-control" type="text" disabled ng-model="vm.evento.localizacao_long">\n    <br>\n\n    <br>\n    <button class="btn btn-info" ng-click="vm.editEvento()" ng-disabled="vm.botao" style="background-color:#007db7">OK</button>\n\n  </form>\n  <br>\n  <br>\n</div>\n\n<input id="pac-input" class="controls" type="text" placeholder="Busca">\n<div class="naoimprimivel" id="map"></div>')
 }]);
 
 (function () {
@@ -54000,22 +54056,22 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         .module('pdApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['LoginService', 'sessao', '$cookies', '$window'];
-    function HomeController(LoginService, sessao, $cookies, $window) {
+    HomeController.$inject = ['LoginService', 'sessao', '$cookies', '$Estados', '$state'];
+    function HomeController(LoginService, sessao, $cookies, $Estados, $state) {
         var homeVM = this;
         homeVM.sessao = sessao;
 
         var init = function () {
             if (homeVM.sessao.id == undefined) {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             }
             else {
                 LoginService.checar().then(
-                    function(data){
+                    function (data) {
                         console.log(data);
                     },
-                    function(err){
+                    function (err) {
                         console.error(err);
                     }
                 );
@@ -54029,7 +54085,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // source: app/assets/javascripts/views/home/home.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/home/home.html", '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<meta http-equiv="X-UA-Compatible" content="ie=edge">\n\n\n\n\n\n<div class="jumbotron text-center" style="font-family:roboto;width:105.9%;transform: translate(-3%, 0%);background-image: url(/assets/logo3.png);">\n  <h1> <kbd> Ponto Dinâmico </kbd></h1>\n\n\n  <p style="font-family:roboto"> <kbd>Seja bem-vindo ao Ponto Dinâmico </kbd></p>\n</div>\n\n<div class="container">\n  <div class="row">\n    <div class="col-sm-6">\n      <div class="list-group" style="position:relative;left:50%;transform: translate(-50%, -0%); width:100%;top:30%;text-align: center ">\n        <li class="list-group-item list-group-item-info" style="font-size:150%;font-family:Ubuntu;color:Black">Cadastros</li>\n        <a href="#!/cadastrarEvento/" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Cadastrar evento</a>\n        <a href="#!/cadastrarUser/" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Cadastrar perfil do usuário</a>\n        <a href="#" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Gerar Qrcode </a>\n      </div>\n    </div>\n    <div class="col-sm-6">\n      <div class="list-group" style="position:relative;left:50%;transform: translate(-50%, -0%); width:100%;top:30%;text-align: center ">\n        <li class="list-group-item list-group-item-info" style="font-size:150%;font-family:Ubuntu;color:Black">Relatórios</li>\n        <a href="#!/listaUser/" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Relatório por usuário</a>\n        <a href="#!/listaEvento/" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Relatório por eventos</a>\n      </div>\n    </div>\n\n  </div>\n</div>\n</div>')
+  $templateCache.put("views/home/home.html", '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<meta http-equiv="X-UA-Compatible" content="ie=edge">\n\n\n\n\n\n<div class="jumbotron text-center" style="font-family:roboto;width:105.9%;transform: translate(-3%, 0%);background-image: url(/assets/logo3.png);">\n  <h1> <kbd> Ponto Dinâmico </kbd></h1>\n\n\n  <p style="font-family:roboto"> <kbd>Seja bem-vindo ao Ponto Dinâmico </kbd></p>\n</div>\n\n<div class="container">\n  <div class="row">\n    <div class="col-sm-6">\n      <div class="list-group" style="position:relative;left:50%;transform: translate(-50%, -0%); width:100%;top:30%;text-align: center ">\n        <li class="list-group-item list-group-item-info" style="font-size:150%;font-family:Ubuntu;color:Black">Cadastros</li>\n        <a href="#!/cadastrarEvento" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Cadastrar evento</a>\n        <a href="#!/cadastrarUser" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Cadastrar perfil do usuário</a>\n      </div>\n    </div>\n    <div class="col-sm-6">\n      <div class="list-group" style="position:relative;left:50%;transform: translate(-50%, -0%); width:100%;top:30%;text-align: center ">\n        <li class="list-group-item list-group-item-info" style="font-size:150%;font-family:Ubuntu;color:Black">Relatórios</li>\n        <a href="#!/listaUser" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Relatório por usuário</a>\n        <a href="#!/listaEvento" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Relatório por eventos</a>\n      </div>\n    </div>\n\n  </div>\n</div>\n</div>')
 }]);
 
 (function () {
@@ -54037,9 +54093,9 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         .module('pdApp')
         .controller('ListaEventoController', ListaEventoController);
 
-    ListaEventoController.$inject = ['LoginService', 'EventoService', 'sessao', '$Respostas', '$window'];
+    ListaEventoController.$inject = ['LoginService', 'EventoService', 'sessao', '$Respostas', '$Estados', '$state'];
 
-    function ListaEventoController(LoginService, EventoService, sessao, $Respostas, $window) {
+    function ListaEventoController(LoginService, EventoService, sessao, $Respostas, $Estados, $state) {
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
@@ -54053,6 +54109,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         vm.radio = "nome";
         vm.relatorio = relatorio;
         vm.sessao = sessao;
+        vm.user_evento;
         vm.users = null;
 
         vm.filtro = {
@@ -54080,12 +54137,12 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                             case '000':
                                 console.log(data.body);
                                 console.log("evento deletado");
-                                vm.listaEventos();
+                                listarEventos();
                                 break;
                             case '501':
                                 console.log("sessão expirada");
                                 LoginService.apagar();
-                                $window.location.href = "#!/login";
+                                $state.go($Estados.login);
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Respostas[data.erro];
@@ -54126,11 +54183,15 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                         case '000':
                             console.log(data.body);
                             vm.users = data.body;
+                            vm.user_evento = evento.id;
+                            break;
+                        case '301':
+                            alert("Nenhum usuário cadastrado neste evento");
                             break;
                         case '501':
                             console.log("sessão expirada");
                             LoginService.apagar();
-                            $window.location.href = "#!/login";
+                            $state.go($Estados.login);
                             break;
                         default:
                             vm.mensagem = 'Erro: ' + $Respostas[data.erro];
@@ -54168,7 +54229,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar()
                     .then(function (data) {
@@ -54184,7 +54245,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // source: app/assets/javascripts/views/listaEvento/listaEvento.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/listaEvento/listaEvento.html", '<div class="naoimprimivel">\n  <div class="modal fade" id="informacoes" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Informações</h4>\n        </div>\n        <div class="modal-body">\n\n          <label for="nome">\n            <h4>Nome</h4>\n          </label>\n          <input disabled class="form-control" name="nome" type="text" ng-model="vm.info.nome">\n          <br>\n\n          <label for="tipo">\n            <h4>Tipo</h4>\n          </label>\n          <input disabled class="form-control" type="text" name="tipo" ng-model="vm.info.tipo">\n          <br>\n\n          <label for="data-inicio">\n            <h4>Data de inicio</h4>\n          </label>\n          <input disabled class="form-control" name="data-inicio" type="date" ng-model="vm.info.data_inicio">\n          <br>\n\n          <label for="data-termino">\n            <h4>Data de término</h4>\n          </label>\n          <input disabled class="form-control" name="data-termino" type="date" ng-model="vm.info.data_fim">\n          <br>\n\n          <label for="hora-inicio">\n            <h4>Hora de Inicio</h4>\n          </label>\n          <input disabled class="form-control" name="hora-inicio" type="time" ng-model="vm.info.hora_inicio">\n          <br>\n\n          <label for="hora-termino">\n            <h4>Hora de Término</h4>\n          </label>\n          <input disabled class="form-control" name="hora-termino" type="time" ng-model="vm.info.hora_fim">\n          <br>\n\n          <label for="local">\n            <h4>Local</h4>\n          </label>\n          <textarea disabled class="form-control" name="local" ng-model="vm.info.lugar"></textarea>\n          <br>\n\n          <label for="desc">\n            <h4>Descrição</h4>\n          </label>\n          <textarea disabled class="form-control" name="desc" ng-model="vm.info.descricao"></textarea>\n          <br>\n\n          <label for="qr">\n            <h4>Qrcode</h4>\n          </label>\n          <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.info.qrcode}}">\n          <br>\n\n          <label for="imagem">\n            <h4>Imagem</h4>\n          </label>\n          <img ng-src="{{vm.info.imagem.url}}">\n          <br>\n\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n<div class="container" style="background-color:#e3f2fd">\n  <div class="row">\n    <br>\n    <br>\n    <form name="vm.form" class="form-horizontal">\n      <div class="form-group">\n        <div class="col-xs-9" style="position:relative;transform: translate(20%, 0%)">\n          <input type="text" class="form-control" ng-change="vm.buscar()" ng-model="vm.busca" placeholder="Nome ou Data">\n          <br>\n          <label class="radio-inline">Buscar por </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'" ng-model="vm.radio" value="nome" checked=\'checked\'> Nome do evento\n          </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'" ng-model="vm.radio" value="data"> Data\n          </label>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n<div class="container">\n  <h2>Resultado</h2>\n  <p>Informações :</p>\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>Data</th>\n        <th>Nome do evento</th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n      </tr>\n    </thead>\n    <tbody>\n      <div>\n        <tr ng-repeat="evento in vm.eventos | filter:vm.filtro:strict" ng-class="evento.classe">\n          <td>{{evento.data_inicio | date:"dd/MM/yyyy"}}</td>\n          <td>{{evento.nome}}</td>\n          <td>\n            <a ui-sref="editEvento({evento: evento})" type="button" class="btn btn-primary" style="color:white">editar</a>\n          </td>\n          <td>\n            <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" style="color:white" ng-click="vm.informar(evento)">informações</a>\n          </td>\n          <td>\n            <a ng-click="vm.relatorio(evento)" type="button" class="btn btn-primary" style="color:white">relatório</a>\n          </td>\n          <td>\n            <a ng-click="vm.deletar(evento.id, evento.nome)" type="button" class="btn btn-danger" style="color:white">Excluir</a>\n          </td>\n        </tr>\n      </div>\n    </tbody>\n  </table>\n  <h2>Detalhes</h2>\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>Nome:</th>\n        <th>Presenças:</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr class="active" ng-repeat="user in vm.users">\n        <td>{{user.nome}}</td>\n        <td>{{user.presenca}}</td>\n      </tr>\n    </tbody>\n  </table>\n</div>')
+  $templateCache.put("views/listaEvento/listaEvento.html", '<div class="naoimprimivel">\n  <div class="modal fade" id="informacoes" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Informações</h4>\n        </div>\n        <div class="modal-body">\n\n          <label for="nome">\n            <h4>Nome</h4>\n          </label>\n          <input disabled class="form-control" name="nome" type="text" ng-model="vm.info.nome">\n          <br>\n\n          <label for="tipo">\n            <h4>Tipo</h4>\n          </label>\n          <input disabled class="form-control" type="text" name="tipo" ng-model="vm.info.tipo">\n          <br>\n\n          <label for="data-inicio">\n            <h4>Data de inicio</h4>\n          </label>\n          <input disabled class="form-control" name="data-inicio" type="date" ng-model="vm.info.data_inicio">\n          <br>\n\n          <label for="data-termino">\n            <h4>Data de término</h4>\n          </label>\n          <input disabled class="form-control" name="data-termino" type="date" ng-model="vm.info.data_fim">\n          <br>\n\n          <label for="hora-inicio">\n            <h4>Hora de Inicio</h4>\n          </label>\n          <input disabled class="form-control" name="hora-inicio" type="time" ng-model="vm.info.hora_inicio">\n          <br>\n\n          <label for="hora-termino">\n            <h4>Hora de Término</h4>\n          </label>\n          <input disabled class="form-control" name="hora-termino" type="time" ng-model="vm.info.hora_fim">\n          <br>\n\n          <label for="local">\n            <h4>Local</h4>\n          </label>\n          <textarea disabled class="form-control" name="local" ng-model="vm.info.lugar"></textarea>\n          <br>\n\n          <label for="desc">\n            <h4>Descrição</h4>\n          </label>\n          <textarea disabled class="form-control" name="desc" ng-model="vm.info.descricao"></textarea>\n          <br>\n\n          <label for="qr">\n            <h4>Qrcode</h4>\n          </label>\n          <br>\n          <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.info.qrcode}}">\n          <br>\n\n          <label for="imagem">\n            <h4>Imagem</h4>\n          </label>\n          <br>\n          <img class="img-responsive" ng-src="{{vm.info.imagem.url}}">\n          <br>\n\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n<div class="container" style="background-color:#e3f2fd">\n  <div class="row">\n    <br>\n    <br>\n    <form name="vm.form" class="form-horizontal">\n      <div class="form-group">\n        <div class="col-xs-9" style="position:relative;transform: translate(20%, 0%)">\n          <input type="text" class="form-control" ng-change="vm.buscar()" ng-model="vm.busca" placeholder="Nome ou Data">\n          <br>\n          <label class="radio-inline">Buscar por </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'" ng-model="vm.radio" value="nome" checked=\'checked\'> Nome do evento\n          </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'" ng-model="vm.radio" value="data"> Data\n          </label>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n<div class="container">\n  <h2>Resultado</h2>\n  <p>Informações :</p>\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>Data de início</th>\n        <th>Nome do evento</th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n      </tr>\n    </thead>\n    <tbody>\n      <div>\n        <tr ng-repeat="evento in vm.eventos | filter:vm.filtro:strict" ng-class="evento.classe">\n          <td>{{evento.data_inicio | date:"dd/MM/yyyy"}}</td>\n          <td>{{evento.nome}}</td>\n          <td>\n            <a ui-sref="editEvento({evento: evento})" type="button" class="btn btn-primary" style="color:white">Editar</a>\n          </td>\n          <td>\n            <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" style="color:white" ng-click="vm.informar(evento)">Informações</a>\n          </td>\n          <td>\n            <a ng-click="vm.relatorio(evento)" type="button" class="btn btn-primary" style="color:white">Relatório</a>\n          </td>\n          <td>\n            <a ng-click="vm.deletar(evento.id, evento.nome)" type="button" class="btn btn-danger" style="color:white">Excluir</a>\n          </td>\n        </tr>\n      </div>\n    </tbody>\n  </table>\n  <h2>Detalhes</h2>\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>Nome:</th>\n        <th>Presenças:</th>\n        <th> </th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr class="active" ng-repeat="user in vm.users">\n        <td>{{user.nome}}</td>\n        <td>{{user.presenca}}</td>\n        <td>\n          <a ui-sref="listaUser({id_user: user.id, id_evento: vm.user_evento})" type="button" class="btn btn-primary" style="color:white">Abrir pontos</a>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n</div>')
 }]);
 
 (function () {
@@ -54192,9 +54253,9 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         .module('pdApp')
         .controller('ListaUserController', ListaUserController);
 
-    ListaUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$window'];
+    ListaUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$Estados', '$state', '$stateParams'];
 
-    function ListaUserController(LoginService, UserService, sessao, $Respostas, $window) {
+    function ListaUserController(LoginService, UserService, sessao, $Respostas, $Estados, $state, $stateParams) {
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
@@ -54225,8 +54286,8 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
             }
         }
 
-        function deletar(id) {
-            if (confirm("Tem certeza que deseja deletar este usuário?")) {
+        function deletar(id, nome) {
+            if (confirm("Tem certeza que deseja deletar o usuário " + nome + "?")) {
                 UserService.deletUser(id).then(
                     function (data) {
                         console.log(data);
@@ -54234,12 +54295,12 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                             case '000':
                                 console.log(data.body);
                                 console.log("usuário deletado");
-                                vm.listaEventos();
+                                listar();
                                 break;
                             case '501':
                                 console.log("sessão expirada");
                                 LoginService.apagar();
-                                $window.location.href = "#!/login";
+                                $state.go($Estados.login);
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Respostas[data.erro];
@@ -54265,10 +54326,13 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                             console.log(data.body);
                             vm.pontos = data.body;
                             break;
+                        case '301':
+                            alert("Usuário sem pontos neste evento");
+                            break;
                         case '501':
                             console.log("sessão expirada");
                             LoginService.apagar();
-                            $window.location.href = "#!/login";
+                            $state.go($Estados.login);
                             break;
                         default:
                             vm.mensagem = 'Erro' + $Respostas[data.erro];
@@ -54300,11 +54364,24 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                                 ev.classe = 'active';
                             });
                             vm.usu_id = id;
+                            if ($stateParams.id_evento != null) {
+                                let alvo;
+                                vm.eventos.forEach(function (ev) {
+                                    if (ev.id == $stateParams.id_evento) {
+                                        alvo = ev;
+                                    }
+                                });
+                                vm.listaPontos(alvo);
+                            }
+
+                            break;
+                        case '301':
+                            alert("Usuário não cadastrado em nenhum evento");
                             break;
                         case '501':
                             console.log("sessão expirada");
                             LoginService.apagar();
-                            $window.location.href = "#!/login";
+                            $state.go($Estados.login);
                             break;
                         default:
                             vm.mensagem = 'Erro' + $Respostas[data.erro];
@@ -54324,6 +54401,17 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                             vm.users.forEach(function (user) {
                                 user.classe = 'active';
                             });
+                            console.log($stateParams);
+                            if ($stateParams.id_user != null) {
+                                let alvo;
+                                vm.users.forEach(function (u) {
+                                    if (u.id == $stateParams.id_user) {
+                                        alvo = u;
+                                    }
+                                });
+                                vm.relatorio(alvo);
+                            }
+
                             break;
                         default:
                             break;
@@ -54334,7 +54422,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar()
                     .then(function (data) {
@@ -54350,7 +54438,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // source: app/assets/javascripts/views/listaUser/listaUser.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/listaUser/listaUser.html", '<div class="naoimprimivel">\n  <div class="modal fade" id="informacoes" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Informações</h4>\n        </div>\n        <div class="modal-body">\n\n          <label for="nome">\n            <h4>Nome</h4>\n          </label>\n          <input disabled class="form-control" name="nome" type="text" ng-model="vm.info.nome"> -\n          <br>\n\n          <label for="email">\n            <h4>E-mail</h4>\n          </label>\n          <input disabled class="form-control" type="text" name="email" ng-model="vm.info.email">\n          <br>\n\n          <label for="matricula">\n            <h4>Matrícula</h4>\n          </label>\n          <input disabled class="form-control" name="matricula" type="text" ng-model="vm.info.matricula">\n          <br>\n\n          <label for="mac">\n            <h4>MAC</h4>\n          </label>\n          <input disabled class="form-control" name="mac" type="text" ng-model="vm.info.mac">\n          <br>\n\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="container" style="background-color:#e3f2fd; ">\n  <div class="row">\n    <br>\n    <br>\n    <form name="vm.form" class="form-horizontal">\n      <div class="form-group">\n        <div class="col-xs-9" style="position:relative;transform: translate(20%, 0%)">\n          <input type="text" class="form-control" ng-change="vm.buscar()" ng-model="vm.busca" placeholder="Nome ou Número de Matrícula">\n          <br>\n          <label class="radio-inline">Buscar por </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'; vm.buscar()" ng-model="vm.radio" value="nome" checked=\'checked\'> Nome\n          </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'; vm.buscar()" ng-model="vm.radio" value="matricula"> Número da matrícula\n          </label>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n<div class="container">\n  <h2>Resultado</h2>\n  <p>Informações :</p>\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>NúmeroM</th>\n        <th>Nome</th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr ng-repeat="user in vm.users | filter:vm.filtro:strict" ng-class="user.classe">\n        <span style="width: max-content">\n          <td>{{user.matricula}}</td>\n          <td>{{user.nome}}</td>\n          <td>\n            <a ui-sref="editUser({user: user})" type="button" class="btn btn-primary" style="color:white">editar</a>\n          </td>\n          <td>\n            <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" ng-click="vm.informar(user)"\n              style="color:white">informações</a>\n          </td>\n          <td>\n            <a ng-click="vm.relatorio(user)" type="button" class="btn btn-primary" style="color:white">relatório</a>\n          </td>\n        </span>\n      </tr>\n    </tbody>\n  </table>\n  <h2>Relatório:</h2>\n\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>nome</th>\n        <th>Data Início</th>\n        <th>Data Fim</th>\n        <th> </th>\n        <th> </th>\n      </tr>\n    </thead>\n    <tbody>\n\n      <tr ng-repeat="evento in vm.eventos" ng-class="evento.classe">\n        <td>{{evento.nome}}</td>\n        <td>{{evento.data_inicio}}</td>\n        <td>{{evento.data_fim}}</td>\n        <td>\n          <a ng-click="vm.listaPontos(evento)" type="button" class="btn btn-primary" style="color:white">pontos</a>\n        </td>\n        <td> </td>\n      </tr>\n\n    </tbody>\n  </table>\n\n  <h2>Pontos:</h2>\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>Data</th>\n        <th>Entrada</th>\n        <th>Saída</th>\n        <th>Mensagem de Atraso</th>\n      </tr>\n    </thead>\n\n    <tbody>\n      <tr class="active" ng-repeat="ponto in vm.pontos">\n        <td>{{ponto.data | date:"dd/MM/yyyy"}}</td>\n        <td>{{ponto.hora_inicio}}</td>\n        <td>{{ponto.hora_fim}}</td>\n        <td>{{ponto.mensagem}}</td>\n      </tr>\n    </tbody>\n  </table>\n\n</div>')
+  $templateCache.put("views/listaUser/listaUser.html", '<div class="naoimprimivel">\n  <div class="modal fade" id="informacoes" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Informações</h4>\n        </div>\n        <div class="modal-body">\n\n          <label for="nome">\n            <h4>Nome</h4>\n          </label>\n          <input disabled class="form-control" name="nome" type="text" ng-model="vm.info.nome">\n          <br>\n\n          <label for="email">\n            <h4>E-mail</h4>\n          </label>\n          <input disabled class="form-control" type="text" name="email" ng-model="vm.info.email">\n          <br>\n\n          <label for="matricula">\n            <h4>Matrícula</h4>\n          </label>\n          <input disabled class="form-control" name="matricula" type="text" ng-model="vm.info.matricula">\n          <br>\n\n          <label for="mac">\n            <h4>MAC</h4>\n          </label>\n          <input disabled class="form-control" name="mac" type="text" ng-model="vm.info.mac">\n          <br>\n\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="container" style="background-color:#e3f2fd; ">\n  <div class="row">\n    <br>\n    <br>\n    <form name="vm.form" class="form-horizontal">\n      <div class="form-group">\n        <div class="col-xs-9" style="position:relative;transform: translate(20%, 0%)">\n          <input type="text" class="form-control" ng-change="vm.buscar()" ng-model="vm.busca" placeholder="Nome ou Número de Matrícula">\n          <br>\n          <label class="radio-inline">Buscar por </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'; vm.buscar()" ng-model="vm.radio" value="nome" checked=\'checked\'> Nome\n          </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'; vm.buscar()" ng-model="vm.radio" value="matricula"> Número da matrícula\n          </label>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n<div class="container">\n  <h2>Resultado</h2>\n  <p>Informações :</p>\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>Matrícula </th>\n        <th>Nome</th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr ng-repeat="user in vm.users | filter:vm.filtro:strict" ng-class="user.classe">\n        <span style="width: max-content">\n          <td>{{user.matricula}}</td>\n          <td>{{user.nome}}</td>\n          <td>\n            <a ui-sref="editUser({user: user})" type="button" class="btn btn-primary" style="color:white">Editar</a>\n          </td>\n          <td>\n            <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" ng-click="vm.informar(user)"\n              style="color:white">Informações</a>\n          </td>\n          <td>\n            <a ng-click="vm.relatorio(user)" type="button" class="btn btn-primary" style="color:white">Relatório</a>\n          </td>\n          <td>\n            <a ng-click="vm.deletar(user.id, user.nome)" type="button" class="btn btn-danger" style="color:white">Excluir</a>\n          </td>\n        </span>\n      </tr>\n    </tbody>\n  </table>\n  <h2>Relatório:</h2>\n\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>Nome</th>\n        <th>Data Início</th>\n        <th>Data Fim</th>\n        <th> </th>\n        <th> </th>\n      </tr>\n    </thead>\n    <tbody>\n\n      <tr ng-repeat="evento in vm.eventos" ng-class="evento.classe">\n        <td>{{evento.nome}}</td>\n        <td>{{evento.data_inicio}}</td>\n        <td>{{evento.data_fim}}</td>\n        <td>\n          <a ng-click="vm.listaPontos(evento)" type="button" class="btn btn-primary" style="color:white">pontos</a>\n        </td>\n        <td> </td>\n      </tr>\n\n    </tbody>\n  </table>\n\n  <h2>Pontos:</h2>\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>Data</th>\n        <th>Entrada</th>\n        <th>Saída</th>\n        <th>Mensagem de Atraso</th>\n      </tr>\n    </thead>\n\n    <tbody>\n      <tr class="active" ng-repeat="ponto in vm.pontos">\n        <td>{{ponto.data | date:"dd/MM/yyyy"}}</td>\n        <td>{{ponto.hora_inicio}}</td>\n        <td>{{ponto.hora_fim}}</td>\n        <td>{{ponto.mensagem}}</td>\n      </tr>\n    </tbody>\n  </table>\n\n</div>')
 }]);
 
 (function () {
@@ -54358,9 +54446,9 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         .module('pdApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['LoginService', 'sessao', '$cookies', '$Respostas', '$window'];
+    LoginController.$inject = ['LoginService', 'sessao', '$cookies', '$Respostas', '$Estados', '$state'];
 
-    function LoginController(LoginService, sessao, $cookies, $Respostas, $window) {
+    function LoginController(LoginService, sessao, $cookies, $Respostas, $Estados, $state) {
 
         vm = this;
 
@@ -54391,7 +54479,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                                 $cookies.put('sessao_pd_id', vm.sessao.id);
                                 vm.sessao.nome = data.body.nome;
                                 $cookies.put('sessao_pd_nome', vm.sessao.nome);
-                                $window.location.href = "#!/home/";
+                                $state.go($Estados.home);
                                 break;
                             case "202":
                                 vm.senha = '';
@@ -54415,7 +54503,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         var init = function () {
             vm.sessao.id = $cookies.get('sessao_pd_id');
             if ("undefined" != typeof vm.sessao.id) {
-                $window.location.href = "#!/home/";
+                $state.go($Estados.home);
             }
         }
 
@@ -54427,7 +54515,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // source: app/assets/javascripts/views/login/login.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/login/login.html", '<div class="row">\n	<div class="col-xs-12">\n\n		<div class="container " style="position:relative;transform: translate(0%, 0%); width:30%;top:25%; background-color:	#fafafa">\n\n			<img ng-src="/assets/logotipo-nexti.png" class="img-responsive" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação">\n\n			<div class="box-parent-login">\n				<div class="well bg-white box-login">\n					<form role="form" name="vm.form">\n						<fieldset>\n\n							<div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n\n							<div class="form-group ls-login-user">\n								<label for="userLogin">Usuário</label>\n								<input class="form-control ls-login-bg-user input-lg" name="user" id="userLogin" type="text" aria-label="Usuário" placeholder="Usuário"\n								 ng-model="vm.login" required>\n							</div>\n							<div role="alert">\n								<span class="error" ng-show="vm.form.user.$dirty && vm.form.user.$error.required">\n       						Campo obrigatório</span>\n							</div>\n\n							<div class="form-group ls-login-password">\n								<label for="userPassword">Senha</label>\n								<input class="form-control ls-login-bg-password input-lg" name="senha" id="userPassword" type="password" aria-label="Senha"\n								 placeholder="Senha" ng-model="vm.senha" ng-minlength="5" required>\n							</div>\n\n							<div role="alert">\n								<span class="error" ng-show="vm.form.$dirty && vm.form.senha.$error.required">\n       						Campo obrigatório</span>\n								<span class="error" ng-show="vm.form.$dirty && vm.form.senha.$error.minlength">\n							Senha curta</span>\n							</div>\n\n							<a href="#" class="ls-login-forgot">Esqueci minha senha</a>\n\n							<div style="text-align-last: right">\n								<button class="btn btn-primary" ng-click="vm.logar()" style="background-color:#007db7">Entrar</button>\n							</div>\n\n\n						</fieldset>\n					</form>\n				</div>\n			</div>\n		</div>\n	</div>\n</div>')
+  $templateCache.put("views/login/login.html", '<div class="row">\n	<div class="col-xs-12">\n\n		<div class="container " style="position:relative;transform: translate(0%, 0%); width:30%;top:25%; background-color:	#fafafa">\n\n			<img ng-src="/assets/logotipo-nexti.png" class="img-responsive" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação">\n\n			<div class="box-parent-login">\n				<div class="well bg-white box-login">\n					<form role="form" name="vm.form">\n						<fieldset>\n\n							<div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n\n							<div class="form-group ls-login-user">\n								<label for="userLogin">Usuário</label>\n								<input class="form-control ls-login-bg-user input-lg" name="user" id="userLogin" type="text" aria-label="Usuário" placeholder="Usuário"\n								 ng-model="vm.login" required>\n							</div>\n							<div role="alert">\n								<span class="error" ng-show="vm.form.user.$dirty && vm.form.user.$error.required">\n       						Campo obrigatório</span>\n							</div>\n\n							<div class="form-group ls-login-password">\n								<label for="userPassword">Senha</label>\n								<input class="form-control ls-login-bg-password input-lg" name="senha" id="userPassword" type="password" aria-label="Senha"\n								 placeholder="Senha" ng-model="vm.senha" ng-minlength="5" required>\n							</div>\n\n							<div role="alert">\n								<span class="error" ng-show="vm.form.$dirty && vm.form.senha.$error.required">\n       						Campo obrigatório</span>\n								<span class="error" ng-show="vm.form.$dirty && vm.form.senha.$error.minlength">\n							Senha curta</span>\n							</div>\n\n							<a href class="ls-login-forgot">Esqueci minha senha</a>\n\n							<div style="text-align-last: right">\n								<button class="btn btn-primary" ng-click="vm.logar()" style="background-color:#007db7">Entrar</button>\n							</div>\n\n\n						</fieldset>\n					</form>\n				</div>\n			</div>\n		</div>\n	</div>\n</div>')
 }]);
 
 (function () {
@@ -54477,7 +54565,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // source: app/assets/javascripts/views/nav/nav.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/nav/nav.html", '<style type="text/css">\n.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {\n    color: #fff;\n    background-color:#007db7;\n    \n}\n.dropdown-menu > li > a {\n    display: block;\n    padding: 3px 20px;\n    clear: both;\n    font-weight: normal;\n    line-height: 1.42857143;\n    color: white;\n    white-space: nowrap;\n    \n}\np, ol, ul, td {\n    font-family: verdana, arial, helvetica, sans-serif;\n    font-size: 15px;\n    line-height: 18px;\n    margin: 33px;\n}\n\n</style>\n<div ng-controller="NavController as navVM">\n    <nav ng-hide="navVM.sessao.nome==undefined||navVM.sessao.nome==\'\'" class="navbar navbar-inverse navbar-fixed-top" style="background-color:#007db7;border-color:white">\n        <div class="container-fluid">\n            <div class="navbar-header">\n                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>                        \n      </button>\n                <a class="navbar-brand pull-right" href="#!/home/" style="color:white"> Ponto Dinâmico</a>\n            </div>\n            <div class="collapse navbar-collapse" id="myNavbar">\n                <ul class="nav navbar-nav">\n                    <li class="active"><a href="#!/home/" style="background-color:white;color:blue">Inicio</a></li>\n                    <li class="dropdown">\n                            <a href class="dropdown-toggle" data-toggle="dropdown" style="color:white">Cadastro <span class="caret"></span></a>\n                            <ul class="dropdown-menu" style="background-color:#007db7">\n                                <li><a href="#!/cadastrarUser/" >Usuário</a></li>\n                                <li><a href="#!/cadastrarEvento/" >Evento</a></li>\n    \n                            </ul>\n                    </li>\n                    <li class="dropdown">\n                        <a href class="dropdown-toggle" data-toggle="dropdown" style="color:white">Relatório <span class="caret"></span></a>\n                        <ul class="dropdown-menu" style="background-color:#007db7">\n                            <li><a  href="#!/listaUser/" >Usuários</a></li>\n                            <li><a href="#!/listaEvento/" >Eventos</a></li>\n\n                        </ul>\n                    </li>\n                   \n                    \n                   \n\n                </ul>\n                <ul class="nav navbar-nav navbar-right">\n                    <li ng-hide="navVM.sessao.nome==\'\'"><a ><span class="glyphicon glyphicon-user" style="color:white"></span> <span style="color: white"> {{navVM.sessao.nome}} </span></a></li>\n                    <li ng-show="navVM.sessao.nome==\'\'"><a href="#!/login/"><span class="glyphicon glyphicon-log-in"style="color: white"></span><span style="color: white"> Entrar </span></a></li>\n                    <li ng-hide="navVM.sessao.nome==\'\'"><a href ng-click="navVM.sair()"><span class="glyphicon glyphicon-log-out"style="color: white"></span><span style="color: white"> Sair </span></a></li>\n                </ul>\n            </div>\n        </div>\n    </nav>\n</div>')
+  $templateCache.put("views/nav/nav.html", '<style type="text/css">\n    .navbar-inverse .navbar-nav>.open>a,\n    .navbar-inverse .navbar-nav>.open>a:hover,\n    .navbar-inverse .navbar-nav>.open>a:focus {\n        color: #fff;\n        background-color: #007db7;\n\n    }\n\n    .dropdown-menu>li>a {\n        display: block;\n        padding: 3px 20px;\n        clear: both;\n        font-weight: normal;\n        line-height: 1.42857143;\n        color: white;\n        white-space: nowrap;\n\n    }\n\n    p,\n    ol,\n    ul,\n    td {\n        font-family: verdana, arial, helvetica, sans-serif;\n        font-size: 15px;\n        line-height: 18px;\n        margin: 33px;\n    }\n</style>\n<div ng-controller="NavController as navVM">\n    <nav ng-hide="navVM.sessao.nome==undefined||navVM.sessao.nome==\'\'" class="navbar navbar-inverse navbar-fixed-top" style="background-color:#007db7;border-color:white">\n        <div class="container-fluid">\n            <div class="navbar-header">\n                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">\n                    <span class="icon-bar"></span>\n                    <span class="icon-bar"></span>\n                    <span class="icon-bar"></span>\n                </button>\n                <a class="navbar-brand pull-right" href="#!/home" style="color:white"> Ponto Dinâmico</a>\n            </div>\n            <div class="collapse navbar-collapse" id="myNavbar">\n                <ul class="nav navbar-nav">\n                    <li class="active">\n                        <a href="#!/home" style="background-color:white;color:blue">Inicio</a>\n                    </li>\n                    <li class="dropdown">\n                        <a href class="dropdown-toggle" data-toggle="dropdown" style="color:white">Cadastro\n                            <span class="caret"></span>\n                        </a>\n                        <ul class="dropdown-menu" style="background-color:#007db7">\n                            <li>\n                                <a href="#!/cadastrarUser">Usuário</a>\n                            </li>\n                            <li>\n                                <a href="#!/cadastrarEvento">Evento</a>\n                            </li>\n                        </ul>\n                    </li>\n                    <li class="dropdown">\n                        <a href class="dropdown-toggle" data-toggle="dropdown" style="color:white">Relatório\n                            <span class="caret"></span>\n                        </a>\n                        <ul class="dropdown-menu" style="background-color:#007db7">\n                            <li>\n                                <a href="#!/listaUser">Usuários</a>\n                            </li>\n                            <li>\n                                <a href="#!/listaEvento">Eventos</a>\n                            </li>\n\n                        </ul>\n                    </li>\n\n                </ul>\n                <ul class="nav navbar-nav navbar-right">\n                    <li ng-hide="navVM.sessao.nome==\'\'">\n                        <a>\n                            <span class="glyphicon glyphicon-user" style="color:white"></span>\n                            <span style="color: white"> {{navVM.sessao.nome}} </span>\n                        </a>\n                    </li>\n                    <li ng-show="navVM.sessao.nome==\'\'">\n                        <a href="#!/login">\n                            <span class="glyphicon glyphicon-log-in" style="color: white"></span>\n                            <span style="color: white"> Entrar </span>\n                        </a>\n                    </li>\n                    <li ng-hide="navVM.sessao.nome==\'\'">\n                        <a href ng-click="navVM.sair()">\n                            <span class="glyphicon glyphicon-log-out" style="color: white"></span>\n                            <span style="color: white"> Sair </span>\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </nav>\n</div>')
 }]);
 
 // This is a manifest file that'll be compiled into application.js, which will include all the files

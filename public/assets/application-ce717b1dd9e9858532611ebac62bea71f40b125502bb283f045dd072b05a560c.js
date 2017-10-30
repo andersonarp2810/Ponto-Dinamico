@@ -38396,6 +38396,15 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
+/*
+ angular-file-upload v2.5.0
+ https://github.com/nervgh/angular-file-upload
+*/
+
+
+!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports["angular-file-upload"]=t():e["angular-file-upload"]=t()}(this,function(){return function(e){function t(o){if(n[o])return n[o].exports;var r=n[o]={exports:{},id:o,loaded:!1};return e[o].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){"use strict";function o(e){return e&&e.__esModule?e:{"default":e}}var r=n(1),i=o(r),s=n(2),a=o(s),u=n(3),l=o(u),p=n(4),c=o(p),f=n(5),d=o(f),h=n(6),y=o(h),v=n(7),m=o(v),_=n(8),g=o(_),b=n(9),F=o(b),O=n(10),C=o(O),w=n(11),A=o(w),I=n(12),T=o(I),U=n(13),x=o(U);angular.module(i["default"].name,[]).value("fileUploaderOptions",a["default"]).factory("FileUploader",l["default"]).factory("FileLikeObject",c["default"]).factory("FileItem",d["default"]).factory("FileDirective",y["default"]).factory("FileSelect",m["default"]).factory("FileDrop",F["default"]).factory("FileOver",C["default"]).factory("Pipeline",g["default"]).directive("nvFileSelect",A["default"]).directive("nvFileDrop",T["default"]).directive("nvFileOver",x["default"]).run(["FileUploader","FileLikeObject","FileItem","FileDirective","FileSelect","FileDrop","FileOver","Pipeline",function(e,t,n,o,r,i,s,a){e.FileLikeObject=t,e.FileItem=n,e.FileDirective=o,e.FileSelect=r,e.FileDrop=i,e.FileOver=s,e.Pipeline=a}])},function(e,t){e.exports={name:"angularFileUpload"}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]={url:"/",alias:"file",headers:{},queue:[],progress:0,autoUpload:!1,removeAfterUpload:!1,method:"POST",filters:[],formData:[],queueLimit:Number.MAX_VALUE,withCredentials:!1,disableMultipart:!1}},function(e,t,n){"use strict";function o(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t,n,o,i,a,u,g){var b=o.File,F=o.FormData,O=function(){function o(t){r(this,o);var n=p(e);c(this,n,t,{isUploading:!1,_nextIndex:0,_directives:{select:[],drop:[],over:[]}}),this.filters.unshift({name:"queueLimit",fn:this._queueLimitFilter}),this.filters.unshift({name:"folder",fn:this._folderFilter})}return o.prototype.addToQueue=function(e,t,n){var o=this,r=this.isArrayLikeObject(e)?Array.prototype.slice.call(e):[e],i=this._getFilters(n),l=this.queue.length,p=[],c=function d(){var e=r.shift();if(m(e))return f();var n=o.isFile(e)?e:new a(e),l=o._convertFiltersToPipes(i),c=new g(l),h=function(e){var t=e.pipe.originalFilter,n=s(e.args,2),r=n[0],i=n[1];o._onWhenAddingFileFailed(r,t,i),d()},y=function(e,t){var n=new u(o,e,t);p.push(n),o.queue.push(n),o._onAfterAddingFile(n),d()};c.onThrown=h,c.onSuccessful=y,c.exec(n,t)},f=function(){o.queue.length!==l&&(o._onAfterAddingAll(p),o.progress=o._getTotalProgress()),o._render(),o.autoUpload&&o.uploadAll()};c()},o.prototype.removeFromQueue=function(e){var t=this.getIndexOfItem(e),n=this.queue[t];n.isUploading&&n.cancel(),this.queue.splice(t,1),n._destroy(),this.progress=this._getTotalProgress()},o.prototype.clearQueue=function(){for(;this.queue.length;)this.queue[0].remove();this.progress=0},o.prototype.uploadItem=function(e){var t=this.getIndexOfItem(e),n=this.queue[t],o=this.isHTML5?"_xhrTransport":"_iframeTransport";n._prepareToUploading(),this.isUploading||(this._onBeforeUploadItem(n),n.isCancel||(n.isUploading=!0,this.isUploading=!0,this[o](n),this._render()))},o.prototype.cancelItem=function(e){var t=this,n=this.getIndexOfItem(e),o=this.queue[n],r=this.isHTML5?"_xhr":"_form";o&&(o.isCancel=!0,o.isUploading?o[r].abort():!function(){var e=[void 0,0,{}],n=function(){t._onCancelItem.apply(t,[o].concat(e)),t._onCompleteItem.apply(t,[o].concat(e))};i(n)}())},o.prototype.uploadAll=function(){var e=this.getNotUploadedItems().filter(function(e){return!e.isUploading});e.length&&(f(e,function(e){return e._prepareToUploading()}),e[0].upload())},o.prototype.cancelAll=function(){var e=this.getNotUploadedItems();f(e,function(e){return e.cancel()})},o.prototype.isFile=function(e){return this.constructor.isFile(e)},o.prototype.isFileLikeObject=function(e){return this.constructor.isFileLikeObject(e)},o.prototype.isArrayLikeObject=function(e){return this.constructor.isArrayLikeObject(e)},o.prototype.getIndexOfItem=function(e){return h(e)?e:this.queue.indexOf(e)},o.prototype.getNotUploadedItems=function(){return this.queue.filter(function(e){return!e.isUploaded})},o.prototype.getReadyItems=function(){return this.queue.filter(function(e){return e.isReady&&!e.isUploading}).sort(function(e,t){return e.index-t.index})},o.prototype.destroy=function(){var e=this;f(this._directives,function(t){f(e._directives[t],function(e){e.destroy()})})},o.prototype.onAfterAddingAll=function(e){},o.prototype.onAfterAddingFile=function(e){},o.prototype.onWhenAddingFileFailed=function(e,t,n){},o.prototype.onBeforeUploadItem=function(e){},o.prototype.onProgressItem=function(e,t){},o.prototype.onProgressAll=function(e){},o.prototype.onSuccessItem=function(e,t,n,o){},o.prototype.onErrorItem=function(e,t,n,o){},o.prototype.onCancelItem=function(e,t,n,o){},o.prototype.onCompleteItem=function(e,t,n,o){},o.prototype.onCompleteAll=function(){},o.prototype._getTotalProgress=function(e){if(this.removeAfterUpload)return e||0;var t=this.getNotUploadedItems().length,n=t?this.queue.length-t:this.queue.length,o=100/this.queue.length,r=(e||0)*o/100;return Math.round(n*o+r)},o.prototype._getFilters=function(e){if(!e)return this.filters;if(v(e))return e;var t=e.match(/[^\s,]+/g);return this.filters.filter(function(e){return-1!==t.indexOf(e.name)})},o.prototype._convertFiltersToPipes=function(e){var t=this;return e.map(function(e){var n=l(t,e.fn);return n.isAsync=3===e.fn.length,n.originalFilter=e,n})},o.prototype._render=function(){t.$$phase||t.$apply()},o.prototype._folderFilter=function(e){return!(!e.size&&!e.type)},o.prototype._queueLimitFilter=function(){return this.queue.length<this.queueLimit},o.prototype._isSuccessCode=function(e){return e>=200&&300>e||304===e},o.prototype._transformResponse=function(e,t){var o=this._headersGetter(t);return f(n.defaults.transformResponse,function(t){e=t(e,o)}),e},o.prototype._parseHeaders=function(e){var t,n,o,r={};return e?(f(e.split("\n"),function(e){o=e.indexOf(":"),t=e.slice(0,o).trim().toLowerCase(),n=e.slice(o+1).trim(),t&&(r[t]=r[t]?r[t]+", "+n:n)}),r):r},o.prototype._headersGetter=function(e){return function(t){return t?e[t.toLowerCase()]||null:e}},o.prototype._xhrTransport=function(e){var t,n=this,o=e._xhr=new XMLHttpRequest;if(e.disableMultipart?t=e._file:(t=new F,f(e.formData,function(e){f(e,function(e,n){t.append(n,e)})}),t.append(e.alias,e._file,e.file.name)),"number"!=typeof e._file.size)throw new TypeError("The file specified is no longer valid");o.upload.onprogress=function(t){var o=Math.round(t.lengthComputable?100*t.loaded/t.total:0);n._onProgressItem(e,o)},o.onload=function(){var t=n._parseHeaders(o.getAllResponseHeaders()),r=n._transformResponse(o.response,t),i=n._isSuccessCode(o.status)?"Success":"Error",s="_on"+i+"Item";n[s](e,r,o.status,t),n._onCompleteItem(e,r,o.status,t)},o.onerror=function(){var t=n._parseHeaders(o.getAllResponseHeaders()),r=n._transformResponse(o.response,t);n._onErrorItem(e,r,o.status,t),n._onCompleteItem(e,r,o.status,t)},o.onabort=function(){var t=n._parseHeaders(o.getAllResponseHeaders()),r=n._transformResponse(o.response,t);n._onCancelItem(e,r,o.status,t),n._onCompleteItem(e,r,o.status,t)},o.open(e.method,e.url,!0),o.withCredentials=e.withCredentials,f(e.headers,function(e,t){o.setRequestHeader(t,e)}),o.send(t)},o.prototype._iframeTransport=function(e){var t=this,n=_('<form style="display: none;" />'),o=_('<iframe name="iframeTransport'+Date.now()+'">'),r=e._input;e._form&&e._form.replaceWith(r),e._form=n,r.prop("name",e.alias),f(e.formData,function(e){f(e,function(e,t){var o=_('<input type="hidden" name="'+t+'" />');o.val(e),n.append(o)})}),n.prop({action:e.url,method:"POST",target:o.prop("name"),enctype:"multipart/form-data",encoding:"multipart/form-data"}),o.bind("load",function(){var n="",r=200;try{n=o[0].contentDocument.body.innerHTML}catch(i){r=500}var s={response:n,status:r,dummy:!0},a={},u=t._transformResponse(s.response,a);t._onSuccessItem(e,u,s.status,a),t._onCompleteItem(e,u,s.status,a)}),n.abort=function(){var i,s={status:0,dummy:!0},a={};o.unbind("load").prop("src","javascript:false;"),n.replaceWith(r),t._onCancelItem(e,i,s.status,a),t._onCompleteItem(e,i,s.status,a)},r.after(n),n.append(r).append(o),n[0].submit()},o.prototype._onWhenAddingFileFailed=function(e,t,n){this.onWhenAddingFileFailed(e,t,n)},o.prototype._onAfterAddingFile=function(e){this.onAfterAddingFile(e)},o.prototype._onAfterAddingAll=function(e){this.onAfterAddingAll(e)},o.prototype._onBeforeUploadItem=function(e){e._onBeforeUpload(),this.onBeforeUploadItem(e)},o.prototype._onProgressItem=function(e,t){var n=this._getTotalProgress(t);this.progress=n,e._onProgress(t),this.onProgressItem(e,t),this.onProgressAll(n),this._render()},o.prototype._onSuccessItem=function(e,t,n,o){e._onSuccess(t,n,o),this.onSuccessItem(e,t,n,o)},o.prototype._onErrorItem=function(e,t,n,o){e._onError(t,n,o),this.onErrorItem(e,t,n,o)},o.prototype._onCancelItem=function(e,t,n,o){e._onCancel(t,n,o),this.onCancelItem(e,t,n,o)},o.prototype._onCompleteItem=function(e,t,n,o){e._onComplete(t,n,o),this.onCompleteItem(e,t,n,o);var r=this.getReadyItems()[0];return this.isUploading=!1,y(r)?void r.upload():(this.onCompleteAll(),this.progress=this._getTotalProgress(),void this._render())},o.isFile=function(e){return b&&e instanceof b},o.isFileLikeObject=function(e){return e instanceof a},o.isArrayLikeObject=function(e){return d(e)&&"length"in e},o.inherit=function(e,t){e.prototype=Object.create(t.prototype),e.prototype.constructor=e,e.super_=t},o}();return O.prototype.isHTML5=!(!b||!F),O.isHTML5=O.prototype.isHTML5,O}Object.defineProperty(t,"__esModule",{value:!0});var s=function(){function e(e,t){var n=[],o=!0,r=!1,i=void 0;try{for(var s,a=e[Symbol.iterator]();!(o=(s=a.next()).done)&&(n.push(s.value),!t||n.length!==t);o=!0);}catch(u){r=!0,i=u}finally{try{!o&&a["return"]&&a["return"]()}finally{if(r)throw i}}return n}return function(t,n){if(Array.isArray(t))return t;if(Symbol.iterator in Object(t))return e(t,n);throw new TypeError("Invalid attempt to destructure non-iterable instance")}}();t["default"]=i;var a=n(1),u=(o(a),angular),l=u.bind,p=u.copy,c=u.extend,f=u.forEach,d=u.isObject,h=u.isNumber,y=u.isDefined,v=u.isArray,m=u.isUndefined,_=u.element;i.$inject=["fileUploaderOptions","$rootScope","$http","$window","$timeout","FileLikeObject","FileItem","Pipeline"]},function(e,t,n){"use strict";function o(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(){return function(){function e(t){r(this,e);var n=l(t),o=n?t.value:t,i=p(o)?"FakePath":"Object",s="_createFrom"+i;this[s](o)}return e.prototype._createFromFakePath=function(e){this.lastModifiedDate=null,this.size=null,this.type="like/"+e.slice(e.lastIndexOf(".")+1).toLowerCase(),this.name=e.slice(e.lastIndexOf("/")+e.lastIndexOf("\\")+2)},e.prototype._createFromObject=function(e){this.lastModifiedDate=u(e.lastModifiedDate),this.size=e.size,this.type=e.type,this.name=e.name},e}()}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=i;var s=n(1),a=(o(s),angular),u=a.copy,l=a.isElement,p=a.isString},function(e,t,n){"use strict";function o(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){return function(){function n(e,o,i){r(this,n);var s=c(o),a=s?p(o):null,f=s?null:o;l(this,{url:e.url,alias:e.alias,headers:u(e.headers),formData:u(e.formData),removeAfterUpload:e.removeAfterUpload,withCredentials:e.withCredentials,disableMultipart:e.disableMultipart,method:e.method},i,{uploader:e,file:new t(o),isReady:!1,isUploading:!1,isUploaded:!1,isSuccess:!1,isCancel:!1,isError:!1,progress:0,index:null,_file:f,_input:a}),a&&this._replaceNode(a)}return n.prototype.upload=function(){try{this.uploader.uploadItem(this)}catch(e){var t=e.name+":"+e.message;this.uploader._onCompleteItem(this,t,e.code,[]),this.uploader._onErrorItem(this,t,e.code,[])}},n.prototype.cancel=function(){this.uploader.cancelItem(this)},n.prototype.remove=function(){this.uploader.removeFromQueue(this)},n.prototype.onBeforeUpload=function(){},n.prototype.onProgress=function(e){},n.prototype.onSuccess=function(e,t,n){},n.prototype.onError=function(e,t,n){},n.prototype.onCancel=function(e,t,n){},n.prototype.onComplete=function(e,t,n){},n.prototype._onBeforeUpload=function(){this.isReady=!0,this.isUploading=!1,this.isUploaded=!1,this.isSuccess=!1,this.isCancel=!1,this.isError=!1,this.progress=0,this.onBeforeUpload()},n.prototype._onProgress=function(e){this.progress=e,this.onProgress(e)},n.prototype._onSuccess=function(e,t,n){this.isReady=!1,this.isUploading=!1,this.isUploaded=!0,this.isSuccess=!0,this.isCancel=!1,this.isError=!1,this.progress=100,this.index=null,this.onSuccess(e,t,n)},n.prototype._onError=function(e,t,n){this.isReady=!1,this.isUploading=!1,this.isUploaded=!0,this.isSuccess=!1,this.isCancel=!1,this.isError=!0,this.progress=0,this.index=null,this.onError(e,t,n)},n.prototype._onCancel=function(e,t,n){this.isReady=!1,this.isUploading=!1,this.isUploaded=!1,this.isSuccess=!1,this.isCancel=!0,this.isError=!1,this.progress=0,this.index=null,this.onCancel(e,t,n)},n.prototype._onComplete=function(e,t,n){this.onComplete(e,t,n),this.removeAfterUpload&&this.remove()},n.prototype._destroy=function(){this._input&&this._input.remove(),this._form&&this._form.remove(),delete this._form,delete this._input},n.prototype._prepareToUploading=function(){this.index=this.index||++this.uploader._nextIndex,this.isReady=!0},n.prototype._replaceNode=function(t){var n=e(t.clone())(t.scope());n.prop("value",null),t.css("display","none"),t.after(n)},n}()}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=i;var s=n(1),a=(o(s),angular),u=a.copy,l=a.extend,p=a.element,c=a.isElement;i.$inject=["$compile","FileLikeObject"]},function(e,t,n){"use strict";function o(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(){var e=function(){function e(t){r(this,e),u(this,t),this.uploader._directives[this.prop].push(this),this._saveLinks(),this.bind()}return e.prototype.bind=function(){for(var e in this.events){var t=this.events[e];this.element.bind(e,this[t])}},e.prototype.unbind=function(){for(var e in this.events)this.element.unbind(e,this.events[e])},e.prototype.destroy=function(){var e=this.uploader._directives[this.prop].indexOf(this);this.uploader._directives[this.prop].splice(e,1),this.unbind()},e.prototype._saveLinks=function(){for(var e in this.events){var t=this.events[e];this[t]=this[t].bind(this)}},e}();return e.prototype.events={},e}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=i;var s=n(1),a=(o(s),angular),u=a.extend},function(e,t,n){"use strict";function o(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function s(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}function a(e,t){return function(t){function n(e){r(this,n);var o=p(e,{events:{$destroy:"destroy",change:"onChange"},prop:"select"}),s=i(this,t.call(this,o));return s.uploader.isHTML5||s.element.removeAttr("multiple"),s.element.prop("value",null),s}return s(n,t),n.prototype.getOptions=function(){},n.prototype.getFilters=function(){},n.prototype.isEmptyAfterSelection=function(){return!!this.element.attr("multiple")},n.prototype.onChange=function(){var t=this.uploader.isHTML5?this.element[0].files:this.element[0],n=this.getOptions(),o=this.getFilters();this.uploader.isHTML5||this.destroy(),this.uploader.addToQueue(t,n,o),this.isEmptyAfterSelection()&&(this.element.prop("value",null),this.element.replaceWith(e(this.element.clone())(this.scope)))},n}(t)}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=a;var u=n(1),l=(o(u),angular),p=l.extend;a.$inject=["$compile","FileDirective"]},function(e,t){"use strict";function n(e){if(Array.isArray(e)){for(var t=0,n=Array(e.length);t<e.length;t++)n[t]=e[t];return n}return Array.from(e)}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function r(e){return function(){function t(){var e=arguments.length<=0||void 0===arguments[0]?[]:arguments[0];o(this,t),this.pipes=e}return t.prototype.next=function(t){var o=this.pipes.shift();if(a(o))return void this.onSuccessful.apply(this,n(t));var r=new Error("The filter has not passed");if(r.pipe=o,r.args=t,o.isAsync){var i=e.defer(),u=s(this,this.next,t),l=s(this,this.onThrown,r);i.promise.then(u,l),o.apply(void 0,n(t).concat([i]))}else{var p=Boolean(o.apply(void 0,n(t)));p?this.next(t):this.onThrown(r)}},t.prototype.exec=function(){for(var e=arguments.length,t=Array(e),n=0;e>n;n++)t[n]=arguments[n];this.next(t)},t.prototype.onThrown=function(e){},t.prototype.onSuccessful=function(){},t}()}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=r;var i=angular,s=i.bind,a=i.isUndefined;r.$inject=["$q"]},function(e,t,n){"use strict";function o(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function s(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}function a(e){return function(e){function t(n){r(this,t);var o=p(n,{events:{$destroy:"destroy",drop:"onDrop",dragover:"onDragOver",dragleave:"onDragLeave"},prop:"drop"});return i(this,e.call(this,o))}return s(t,e),t.prototype.getOptions=function(){},t.prototype.getFilters=function(){},t.prototype.onDrop=function(e){var t=this._getTransfer(e);if(t){var n=this.getOptions(),o=this.getFilters();this._preventAndStop(e),c(this.uploader._directives.over,this._removeOverClass,this),this.uploader.addToQueue(t.files,n,o)}},t.prototype.onDragOver=function(e){var t=this._getTransfer(e);this._haveFiles(t.types)&&(t.dropEffect="copy",this._preventAndStop(e),c(this.uploader._directives.over,this._addOverClass,this))},t.prototype.onDragLeave=function(e){e.currentTarget!==this.element[0]&&(this._preventAndStop(e),c(this.uploader._directives.over,this._removeOverClass,this))},t.prototype._getTransfer=function(e){return e.dataTransfer?e.dataTransfer:e.originalEvent.dataTransfer},t.prototype._preventAndStop=function(e){e.preventDefault(),e.stopPropagation()},t.prototype._haveFiles=function(e){return e?e.indexOf?-1!==e.indexOf("Files"):e.contains?e.contains("Files"):!1:!1},t.prototype._addOverClass=function(e){e.addOverClass()},t.prototype._removeOverClass=function(e){e.removeOverClass()},t}(e)}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=a;var u=n(1),l=(o(u),angular),p=l.extend,c=l.forEach;a.$inject=["FileDirective"]},function(e,t,n){"use strict";function o(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function s(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}function a(e){return function(e){function t(n){r(this,t);var o=p(n,{events:{$destroy:"destroy"},prop:"over",overClass:"nv-file-over"});return i(this,e.call(this,o))}return s(t,e),t.prototype.addOverClass=function(){this.element.addClass(this.getOverClass())},t.prototype.removeOverClass=function(){this.element.removeClass(this.getOverClass())},t.prototype.getOverClass=function(){return this.overClass},t}(e)}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=a;var u=n(1),l=(o(u),angular),p=l.extend;a.$inject=["FileDirective"]},function(e,t,n){"use strict";function o(e){return e&&e.__esModule?e:{"default":e}}function r(e,t,n){return{link:function(o,r,i){var s=o.$eval(i.uploader);if(!(s instanceof t))throw new TypeError('"Uploader" must be an instance of FileUploader');var a=new n({uploader:s,element:r,scope:o});a.getOptions=e(i.options).bind(a,o),a.getFilters=function(){return i.filters}}}}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=r;var i=n(1);o(i);r.$inject=["$parse","FileUploader","FileSelect"]},function(e,t,n){"use strict";function o(e){return e&&e.__esModule?e:{"default":e}}function r(e,t,n){return{link:function(o,r,i){var s=o.$eval(i.uploader);if(!(s instanceof t))throw new TypeError('"Uploader" must be an instance of FileUploader');if(s.isHTML5){var a=new n({uploader:s,element:r});a.getOptions=e(i.options).bind(a,o),a.getFilters=function(){return i.filters}}}}}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=r;var i=n(1);o(i);r.$inject=["$parse","FileUploader","FileDrop"]},function(e,t,n){"use strict";function o(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){return{link:function(n,o,r){var i=n.$eval(r.uploader);if(!(i instanceof e))throw new TypeError('"Uploader" must be an instance of FileUploader');var s=new t({uploader:i,element:o});s.getOverClass=function(){return r.overClass||s.overClass}}}}Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=r;var i=n(1);o(i);r.$inject=["FileUploader","FileOver"]}])});
+//# sourceMappingURL=angular-file-upload.min.js.map
+;
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -51593,10 +51602,10 @@ var o,i,s,a,u;return i=null!=n?n:{},a=i.restorationIdentifier,s=i.restorationDat
 }).call(this);
 angular.module('pdApp', [
     'anguFixedHeaderTable',
+    'angularFileUpload',
     'ngCookies',
     'ui.router',
     'templates',
-    'appFilereader'
 ]);
 
 (function() {
@@ -52325,67 +52334,6 @@ angular.module('pdApp', [
         }
     }
 })();
-(function () {
-    angular
-        .module('appFilereader', [])
-        .directive('appFilereader', function (
-            $q
-        ) {
-            /*
-            made by elmerbulthuis@gmail.com WTFPL licensed
-            */
-            var slice = Array.prototype.slice;
-
-            return {
-                restrict: 'A',
-                require: '?ngModel',
-                link: function (scope, element, attrs, ngModel) {
-                    if (!ngModel) return;
-
-                    ngModel.$render = function () { }
-
-                    element.bind('change', function (e) {
-                        var element = e.target;
-                        if (!element.value) return;
-
-                        element.disabled = true;
-                        $q.all(slice.call(element.files, 0).map(readFile))
-                            .then(function (values) {
-                                if (element.multiple) ngModel.$setViewValue(values);
-                                else ngModel.$setViewValue(values.length ? values[0] : null);
-                                //element.value = null; // isso faz com que o nome da imagem suma
-                                element.disabled = false;
-                            });
-
-                        function readFile(file) {
-                            var deferred = $q.defer();
-
-                            var reader = new FileReader()
-                            reader.onload = function (e) {
-                                deferred.resolve(
-                                    {
-                                        url: e.target.result,
-                                        file: file
-                                    }
-                                );
-                            }
-                            reader.onerror = function (e) {
-                                deferred.reject(e);
-                            }
-                            reader.readAsDataURL(file);
-
-                            return deferred.promise;
-                        }
-
-                    }); //change
-
-                } //link
-
-            }; //return
-
-        }) //appFilereader
-        ;
-})();
 (function() {
 
 
@@ -52445,49 +52393,59 @@ angular.module('pdApp', [
 
         $stateProvider
             .state($Estados.home, {
-                url: '/home/',
+                url: '/home',
                 templateUrl: 'views/home/home.html',
                 controller: 'HomeController',
                 controllerAs: 'vm'
             })
             .state($Estados.login, {
-                url: '/login/',
+                url: '/login',
                 templateUrl: 'views/login/login.html',
                 controller: 'LoginController',
                 controllerAs: 'vm'
             })
             .state($Estados.userCadastro, {
-                url: '/cadastrarUser/',
+                url: '/cadastrarUser',
                 templateUrl: "views/cadastroUser/cadastroUser.html",
                 controller: "CadastroUserController",
                 controllerAs: "vm"
             })
             .state($Estados.userEdit, {
-                url: '/editUser/{user: json}/',
+                url: '/editUser',
+                params: {
+                    user: null
+                },
                 templateUrl: "views/editUser/editUser.html",
                 controller: "EditUserController",
                 controllerAs: "vm"
             })
             .state($Estados.userLista, {
-                url: '/listaUser/',
+                url: '/listaUser',
+                params: {
+                    id_user: null,
+                    id_evento: null,
+                },
                 templateUrl: "views/listaUser/listaUser.html",
                 controller: "ListaUserController",
                 controllerAs: "vm"
             })
             .state($Estados.eventoCadastro, {
-                url: '/cadastrarEvento/',
+                url: '/cadastrarEvento',
                 templateUrl: "views/cadastroEvento/CadastrodeEventos.html",
                 controller: "CadastroEventoController",
                 controllerAs: "vm"
             })
             .state($Estados.eventoEdit, {
-                url: '/editEvento/{evento: json}/',
+                url: '/editEvento',
+                params: {
+                    evento: null
+                },
                 templateUrl: "views/editarEvento/editEvento.html",
                 controller: "EditEventoController",
                 controllerAs: "vm"
             })
             .state($Estados.eventoLista, {
-                url: '/listaEvento/',
+                url: '/listaEvento',
                 templateUrl: "views/listaEvento/listaEvento.html",
                 controller: "ListaEventoController",
                 controllerAs: "vm"
@@ -52500,9 +52458,9 @@ angular.module('pdApp', [
         .module('pdApp')
         .service('EventoService', EventoService);
 
-    EventoService.$inject = ["Requisicoes", 'sessao', "$Rotas"];
+    EventoService.$inject = ["FileUploader", "Requisicoes", 'sessao', "$q", "$Rotas"];
 
-    function EventoService(Requisicoes, sessao, $Rotas) {
+    function EventoService(FileUploader, Requisicoes, sessao, $q, $Rotas) {
 
         this.deletEvento = deletEvento;
         this.editEvento = editEvento;
@@ -52521,19 +52479,13 @@ angular.module('pdApp', [
 
             url = $Rotas.editEvento;
 
-            ev = Object.assign({}, evento);
+            return Requisicoes.putEvento(url, evento);
 
-            ev.hora_fim = ev.hora_fim.toTimeString().substr(0, 8);
-            ev.hora_inicio = ev.hora_inicio.toTimeString().substr(0, 8);
-
-            tipo = "evento";
-
-            return Requisicoes.put(url, ev, tipo);
         }
 
-        function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, imagem, QR,
-            latitude, longitude) {
-
+        function enviarEvento(nome, tipo, dataInicio, dataFim, horaInicio, horaFim, descricao, local, QR,
+            latitude, longitude, uploader) {
+            // só entra aqui se o evento for sem imagem
             url = $Rotas.sendEvento;
             tipo = "evento";
 
@@ -52546,8 +52498,7 @@ angular.module('pdApp', [
                 hora_inicio: horaInicio,
                 hora_fim: horaFim,
                 descricao: descricao,
-                local: local,
-                imagem: imagem,
+                lugar: local,
                 qrcode: QR,
                 localizacao_lati: latitude,
                 localizacao_long: longitude
@@ -52556,6 +52507,8 @@ angular.module('pdApp', [
 
             evento.hora_fim = evento.hora_fim.toTimeString().substr(0, 8);
             evento.hora_inicio = evento.hora_inicio.toTimeString().substr(0, 8);
+
+            console.log(evento);
 
             return Requisicoes.post(url, evento, tipo);
         }
@@ -52589,14 +52542,17 @@ angular.module('pdApp', [
             if (!$window.navigator.geolocation) {
                 deferred.reject('Geolocalização não suportada.');
             } else {
+                console.log($window.navigator.geolocation);
+                console.log($window.navigator.geolocation.getCurrentPosition);
                 $window.navigator.geolocation.getCurrentPosition(
                     function (position) {
+                        console.log("entrou");
                         deferred.resolve(position.coords);
                     },
                     function (erro) {
                         deferred.reject(erro);
                     },
-                    {timeout: 30000, enableHighAccuracy: true, maximumAge: 75000}
+                    { timeout: 30000, enableHighAccuracy: true, maximumAge: 75000 }
                 );
             }
             return deferred.promise;
@@ -52728,9 +52684,10 @@ angular.module('pdApp', [
         this.relatorio = relatorio;
 
         function deletUser(id) {
-            url = $Rotas.deletUser;
+            
+            url = $Rotas.deletUser + "/" + id;
 
-            return Requisicoes.destroy(url, id);
+            return Requisicoes.destroy(url);
         }
 
         function editUser(usuario) {
@@ -52796,6 +52753,7 @@ angular.module('pdApp', [
         escopo.get = get;
         escopo.post = post;
         escopo.put = put;
+        escopo.putEvento = putEvento;
         escopo.sessao = sessao;
 
         function destroy(url) {
@@ -52867,6 +52825,29 @@ angular.module('pdApp', [
                 method: "PUT",
                 url: url + "/" + da[tipo].id,
                 data: da,  // um objeto
+                headers: { 'Content-Type': 'application/json' }
+            }).then(
+                function sucesso(response) {
+                    console.log("resolve")
+                    resposta.resolve(response.data);
+                }, function falha(erro) {
+                    response = { erro: erro.data, status: erro.status };
+                    console.log("reject")
+                    resposta.reject(response);
+                }
+                );
+            console.log('resposta.promise');
+            console.log(resposta.promise);
+            return resposta.promise;
+        };
+
+        function putEvento(url, dados) {
+            console.log(url);
+            resposta = $q.defer();
+            $http({
+                method: "PUT",
+                url: url + "/" + da[tipo].id,
+                data: dados,  // um objeto
                 headers: { 'Content-Type': 'application/json' }
             }).then(
                 function sucesso(response) {
@@ -53277,9 +53258,9 @@ function SHA2_512_256(sData) {
         .module('pdApp')
         .controller('CadastroEventoController', CadastroEventoController);
 
-    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$window'];
+    CadastroEventoController.$inject = ['$scope', '$log', 'EventoService', 'FileUploader', 'LoginService', 'GeoService', 'sessao', '$Respostas', '$Estados', '$state'];
 
-    function CadastroEventoController($scope, $log, EventoService, LoginService, GeoService, sessao, $Repostas, $window) {
+    function CadastroEventoController($scope, $log, EventoService, FileUploader, LoginService, GeoService, sessao, $Repostas, $Estados, $state) {
         var vm = this; //view model
         vm.botao = false;
         vm.cadastrarEvento = cadastrarEvento;
@@ -53289,32 +53270,61 @@ function SHA2_512_256(sData) {
         vm.horaInicio;
         vm.horaFim;
         vm.imprime = imprime;
-        vm.imagem;
         vm.local;
         vm.latitude = -7.205858600000001;
         vm.longitude = -39.311446;
+        vm.mapLoad = false;
         vm.mensagem;
         vm.nome;
         vm.QR = '';
+        vm.uploader = new FileUploader({
+            url: '/cadastrarevento',
+            alias: 'imagem',
+            method: 'POST',
+            removeAfterUpload: true,
+        });
         vm.tipo;
         vm.sessao = sessao;
 
-        vm.logzin = function(){
-            console.log(vm.imagem);
-        }
+        vm.uploader.onAfterAddingFile = function (item, filter, options) {
+            if (vm.uploader.queue.length > 1) {
+                vm.uploader.queue.splice(0, 1);
+            }
+        };
 
         function cadastrarEvento() {
-            if (vm.form.$invalid) {
+            console.log(vm.uploader);
+            if (vm.form.$invalid || vm.dataInicio > vm.dataFim || vm.horaInicio > vm.horaFim) {
                 alert("Preencha os campos corretamente.");
             }
             else {
                 vm.botao = true;
                 vm.horaInicio.setFullYear(2000);
                 vm.horaFim.setFullYear(2000);
-                EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
-                    vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.imagem.file, vm.QR,
-                    vm.latitude, vm.longitude)
-                    .then(function (data) {
+
+                if (vm.uploader.queue.length > 0) { // com imagem
+
+                    evento = {
+                        usuario_id: sessao.id,
+                        nome: vm.nome,
+                        tipo: vm.tipo,
+                        data_inicio: vm.dataInicio,
+                        data_fim: vm.dataFim,
+                        hora_inicio: vm.horaInicio.toTimeString().substr(0, 8),
+                        hora_fim: vm.horaFim.toTimeString().substr(0, 8),
+                        descricao: vm.descricao,
+                        lugar: vm.local,
+                        qrcode: vm.QR,
+                        localizacao_lati: vm.latitude,
+                        localizacao_long: vm.longitude
+                    }
+                    console.log(evento);
+
+                    vm.uploader.queue[0].formData[0] = evento;
+                    console.log(vm.uploader);
+                    console.log(vm.uploader.queue[0]);
+
+                    vm.uploader.queue[0].onSuccess = function (data, status, headers) {
                         console.log(data);
                         vm.mensagem = '';
                         switch (data.erro) { // definir erro pra cada campo
@@ -53322,7 +53332,7 @@ function SHA2_512_256(sData) {
                                 console.log(data.body);
                                 vm.mensagem = "Evento criado";
                                 //limpar();
-                                $window.location.href = "#!/listaEvento/";
+                                $state.go($Estados.eventoLista);
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Repostas[data.erro];
@@ -53332,16 +53342,66 @@ function SHA2_512_256(sData) {
                                         vm.nome = '';
                                     case "501":
                                         console.log("faça login");
-                                        $window.location.href = "#!/login";
+                                        $state.go($Estados.login);
                                         LoginService.apagar();
                                     //deslogar
                                 }
                                 break;
                         } // end switch
+                    }
+
+                    vm.uploader.queue[0].onError = function (response, status, headers) {
+                        console.error(response);
+                    }
+
+                    vm.uploader.queue[0].onComplete = function (response, status, headers) {
                         vm.botao = false;
-                    }); //end then
+                    }
+
+                    vm.uploader.queue[0].upload();
+
+                }
+
+                else { // sem imagem
+                    EventoService.enviarEvento(vm.nome, vm.tipo, vm.dataInicio, vm.dataFim,
+                        vm.horaInicio, vm.horaFim, vm.descricao, vm.local, vm.QR,
+                        vm.latitude, vm.longitude, vm.uploader)
+                        .then(function (data) {
+                            console.log(data);
+                            vm.mensagem = '';
+                            switch (data.erro) { // definir erro pra cada campo
+                                case "000":
+                                    console.log(data.body);
+                                    vm.mensagem = "Evento criado";
+                                    //limpar();
+                                    $state.go($Estados.eventoLista);
+                                    break;
+                                default:
+                                    vm.mensagem = 'Erro: ' + $Repostas[data.erro];
+                                    console.log(data.status);
+                                    switch (data.erro) {
+                                        case "102":
+                                            vm.nome = '';
+                                        case "501":
+                                            console.log("faça login");
+                                            $state.go($Estados.login);
+                                            LoginService.apagar();
+                                        //deslogar
+                                    }
+                                    break;
+                            } // end switch
+                            vm.botao = false;
+                        },
+                        function (err) {
+                            console.error(err);
+                            vm.botao = false;
+                        }
+                        ); //end then
+                }   // sem imagem
             }
         }
+
+
 
         function imprime() {
             window.print();
@@ -53360,19 +53420,12 @@ function SHA2_512_256(sData) {
             vm.tipo = '';
         }
 
-        //isso é apenas um teste de observador - remover em versão final
-        $scope.$watch('vm.horaFim', function (current, original) {
-            $log.info('vm.horaFim was %s', original);
-            $log.info('vm.horaFim is now %s', current);
-        });
-
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar();
-
                 console.log("geo");
                 GeoService.getPosicao()
                     .then(
@@ -53384,10 +53437,13 @@ function SHA2_512_256(sData) {
                         iniciarMapa();
                     },
                     function (erro) {
-                        console.log(erro);
+                        console.error(erro);
+                        //alert("Erro de Geolocalização.");
                     }
                     );
             }
+
+
             //jquery do input pra mostrar qual arquivo escolhido
             $(function () {
 
@@ -53523,6 +53579,8 @@ function SHA2_512_256(sData) {
             $scope.$on('$viewContentLoaded', function () { // faz o mapa carregar sem f5
                 google.maps.event.trigger(map, 'resize');
             });
+
+            vm.mapLoad = true;
         }
         //mapa
 
@@ -53537,7 +53595,7 @@ function SHA2_512_256(sData) {
 // source: app/assets/javascripts/views/cadastroEvento/CadastrodeEventos.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/cadastroEvento/CadastrodeEventos.html", '<div class="imprimivel">\n  <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Código QR</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n            {{vm.nome}}\n            <span ng-if="vm.QR==undefined || vm.QR.trim().length>0">\n              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.QR}}">\n            </span>\n          </div>\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="naoimprimivel">\n  <div class="modal fade" id="modalimage" role="dialog" aria-labelledby="modalimageLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="modalimageLabel">Imagem</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n\n            <img ng-src="{{vm.imagem.url}}" width="100%" height="100%" ng-click="vm.logzin()">\n\n          </div>\n        </div>\n        <div class="modal-footer">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n<div class="container naoimprimivel" style="position:relative;transform: translate(0%, 0%); width:50%;top:0%;background-color:#fafafa">\n  <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">\n\n\n  <form name="vm.form">\n    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n    <div>\n      <label for="nome">\n        <h4>Nome</h4>\n      </label>\n      <input class="form-control" name="nome" type="text" ng-model="vm.nome" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.nome.$dirty && vm.form.nome.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="tipo">\n        <h4>Tipo</h4>\n      </label>\n      <input class="form-control" type="text" name="tipo" ng-model="vm.tipo" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.tipo.$dirty && vm.form.tipo.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="data-inicio">\n        <h4>Data de inicio</h4>\n      </label>\n      <input class="form-control" name="data-inicio" type="date" ng-model="vm.dataInicio" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.data-inicio.$dirty && vm.form.data-inicio.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="data-termino">\n        <h4>Data de término</h4>\n      </label>\n      <input class="form-control" name="data-termino" type="date" ng-model="vm.dataFim" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.data-termino.$dirty && vm.form.data-termino.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="hora-inicio">\n        <h4>Hora de Inicio</h4>\n      </label>\n      <input class="form-control" name="hora-inicio" type="time" ng-model="vm.horaInicio" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.hora-inicio.$dirty && vm.form.hora-inicio.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="hora-termino">\n        <h4>Hora de Término</h4>\n      </label>\n      <input class="form-control" name="hora-termino" type="time" ng-model="vm.horaFim" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.hora-termino.$dirty && vm.form.hora-termino.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="local">\n        <h4>Local</h4>\n      </label>\n      <textarea class="form-control" name="local" ng-model="vm.local" required></textarea>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.local.$dirty && vm.form.local.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="desc">\n        <h4>Descrição</h4>\n      </label>\n      <textarea class="form-control" name="desc" ng-model="vm.descricao" required></textarea>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.desc.$dirty && vm.form.desc.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Qrcode</h4>\n      </label>\n      <br>\n      <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-responsive" style="width: auto">\n        <span class="	glyphicon glyphicon-qrcode" style="width:auto"></span> Gerar Qrcode </button>\n      <input class="form-control" type="text" name="qr" ng-model="vm.QR" required style="width:60%">\n      <div role="alert">\n        <span class="error" ng-show="vm.form.qr.$dirty && vm.form.qr.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Imagem</h4>\n      </label>\n      <br>\n      <div class="input-group" style="width: 100%;">\n        <label class="input-group-btn" style="width: 20%">\n          <span class="btn btn-primary">\n            <span class="glyphicon glyphicon-camera"></span> Escolher Imagem\n            <input type="file" name="img" ng-model="vm.imagem" required accept="image/*" style="display: none !important;" app-filereader>\n          </span>\n        </label>\n        <input type="text" class="form-control" style="width: 75%" readonly>\n        <button type="button" data-toggle="modal" data-target="#modalimage" class="btn btn-primary btn-responsive" style="width: 25%">\n          Ver imagem</button>\n      </div>\n    </div>\n\n    <div role="alert">\n      <span class="error" ng-show="vm.form.img.$dirty && vm.form.img.$error.required">\n        (Campo obrigatório)\n      </span>\n    </div>\n\n    <div>\n      <label for="latitude">\n        <h4>Latitude</h4>\n      </label>\n      <input class="form-control" disabled type="text" ng-model="vm.latitude" name="lat">\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.lat.$dirty && vm.form.lat.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="longitude">\n        <h4>Longitude</h4>\n      </label>\n      <input class="form-control" disabled type="text" ng-model="vm.longitude" name="long">\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.long.$dirty && vm.form.long.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <br>\n    <button class="btn btn-info btn-responsive" ng-click="vm.cadastrarEvento()" ng-disabled="vm.botao" style="background-color:#007db7">\n      <span class="	glyphicon glyphicon-ok"></span> OK</button>\n\n  </form>\n\n\n\n  <br>\n  <br>\n</div>\n\n<input id="pac-input" class="controls" type="text" placeholder="Busca">\n<div class="naoimprimivel" id="map"></div>')
+  $templateCache.put("views/cadastroEvento/CadastrodeEventos.html", '<div class="imprimivel">\n  <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Código QR</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n            <h1>{{vm.nome}}</h1>\n            <br>\n            <span ng-if="vm.QR==undefined || vm.QR.trim().length>0">\n              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.QR}}">\n            </span>\n          </div>\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="container naoimprimivel" style="position:relative;transform: translate(0%, 0%); width:50%;top:0%;background-color:#fafafa">\n  <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">\n\n\n  <form name="vm.form">\n    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n    <div>\n      <label for="nome">\n        <h4>Nome</h4>\n      </label>\n      <input class="form-control" name="nome" type="text" ng-model="vm.nome" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.nome.$dirty && vm.form.nome.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="tipo">\n        <h4>Tipo</h4>\n      </label>\n      <input class="form-control" type="text" name="tipo" ng-model="vm.tipo" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.tipo.$dirty && vm.form.tipo.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="data-inicio">\n        <h4>Data de inicio</h4>\n      </label>\n      <input class="form-control" name="data-inicio" type="date" ng-model="vm.dataInicio" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.data-inicio.$dirty && vm.form.data-inicio.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="data-termino">\n        <h4>Data de término</h4>\n      </label>\n      <input class="form-control" name="data-termino" type="date" ng-model="vm.dataFim" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.data-termino.$dirty && vm.form.data-termino.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="hora-inicio">\n        <h4>Hora de Inicio</h4>\n      </label>\n      <input class="form-control" name="hora-inicio" type="time" ng-model="vm.horaInicio" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.hora-inicio.$dirty && vm.form.hora-inicio.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="hora-termino">\n        <h4>Hora de Término</h4>\n      </label>\n      <input class="form-control" name="hora-termino" type="time" ng-model="vm.horaFim" required>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.hora-termino.$dirty && vm.form.hora-termino.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="local">\n        <h4>Local</h4>\n      </label>\n      <textarea class="form-control" name="local" ng-model="vm.local" required></textarea>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.local.$dirty && vm.form.local.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="desc">\n        <h4>Descrição</h4>\n      </label>\n      <textarea class="form-control" name="desc" ng-model="vm.descricao" required></textarea>\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.desc.$dirty && vm.form.desc.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Qrcode</h4>\n      </label>\n      <br>\n      <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-responsive" style="width: auto">\n        <span class="	glyphicon glyphicon-qrcode" style="width:auto"></span> Gerar Qrcode </button>\n      <input class="form-control" type="text" name="qr" ng-model="vm.QR" required style="width:60%">\n      <div role="alert">\n        <span class="error" ng-show="vm.form.qr.$dirty && vm.form.qr.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Imagem</h4>\n      </label>\n      <br>\n      <div class="input-group" style="width: 100%;">\n        <label class="input-group-btn" style="width: 20%">\n          <span class="btn btn-primary">\n            <span class="glyphicon glyphicon-camera"></span> Escolher Imagem\n            <input type="file" name="img" nv-file-select uploader="vm.uploader" accept="image/*" style="display: none !important;">\n          </span>\n        </label>\n        <input type="text" class="form-control" style="width: 75%" readonly placeholder="Nenhuma escolhida">\n      </div>\n    </div>\n\n    <div role="alert">\n      <span class="error" ng-show="vm.form.img.$dirty && vm.form.img.$error.required">\n        (Campo obrigatório)\n      </span>\n    </div>\n\n    <div>\n      <label for="latitude">\n        <h4>Latitude</h4>\n      </label>\n      <input class="form-control" disabled type="text" ng-model="vm.latitude" name="lat">\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.lat.$dirty && vm.form.lat.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <div>\n      <label for="longitude">\n        <h4>Longitude</h4>\n      </label>\n      <input class="form-control" disabled type="text" ng-model="vm.longitude" name="long">\n      <br>\n      <div role="alert">\n        <span class="error" ng-show="vm.form.long.$dirty && vm.form.long.$error.required">\n          (Campo obrigatório)</span>\n      </div>\n    </div>\n    <br>\n    <button class="btn btn-info btn-responsive" ng-click="vm.cadastrarEvento()" ng-disabled="vm.botao" style="background-color:#007db7">\n      <span class="	glyphicon glyphicon-ok"></span> OK</button>\n\n  </form>\n\n  <br>\n  <br>\n</div>\n\n<input ng-show="vm.mapLoad" id="pac-input" class="controls" type="text" placeholder="Busca">\n<div ng-show="vm.mapLoad" class="naoimprimivel" id="map"></div>')
 }]);
 
 (function () {
@@ -53545,9 +53603,9 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 		.module('pdApp')
 		.controller("CadastroUserController", CadastroUserController);
 
-	CadastroUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$window'];
+	CadastroUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$Estados', '$state'];
 
-	function CadastroUserController(LoginService, UserService, sessao, $Respostas, $window) {
+	function CadastroUserController(LoginService, UserService, sessao, $Respostas, $Estados, $state) {
 
 		var vm = this;
 
@@ -53575,7 +53633,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 								console.log(data.body);
 								vm.mensagem = "Usuário criado";
 								//limpar();
-								$window.location.href = "#!/listaUser/";
+								$state.go($Estados.userLista);
 								break;
 							default:
 								vm.mensagem = "Erro: " + $Respostas[data.erro];
@@ -53598,7 +53656,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 										break;
 									case "501":
 										console.log("Sessão expirada.");
-										$window.location.href = "#!/login/";
+										$state.go($Estados.login);
 										LoginService.apagar();
 										break;
 								}
@@ -53618,7 +53676,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 		var init = function () {
 			if (vm.sessao.nome == '') {
 				console.log("faça login");
-				$window.location.href = "#!/login/";
+				$state.go($Estados.login);
 			}
 			else {
 				LoginService.checar();
@@ -53640,15 +53698,16 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 		.module('pdApp')
 		.controller('EditUserController', EditUserController);
 
-	EditUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$stateParams', '$window'];
+	EditUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Estados', '$Respostas', '$state', '$stateParams'];
 
-	function EditUserController(LoginService, UserService, sessao, $Respostas, $stateParams, $window) {
+	function EditUserController(LoginService, UserService, sessao, $Estados, $Respostas, $state, $stateParams) {
 		var vm = this;
 		vm.confirmaSenha;
 		vm.editarUser = editarUser;
 		vm.sessao = sessao;
 		vm.mensagem;
-		vm.user = $stateParams.user;
+		vm.user = Object.assign({}, $stateParams.user);
+		delete (vm.user.classe);
 
 		function editarUser() {
 			if (vm.form.$invalid) {
@@ -53657,12 +53716,13 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 			else {
 				UserService.editUser(vm.user)
 					.then(function (data) {
+						console.log(data);
 						vm.mensagem = '';
 						switch (data.erro) {
 							case "000":
 								console.log(data.body);
 								vm.mensagem = "Alteração concluída com sucesso!";
-								$window.location.href = "#!/listaUser";
+								$state.go($Estados.userLista);
 								break;
 							default:
 								vm.mensagem = "Erro: " + $Respostas[data.erro];
@@ -53672,7 +53732,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 										break;
 									case "501":
 										console.log("sessão expirada");
-										$window.location.href = "#!/login";
+										$state.go($Estados.login);
 										LoginService.apagar();
 										break;
 								}
@@ -53684,7 +53744,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 		var init = function () {
 			if (vm.sessao.nome == '') {
 				console.log("faça login");
-				$window.location.href = "#!/login/";
+				$state.go($Estados.login);
 			} else {
 				LoginService.checar();
 			}
@@ -53695,10 +53755,10 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 	}
 })();
 // Angular Rails Template
-// source: app/assets/javascripts/views/editUser/edituser.html
+// source: app/assets/javascripts/views/editUser/editUser.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/editUser/edituser.html", '<div class="container " style="position:relative;transform: translate(0%, 10%); width:50%;top:5%; background-color:	#fafafa">\n	<div class="form-group form-group-sm">\n		<form name="vm.form">\n			<div style="text-align: center; font-family: inherit;">\n				<h2 style="color:black">Editar<small><br><div style="color:black">(Campos em branco não serão modificados)</div></small> </h2>\n			</div>\n \n			<div class="form-group form-group-sm">\n				<label class="col-sm-8 control-label" for="formGroupInputSmall">Nova senha</label>\n				<input class="form-control" type="password" name="senha" placeholder="Senha" ng-model="vm.user.password"><br>\n			</div>\n			<div class="form-group form-group-sm">\n				<label class="col-sm-6 control-label" for="formGroupInputSmall">Confirmar senha</label>\n				<input class="form-control" type="password" name="confirmaSenha" placeholder="Confirmar Senha" ng-model="vm.confirmaSenha"\n				 ng-pattern="{{vm.user.password}}"><br>\n			</div>\n			<div role="alert">\n				<span class="error" ng-show="vm.form.confirmaSenha.$dirty && vm.form.confirmaSenha.$error.pattern">\n					As senhas não correspondem</span>\n			</div>\n			<div class="form-group form-group-sm">\n				<label class="col-sm-10 control-label" for="formGroupInputSmall">Número MAC</label>\n				<input class="form-control" ng-disabled="vm.user.nivel==\'usuario_adm\'" name="mac" type="text" placeholder="MAC" ng-model="vm.user.mac"><br>\n			</div>\n			<div class="form-group form-group-sm">\n				<label class="col-sm-5 control-label" for="formGroupInputSmall">E-mail</label>\n				<input class="form-control" name="imei" type="email" placeholder="E-mail" ng-model="vm.user.email"><br>\n			</div>\n		</form>\n		<div style="text-align-last: right">\n			<button class="btn btn-primary" ng-click="vm.editarUser()">Editar</button>\n		</div>\n	</div>\n</div>')
+  $templateCache.put("views/editUser/editUser.html", '<div class="container " style="position:relative;transform: translate(0%, 10%); width:50%;top:5%; background-color:	#fafafa">\n	<div class="form-group form-group-sm">\n		<form name="vm.form">\n			<div style="text-align: center; font-family: inherit;">\n				<h2 style="color:black">Editar<small><br><div style="color:black">(Campos em branco não serão modificados)</div></small> </h2>\n			</div>\n \n			<div class="form-group form-group-sm">\n				<label class="col-sm-8 control-label" for="formGroupInputSmall">Nome</label>\n				<input disabled class="form-control" type="text" name="nome" placeholder="Nome" ng-model="vm.user.nome"><br>\n			</div>\n\n			<div class="form-group form-group-sm">\n				<label class="col-sm-8 control-label" for="formGroupInputSmall">Nova senha (Deixe vazio para não alterar)</label>\n				<input class="form-control" type="password" name="senha" placeholder="Senha" ng-model="vm.user.password"><br>\n			</div>\n			<div class="form-group form-group-sm">\n				<label class="col-sm-6 control-label" for="formGroupInputSmall">Confirmar senha</label>\n				<input class="form-control" type="password" name="confirmaSenha" placeholder="Confirmar Senha" ng-model="vm.confirmaSenha"\n				 ng-pattern="{{vm.user.password}}"><br>\n			</div>\n			<div role="alert">\n				<span class="error" ng-show="vm.form.confirmaSenha.$dirty && vm.form.confirmaSenha.$error.pattern">\n					As senhas não correspondem</span>\n			</div>\n			<div class="form-group form-group-sm">\n				<label class="col-sm-10 control-label" for="formGroupInputSmall">Número MAC</label>\n				<input class="form-control" ng-disabled="vm.user.nivel==\'usuario_adm\'" name="mac" type="text" placeholder="MAC" ng-model="vm.user.mac"><br>\n			</div>\n			<div class="form-group form-group-sm">\n				<label class="col-sm-5 control-label" for="formGroupInputSmall">E-mail</label>\n				<input class="form-control" name="imei" type="email" placeholder="E-mail" ng-model="vm.user.email"><br>\n			</div>\n		</form>\n		<div style="text-align-last: right">\n			<button class="btn btn-primary" ng-click="vm.editarUser()">Editar</button>\n		</div>\n	</div>\n</div>')
 }]);
 
 (function () {
@@ -53706,9 +53766,9 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         .module('pdApp')
         .controller('EditEventoController', EditEventoController);
 
-    EditEventoController.$inject = ['$scope', 'EventoService', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$stateParams', '$window'];
+    EditEventoController.$inject = ['$scope', 'EventoService', 'FileUploader', 'GeoService', 'LoginService', 'sessao', '$Respostas', '$Estados', '$state', '$stateParams'];
 
-    function EditEventoController($scope, EventoService, GeoService, LoginService, sessao, $Respostas, $stateParams, $window) {
+    function EditEventoController($scope, EventoService, FileUploader, GeoService, LoginService, sessao, $Respostas, $Estados, $state, $stateParams) {
         var vm = this;
         vm.botao = false;
         x = $stateParams.evento;
@@ -53721,20 +53781,34 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         vm.imprime = imprime;
         vm.mensagem;
         vm.sessao = sessao;
-
-        $scope.$watch('vm.evento.hora_fim', function (current, original) {
-            console.info('vm.evento.hora_fim era %s', original);
-            console.info('vm.evento.hora_fim é %s', current);
+        vm.uploader = new FileUploader({
+            url: '/eventos',
+            alias: 'imagem',
+            method: 'PUT',
+            removeAfterUpload: true,
         });
 
         function editEvento() {
-            if (vm.form.$invalid) {
+            if (vm.form.$invalid || vm.evento.data_inicio > vm.evento.data_fim || vm.evento.hora_inicio > vm.evento.hora_fim) {
                 alert("Preencha os campos corretamente.");
             }
             else {
                 vm.botao = true;
-                EventoService.editEvento(vm.evento)
-                    .then(function (data) {
+
+                ev = Object.assign({}, vm.evento);
+
+                ev.hora_fim = ev.hora_fim.toTimeString().substr(0, 8);
+                ev.hora_inicio = ev.hora_inicio.toTimeString().substr(0, 8);
+
+                console.log(ev);
+
+                if (vm.uploader.queue.length > 0) {
+                    vm.uploader.queue[0].url = 'eventos/' + ev.id;
+                    vm.uploader.queue[0].formData[0] = ev;
+                    vm.uploader.queue[0].method = "PUT";
+                    console.log(vm.uploader.queue[0]);
+
+                    vm.uploader.queue[0].onSuccess = function (data, status, headers) {
                         console.log(data);
                         vm.mensagem = '';
                         switch (data.erro) { // definir erro pra cada campo
@@ -53742,7 +53816,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                                 console.log(data.body);
                                 vm.mensagem = "Evento criado";
                                 //limpar();
-                                $window.location.href = "#!/listaEvento/";
+                                $state.go($Estados.eventoLista);
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Respostas[data.erro];
@@ -53753,13 +53827,53 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                                     case "501":
                                         console.log("sessão expirada");
                                         LoginService.apagar();
-                                        $window.location.href = "#!/login";
+                                        $state.go($Estados.login);
                                     //deslogar
                                 }
                                 break;
                         } // end switch
+                    }
+
+                    vm.uploader.queue[0].onError = function (response, status, headers) {
+                        console.error(response);
+                    }
+
+                    vm.uploader.queue[0].onComplete = function (response, status, headers) {
                         vm.botao = false;
-                    }); //end then
+                    }
+
+                    vm.uploader.queue[0].upload();
+                }
+
+                else { // caso não mude a imagem
+                    EventoService.editEvento(ev)
+                        .then(function (data) {
+                            console.log(data);
+                            vm.mensagem = '';
+                            switch (data.erro) { // definir erro pra cada campo
+                                case "000":
+                                    console.log(data.body);
+                                    vm.mensagem = "Evento criado";
+                                    //limpar();
+                                    $state.go($Estados.eventoLista);
+                                    break;
+                                default:
+                                    vm.mensagem = 'Erro: ' + $Respostas[data.erro];
+                                    console.log(data.status);
+                                    switch (data.erro) {
+                                        case "102":
+                                            vm.nome = '';
+                                        case "501":
+                                            console.log("sessão expirada");
+                                            LoginService.apagar();
+                                            $state.go($Estados.login);
+                                        //deslogar
+                                    }
+                                    break;
+                            } // end switch
+                            vm.botao = false;
+                        }); //end then
+                }   // fim do else não mude imagem
             }
         }
 
@@ -53782,7 +53896,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar();
 
@@ -53938,7 +54052,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // source: app/assets/javascripts/views/editarEvento/editEvento.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/editarEvento/editEvento.html", '<div class="imprimivel">\n  <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Código QR</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n            {{vm.evento.nome}}\n            <span ng-if="vm.evento.qrcode==undefined || vm.evento.qrcode.trim().length>0">\n              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.evento.qrcode}}">\n            </span>\n          </div>\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="naoimprimivel">\n  <div class="modal fade" id="modalimage" role="dialog" aria-labelledby="modalimageLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="modalimageLabel">Imagem</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n\n            <img ng-src="{{vm.evento.imagem.url}}" width="100%" height="100%">\n\n          </div>\n        </div>\n        <div class="modal-footer">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="container" style="position:relative;transform: translate(0%, 5%); width:50%;top:0%;background-color:#fafafa">\n  <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">\n\n  <form name="vm.form">\n    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n\n    <label for="nome">\n      <h4>Nome</h4>\n    </label>\n    <input class="form-control" name="nome" type="text" ng-model="vm.evento.nome">\n    <br>\n\n    <label for="tipo">\n      <h4>Tipo</h4>\n    </label>\n    <input class="form-control" type="text" name="tipo" ng-model="vm.evento.tipo">\n    <br>\n\n    <label for="data-inicio">\n      <h4>Data de inicio</h4>\n    </label>\n    <input class="form-control" name="data-inicio" type="date" ng-model="vm.evento.data_inicio">\n    <br>\n\n    <label for="data-termino">\n      <h4>Data de término</h4>\n    </label>\n    <input class="form-control" name="data-termino" type="date" ng-model="vm.evento.data_fim">\n    <br>\n\n    <label for="hora-inicio">\n      <h4>Hora de Inicio</h4>\n    </label>\n    <input class="form-control" name="hora-inicio" type="time" ng-model="vm.evento.hora_inicio">\n    <br>\n\n    <label for="hora-termino">\n      <h4>Hora de Término</h4>\n    </label>\n    <input class="form-control" name="hora-termino" type="time" ng-model="vm.evento.hora_fim">\n    <br>\n\n    <label for="local">\n      <h4>Local</h4>\n    </label>\n    <textarea class="form-control" name="local" ng-model="vm.evento.local"></textarea>\n    <br>\n\n    <label for="desc">\n      <h4>Descrição</h4>\n    </label>\n    <textarea class="form-control" name="desc" ng-model="vm.evento.descricao"></textarea>\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Qrcode</h4>\n      </label>\n      <br>\n      <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-responsive" style="width: auto">\n        <span class="	glyphicon glyphicon-qrcode" style="width:auto"></span> Gerar Qrcode </button>\n      <input class="form-control" type="text" name="qr" ng-model="vm.evento.qrcode" style="width:60%">\n    </div>\n\n\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Imagem</h4>\n      </label>\n      <br>\n      <div class="input-group" style="width: 100%;">\n        <label class="input-group-btn" style="width: 20%">\n          <span class="btn btn-primary">\n            <span class="glyphicon glyphicon-camera"></span> Escolher Imagem\n            <input type="file" name="img" ng-model="vm.evento.imagem" accept="image/*" style="display: none !important;" app-filereader>\n          </span>\n        </label>\n        <input type="text" class="form-control" style="width: 75%" readonly>\n        <button type="button" data-toggle="modal" data-target="#modalimage" class="btn btn-primary" style="width: 25%">\n          Ver imagem</button>\n      </div>\n    </div>\n\n    <label for="latitude">\n      <h4>Latitude</h4>\n    </label>\n    <input class="form-control" type="text" disabled ng-model="vm.evento.localizacao_lati">\n    <br>\n\n    <label for="longitude">\n      <h4>Longitude</h4>\n    </label>\n    <input class="form-control" type="text" disabled ng-model="vm.evento.localizacao_long">\n    <br>\n\n    <br>\n    <button class="btn btn-info" ng-click="vm.editEvento()" ng-disabled="vm.botao" style="background-color:#007db7">OK</button>\n\n  </form>\n  <br>\n  <br>\n</div>\n\n<input id="pac-input" class="controls" type="text" placeholder="Busca">\n<div class="naoimprimivel" id="map"></div>')
+  $templateCache.put("views/editarEvento/editEvento.html", '<div class="imprimivel">\n  <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Código QR</h4>\n        </div>\n        <div class="modal-body">\n          <div>\n            {{vm.evento.nome}}\n            <br>\n            <span ng-if="vm.evento.qrcode==undefined || vm.evento.qrcode.trim().length>0">\n              <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.evento.qrcode}}">\n            </span>\n          </div>\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n          <button type="button" class="btn btn-primary info" ng-click="vm.imprime()">Imprimir</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="container naoimprimivel" style="position:relative;transform: translate(0%, 5%); width:50%;top:0%;background-color:#fafafa">\n  <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">\n\n  <form name="vm.form">\n    <div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n\n    <label for="nome">\n      <h4>Nome</h4>\n    </label>\n    <input class="form-control" name="nome" type="text" ng-model="vm.evento.nome">\n    <br>\n\n    <label for="tipo">\n      <h4>Tipo</h4>\n    </label>\n    <input class="form-control" type="text" name="tipo" ng-model="vm.evento.tipo">\n    <br>\n\n    <label for="data-inicio">\n      <h4>Data de inicio</h4>\n    </label>\n    <input class="form-control" name="data-inicio" type="date" ng-model="vm.evento.data_inicio">\n    <br>\n\n    <label for="data-termino">\n      <h4>Data de término</h4>\n    </label>\n    <input class="form-control" name="data-termino" type="date" ng-model="vm.evento.data_fim">\n    <br>\n\n    <label for="hora-inicio">\n      <h4>Hora de Inicio</h4>\n    </label>\n    <input class="form-control" name="hora-inicio" type="time" ng-model="vm.evento.hora_inicio">\n    <br>\n\n    <label for="hora-termino">\n      <h4>Hora de Término</h4>\n    </label>\n    <input class="form-control" name="hora-termino" type="time" ng-model="vm.evento.hora_fim">\n    <br>\n\n    <label for="local">\n      <h4>Local</h4>\n    </label>\n    <textarea class="form-control" name="local" ng-model="vm.evento.lugar"></textarea>\n    <br>\n\n    <label for="desc">\n      <h4>Descrição</h4>\n    </label>\n    <textarea class="form-control" name="desc" ng-model="vm.evento.descricao"></textarea>\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Qrcode</h4>\n      </label>\n      <br>\n      <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-responsive" style="width: auto">\n        <span class="	glyphicon glyphicon-qrcode" style="width:auto"></span> Gerar Qrcode </button>\n      <input class="form-control" type="text" name="qr" ng-model="vm.evento.qrcode" style="width:60%">\n    </div>\n\n\n    <br>\n\n    <div class="form-inline">\n      <label for="qr">\n        <h4>Imagem</h4>\n      </label>\n      <br>\n      <div class="input-group" style="width: 100%;">\n        <label class="input-group-btn" style="width: 20%">\n          <span class="btn btn-primary">\n            <span class="glyphicon glyphicon-camera"></span> Escolher Imagem\n            <input type="file" name="img" nv-file-select uploader="vm.uploader" accept="image/*" style="display: none !important;">\n          </span>\n        </label>\n        <input type="text" class="form-control" style="width: 75%" readonly placeholder="Não será mudada caso não escolha uma nova">\n      </div>\n    </div>\n\n    <label for="latitude">\n      <h4>Latitude</h4>\n    </label>\n    <input class="form-control" type="text" disabled ng-model="vm.evento.localizacao_lati">\n    <br>\n\n    <label for="longitude">\n      <h4>Longitude</h4>\n    </label>\n    <input class="form-control" type="text" disabled ng-model="vm.evento.localizacao_long">\n    <br>\n\n    <br>\n    <button class="btn btn-info" ng-click="vm.editEvento()" ng-disabled="vm.botao" style="background-color:#007db7">OK</button>\n\n  </form>\n  <br>\n  <br>\n</div>\n\n<input id="pac-input" class="controls" type="text" placeholder="Busca">\n<div class="naoimprimivel" id="map"></div>')
 }]);
 
 (function () {
@@ -53946,22 +54060,22 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         .module('pdApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['LoginService', 'sessao', '$cookies', '$window'];
-    function HomeController(LoginService, sessao, $cookies, $window) {
+    HomeController.$inject = ['LoginService', 'sessao', '$cookies', '$Estados', '$state'];
+    function HomeController(LoginService, sessao, $cookies, $Estados, $state) {
         var homeVM = this;
         homeVM.sessao = sessao;
 
         var init = function () {
             if (homeVM.sessao.id == undefined) {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             }
             else {
                 LoginService.checar().then(
-                    function(data){
+                    function (data) {
                         console.log(data);
                     },
-                    function(err){
+                    function (err) {
                         console.error(err);
                     }
                 );
@@ -53975,7 +54089,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // source: app/assets/javascripts/views/home/home.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/home/home.html", '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<meta http-equiv="X-UA-Compatible" content="ie=edge">\n\n\n\n\n\n<div class="jumbotron text-center" style="font-family:roboto;width:105.9%;transform: translate(-3%, 0%);background-image: url(/assets/logo3.png);">\n  <h1> <kbd> Ponto Dinâmico </kbd></h1>\n\n\n  <p style="font-family:roboto"> <kbd>Seja bem-vindo ao Ponto Dinâmico </kbd></p>\n</div>\n\n<div class="container">\n  <div class="row">\n    <div class="col-sm-6">\n      <div class="list-group" style="position:relative;left:50%;transform: translate(-50%, -0%); width:100%;top:30%;text-align: center ">\n        <li class="list-group-item list-group-item-info" style="font-size:150%;font-family:Ubuntu;color:Black">Cadastros</li>\n        <a href="#!/cadastrarEvento/" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Cadastrar evento</a>\n        <a href="#!/cadastrarUser/" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Cadastrar perfil do usuário</a>\n        <a href="#" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Gerar Qrcode </a>\n      </div>\n    </div>\n    <div class="col-sm-6">\n      <div class="list-group" style="position:relative;left:50%;transform: translate(-50%, -0%); width:100%;top:30%;text-align: center ">\n        <li class="list-group-item list-group-item-info" style="font-size:150%;font-family:Ubuntu;color:Black">Relatórios</li>\n        <a href="#!/listaUser/" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Relatório por usuário</a>\n        <a href="#!/listaEvento/" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Relatório por eventos</a>\n      </div>\n    </div>\n\n  </div>\n</div>\n</div>')
+  $templateCache.put("views/home/home.html", '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<meta http-equiv="X-UA-Compatible" content="ie=edge">\n\n\n\n\n\n<div class="jumbotron text-center" style="font-family:roboto;width:105.9%;transform: translate(-3%, 0%);background-image: url(/assets/logo3.png);">\n  <h1> <kbd> Ponto Dinâmico </kbd></h1>\n\n\n  <p style="font-family:roboto"> <kbd>Seja bem-vindo ao Ponto Dinâmico </kbd></p>\n</div>\n\n<div class="container">\n  <div class="row">\n    <div class="col-sm-6">\n      <div class="list-group" style="position:relative;left:50%;transform: translate(-50%, -0%); width:100%;top:30%;text-align: center ">\n        <li class="list-group-item list-group-item-info" style="font-size:150%;font-family:Ubuntu;color:Black">Cadastros</li>\n        <a href="#!/cadastrarEvento" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Cadastrar evento</a>\n        <a href="#!/cadastrarUser" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Cadastrar perfil do usuário</a>\n      </div>\n    </div>\n    <div class="col-sm-6">\n      <div class="list-group" style="position:relative;left:50%;transform: translate(-50%, -0%); width:100%;top:30%;text-align: center ">\n        <li class="list-group-item list-group-item-info" style="font-size:150%;font-family:Ubuntu;color:Black">Relatórios</li>\n        <a href="#!/listaUser" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Relatório por usuário</a>\n        <a href="#!/listaEvento" class="list-group-item" style="font-size:120%;font-family:Ubuntu;color:Black">Relatório por eventos</a>\n      </div>\n    </div>\n\n  </div>\n</div>\n</div>')
 }]);
 
 (function () {
@@ -53983,9 +54097,9 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         .module('pdApp')
         .controller('ListaEventoController', ListaEventoController);
 
-    ListaEventoController.$inject = ['LoginService', 'EventoService', 'sessao', '$Respostas', '$window'];
+    ListaEventoController.$inject = ['LoginService', 'EventoService', 'sessao', '$Respostas', '$Estados', '$state'];
 
-    function ListaEventoController(LoginService, EventoService, sessao, $Respostas, $window) {
+    function ListaEventoController(LoginService, EventoService, sessao, $Respostas, $Estados, $state) {
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
@@ -53997,8 +54111,10 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         vm.eventos = [];
         vm.mensagem;
         vm.radio = "nome";
+        vm.relato = null;
         vm.relatorio = relatorio;
         vm.sessao = sessao;
+        vm.user_evento;
         vm.users = null;
 
         vm.filtro = {
@@ -54013,6 +54129,9 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
             } else if (vm.radio == 'data') {
                 vm.filtro.nome = '';
                 vm.filtro.data_inicio = vm.busca;
+            } else {
+                vm.filtro.nome = '';
+                vm.filtro.data_inicio = '';
             }
         }
 
@@ -54026,16 +54145,17 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                             case '000':
                                 console.log(data.body);
                                 console.log("evento deletado");
-                                vm.listaEventos();
+                                listarEventos();
                                 break;
                             case '501':
                                 console.log("sessão expirada");
                                 LoginService.apagar();
-                                $window.location.href = "#!/login";
+                                $state.go($Estados.login);
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Respostas[data.erro];
                                 vm.users = null;
+                                vm.relato = null;
                                 break;
                         }
                     }
@@ -54071,16 +54191,24 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                     switch (data.erro) {
                         case '000':
                             console.log(data.body);
-                            vm.users = data.body;
+                            vm.users = data.body.users;
+                            vm.relato = data.body.relato;
+                            vm.user_evento = evento.id;
+                            break;
+                        case '301':
+                            alert("Nenhum usuário cadastrado neste evento");
+                            vm.users = null;
+                            vm.relato = null;
                             break;
                         case '501':
                             console.log("sessão expirada");
                             LoginService.apagar();
-                            $window.location.href = "#!/login";
+                            $state.go($Estados.login);
                             break;
                         default:
                             vm.mensagem = 'Erro: ' + $Respostas[data.erro];
                             vm.users = null;
+                            vm.relato = null;
                             break;
                     }
                 });
@@ -54114,7 +54242,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar()
                     .then(function (data) {
@@ -54130,7 +54258,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // source: app/assets/javascripts/views/listaEvento/listaEvento.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/listaEvento/listaEvento.html", '<div class="naoimprimivel">\n  <div class="modal fade" id="informacoes" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Informações</h4>\n        </div>\n        <div class="modal-body">\n\n          <label for="nome">\n            <h4>Nome</h4>\n          </label>\n          <input disabled class="form-control" name="nome" type="text" ng-model="vm.info.nome"> -\n          <br>\n\n          <label for="tipo">\n            <h4>Tipo</h4>\n          </label>\n          <input disabled class="form-control" type="text" name="tipo" ng-model="vm.info.tipo">\n          <br>\n\n          <label for="data-inicio">\n            <h4>Data de inicio</h4>\n          </label>\n          <input disabled class="form-control" name="data-inicio" type="date" ng-model="vm.info.data_inicio">\n          <br>\n\n          <label for="data-termino">\n            <h4>Data de término</h4>\n          </label>\n          <input disabled class="form-control" name="data-termino" type="date" ng-model="vm.info.data_fim">\n          <br>\n\n          <label for="hora-inicio">\n            <h4>Hora de Inicio</h4>\n          </label>\n          <input disabled class="form-control" name="hora-inicio" type="time" ng-model="vm.info.hora_inicio">\n          <br>\n\n          <label for="hora-termino">\n            <h4>Hora de Término</h4>\n          </label>\n          <input disabled class="form-control" name="hora-termino" type="time" ng-model="vm.info.hora_fim">\n          <br>\n\n          <label for="local">\n            <h4>Local</h4>\n          </label>\n          <textarea disabled class="form-control" name="local" ng-model="vm.info.local"></textarea>\n          <br>\n\n          <label for="desc">\n            <h4>Descrição</h4>\n          </label>\n          <textarea disabled class="form-control" name="desc" ng-model="vm.info.descricao"></textarea>\n          <br>\n\n          <label for="qr">\n            <h4>Qrcode</h4>\n          </label>\n          <input disabled class="form-control" type="text" name="qr" ng-model="vm.info.qrcode">\n          <br>\n\n          <label for="latitude">\n            <h4>Latitude</h4>\n          </label>\n          <input disabled class="form-control" type="text" disabled ng-model="vm.info.localizacao_lati">\n          <br>\n\n          <label for="longitude">\n            <h4>Longitude</h4>\n          </label>\n          <input disabled class="form-control" type="text" disabled ng-model="vm.info.localizacao_long">\n          <br>\n\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n<div class="container" style="background-color:#e3f2fd">\n  <div class="row">\n    <br>\n    <br>\n    <form name="vm.form" class="form-horizontal">\n      <div class="form-group">\n        <div class="col-xs-9" style="position:relative;transform: translate(20%, 0%)">\n          <input type="text" class="form-control" ng-change="vm.buscar()" ng-model="vm.busca" placeholder="Nome ou Data">\n          <br>\n          <label class="radio-inline">Buscar por </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'" ng-model="vm.radio" value="nome" checked=\'checked\'> Nome do evento\n          </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'" ng-model="vm.radio" value="data"> Data\n          </label>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n<div class="container" >\n  <h2>Resultado</h2>\n  <p>Informações :</p>\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>Data</th>\n        <th>Nome do evento</th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n      </tr>\n    </thead>\n    <tbody>\n      <div>\n        <tr ng-repeat="evento in vm.eventos | filter:vm.filtro:strict" ng-class="evento.classe">\n          <td>{{evento.data_inicio | date:"dd/MM/yyyy"}}</td>\n          <td>{{evento.nome}}</td>\n          <td>\n            <a ui-sref="editEvento({evento: evento})" type="button" class="btn btn-primary" style="color:white">editar</a>\n          </td>\n          <td>\n            <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" style="color:white" ng-click="vm.informar(evento)">informações</a>\n          </td>\n          <td>\n            <a ng-click="vm.relatorio(evento)" type="button" class="btn btn-primary" style="color:white">relatório</a>\n          </td>\n          <td>\n            <a ng-click="vm.deletar(evento.id, evento.nome)" type="button" class="btn btn-danger" style="color:white">Excluir</a>\n          </td>\n        </tr>\n      </div>\n    </tbody>\n  </table>\n  <h2>Detalhes</h2>\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>Nome:</th>\n        <th>Presenças:</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr class="active" ng-repeat="user in vm.users">\n        <td>{{user.nome}}</td>\n        <td>{{user.presenca}}</td>\n      </tr>\n    </tbody>\n  </table>\n</div>')
+  $templateCache.put("views/listaEvento/listaEvento.html", '<div class="naoimprimivel">\n  <div class="modal fade" id="informacoes" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Informações</h4>\n        </div>\n        <div class="modal-body">\n\n          <label for="nome">\n            <h4>Nome</h4>\n          </label>\n          <input disabled class="form-control" name="nome" type="text" ng-model="vm.info.nome">\n          <br>\n\n          <label for="tipo">\n            <h4>Tipo</h4>\n          </label>\n          <input disabled class="form-control" type="text" name="tipo" ng-model="vm.info.tipo">\n          <br>\n\n          <label for="data-inicio">\n            <h4>Data de inicio</h4>\n          </label>\n          <input disabled class="form-control" name="data-inicio" type="date" ng-model="vm.info.data_inicio">\n          <br>\n\n          <label for="data-termino">\n            <h4>Data de término</h4>\n          </label>\n          <input disabled class="form-control" name="data-termino" type="date" ng-model="vm.info.data_fim">\n          <br>\n\n          <label for="hora-inicio">\n            <h4>Hora de Inicio</h4>\n          </label>\n          <input disabled class="form-control" name="hora-inicio" type="time" ng-model="vm.info.hora_inicio">\n          <br>\n\n          <label for="hora-termino">\n            <h4>Hora de Término</h4>\n          </label>\n          <input disabled class="form-control" name="hora-termino" type="time" ng-model="vm.info.hora_fim">\n          <br>\n\n          <label for="local">\n            <h4>Local</h4>\n          </label>\n          <textarea disabled class="form-control" name="local" ng-model="vm.info.lugar"></textarea>\n          <br>\n\n          <label for="desc">\n            <h4>Descrição</h4>\n          </label>\n          <textarea disabled class="form-control" name="desc" ng-model="vm.info.descricao"></textarea>\n          <br>\n\n          <label for="qr">\n            <h4>Qrcode</h4>\n          </label>\n          <br>\n          <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.info.qrcode}}">\n          <br>\n\n          <label for="imagem">\n            <h4>Imagem</h4>\n          </label>\n          <br>\n          <img class="img-responsive" ng-src="{{vm.info.imagem.url}}">\n          <br>\n\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n<div class="container" style="background-color:#e3f2fd">\n  <div class="row">\n    <br>\n    <br>\n    <form name="vm.form" class="form-horizontal">\n      <div class="form-group">\n        <div class="col-xs-9" style="position:relative;transform: translate(20%, 0%)">\n          <input type="text" class="form-control" ng-change="vm.buscar()" ng-model="vm.busca" placeholder="Nome ou Data">\n          <br>\n          <label class="radio-inline">Buscar por </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'" ng-model="vm.radio" value="nome" checked=\'checked\'> Nome do evento\n          </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'" ng-model="vm.radio" value="data"> Data\n          </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'" ng-model="vm.radio" value="nada"> Sem filtro\n          </label>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n<div class="container">\n  <h2>Resultado</h2>\n  <p>Informações :</p>\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>Data de início</th>\n        <th>Nome do evento</th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n      </tr>\n    </thead>\n    <tbody>\n      <div>\n        <tr ng-repeat="evento in vm.eventos | filter:vm.filtro:strict" ng-class="evento.classe">\n          <td>{{evento.data_inicio | date:"dd/MM/yyyy"}}</td>\n          <td>{{evento.nome}}</td>\n          <td>\n            <a ui-sref="editEvento({evento: evento})" type="button" class="btn btn-primary" style="color:white">Editar</a>\n          </td>\n          <td>\n            <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" style="color:white" ng-click="vm.informar(evento)">Informações</a>\n          </td>\n          <td>\n            <a ng-click="vm.relatorio(evento)" type="button" class="btn btn-primary" style="color:white">Relatório</a>\n          </td>\n          <td>\n            <a ng-click="vm.deletar(evento.id, evento.nome)" type="button" class="btn btn-danger" style="color:white">Excluir</a>\n          </td>\n        </tr>\n      </div>\n    </tbody>\n  </table>\n  <div ng-if="vm.users!=null">\n    <h2>Detalhes</h2>\n\n    <table class="table">\n      <thead>\n        <tr class="info">\n          <th>\n            Inscritos: {{vm.users.length}}\n          </th>\n          <th>\n            Regulares: {{vm.relato.regulares}}\n          </th>\n          <th>\n            Irregulares: {{vm.relato.irregulares}}\n          </th>\n          <th>\n            Ausentes: {{vm.relato.ausentes}}\n          </th>\n        </tr>\n      </thead>\n    </table>\n\n    <table class="table" fixed-header table-height="100px">\n      <thead>\n        <tr class="info">\n          <th>Nome:</th>\n          <th>Presenças:</th>\n          <th> </th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr class="active" ng-repeat="user in vm.users">\n          <td>{{user.nome}}</td>\n          <td>{{user.presenca}}</td>\n          <td>\n            <a ui-sref="listaUser({id_user: user.id, id_evento: vm.user_evento})" type="button" class="btn btn-primary" style="color:white">Abrir pontos</a>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n</div>')
 }]);
 
 (function () {
@@ -54138,9 +54266,9 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         .module('pdApp')
         .controller('ListaUserController', ListaUserController);
 
-    ListaUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$window'];
+    ListaUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$Estados', '$state', '$stateParams'];
 
-    function ListaUserController(LoginService, UserService, sessao, $Respostas, $window) {
+    function ListaUserController(LoginService, UserService, sessao, $Respostas, $Estados, $state, $stateParams) {
         var vm = this;
         vm.busca = '';
         vm.buscar = buscar;
@@ -54148,6 +54276,8 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         vm.eventos = null;
         vm.usu_id = null;
         vm.listaPontos = listaPontos;
+        vm.info;
+        vm.informar = informar;
         vm.pontos = null;
         vm.radio = 'nome';
         vm.relatorio = relatorio;
@@ -54166,11 +54296,14 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
             } else if (vm.radio == 'matricula') {
                 vm.filtro.nome = '';
                 vm.filtro.matricula = vm.busca;
+            } else {
+                vm.filtro.nome = '';
+                vm.filtro.matricula = '';
             }
         }
 
-        function deletar(id) {
-            if (confirm("Tem certeza que deseja deletar este usuário?")) {
+        function deletar(id, nome) {
+            if (confirm("Tem certeza que deseja deletar o usuário " + nome + "?")) {
                 UserService.deletUser(id).then(
                     function (data) {
                         console.log(data);
@@ -54178,12 +54311,12 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                             case '000':
                                 console.log(data.body);
                                 console.log("usuário deletado");
-                                vm.listaEventos();
+                                listar();
                                 break;
                             case '501':
                                 console.log("sessão expirada");
                                 LoginService.apagar();
-                                $window.location.href = "#!/login";
+                                $state.go($Estados.login);
                                 break;
                             default:
                                 vm.mensagem = 'Erro: ' + $Respostas[data.erro];
@@ -54209,16 +54342,24 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                             console.log(data.body);
                             vm.pontos = data.body;
                             break;
+                        case '301':
+                            alert("Usuário sem pontos neste evento");
+                            vm.pontos = null;
+                            break;
                         case '501':
                             console.log("sessão expirada");
                             LoginService.apagar();
-                            $window.location.href = "#!/login";
+                            $state.go($Estados.login);
                             break;
                         default:
                             vm.mensagem = 'Erro' + $Respostas[data.erro];
                             break;
                     }
                 });
+        }
+
+        function informar(user) {
+            vm.info = user;
         }
 
         function relatorio(user) {
@@ -54240,11 +54381,26 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                                 ev.classe = 'active';
                             });
                             vm.usu_id = id;
+                            if ($stateParams.id_evento != null) {
+                                let alvo;
+                                vm.eventos.forEach(function (ev) {
+                                    if (ev.id == $stateParams.id_evento) {
+                                        alvo = ev;
+                                    }
+                                });
+                                $stateParams.id_user = null;
+                                vm.listaPontos(alvo);
+                            }
+
+                            break;
+                        case '301':
+                            alert("Usuário não cadastrado em nenhum evento");
+                            vm.eventos = null;
                             break;
                         case '501':
                             console.log("sessão expirada");
                             LoginService.apagar();
-                            $window.location.href = "#!/login";
+                            $state.go($Estados.login);
                             break;
                         default:
                             vm.mensagem = 'Erro' + $Respostas[data.erro];
@@ -54264,6 +54420,17 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                             vm.users.forEach(function (user) {
                                 user.classe = 'active';
                             });
+                            console.log($stateParams);
+                            if ($stateParams.id_user != null) {
+                                let alvo;
+                                vm.users.forEach(function (u) {
+                                    if (u.id == $stateParams.id_user) {
+                                        alvo = u;
+                                    }
+                                });
+                                vm.relatorio(alvo);
+                            }
+
                             break;
                         default:
                             break;
@@ -54274,7 +54441,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         var init = function () {
             if (vm.sessao.nome == '') {
                 console.log("faça login");
-                $window.location.href = "#!/login/";
+                $state.go($Estados.login);
             } else {
                 LoginService.checar()
                     .then(function (data) {
@@ -54290,7 +54457,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // source: app/assets/javascripts/views/listaUser/listaUser.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/listaUser/listaUser.html", '<div class="container" style="background-color:#e3f2fd; ">\n  <div class="row">\n    <br>\n    <br>\n    <form name="vm.form" class="form-horizontal">\n      <div class="form-group">\n        <div class="col-xs-9" style="position:relative;transform: translate(20%, 0%)">\n          <input type="text" class="form-control" ng-change="vm.buscar()" ng-model="vm.busca" placeholder="Nome ou Número de Matrícula">\n          <br>\n          <label class="radio-inline">Buscar por </label>\n          <label class="radio-inline">\n                <input type="radio" name="busc" ng-change="vm.busca=\'\'; vm.buscar()" ng-model="vm.radio" value="nome" checked=\'checked\'> Nome\n            </label>\n          <label class="radio-inline">\n                <input type="radio" name ="busc" ng-change="vm.busca=\'\'; vm.buscar()" ng-model="vm.radio" value="matricula"> Número da matrícula\n            </label>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n<div class="container">\n  <h2>Resultado</h2>\n  <p>Informações :</p>\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>NúmeroM</th>\n        <th>Nome</th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr ng-repeat="user in vm.users | filter:vm.filtro:strict" ng-class="user.classe">\n        <span style="width: max-content">\n        <td>{{user.matricula}}</td>\n        <td>{{user.nome}}</td>\n        <td><a ui-sref="editUser({user: user})" type="button" class="btn btn-primary" style="color:white">editar</a></td>\n        <td><a href="" type="button" class="btn btn-primary" style="color:white">informações</a></td>\n        <td><a ng-click="vm.relatorio(user)" type="button" class="btn btn-primary" style="color:white">relatório</a></td>\n        </span>\n      </tr>\n    </tbody>\n  </table>\n  <h2>Relatório:</h2>\n\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>nome</th>\n        <th>Data Início</th>\n        <th>Data Fim</th>\n        <th> </th>\n        <th> </th>\n      </tr>\n    </thead>\n    <tbody>\n\n      <tr ng-repeat="evento in vm.eventos" ng-class="evento.classe">\n        <td>{{evento.nome}}</td>\n        <td>{{evento.data_inicio}}</td>\n        <td>{{evento.data_fim}}</td>\n        <td><a ng-click="vm.listaPontos(evento)" type="button" class="btn btn-primary" style="color:white">pontos</a></td>\n        <td> </td>\n      </tr>\n\n    </tbody>\n  </table>\n\n  <h2>Pontos:</h2>\n  <table class="table" fixed-header table-height="100px">\n    <thead>\n      <tr class="info">\n        <th>Data</th>\n        <th>Entrada</th>\n        <th>Saída</th>\n        <th>Mensagem de Atraso</th>\n      </tr>\n    </thead>\n\n    <tbody>\n      <tr class="active" ng-repeat="ponto in vm.pontos">\n        <td>{{ponto.data | date:"dd/MM/yyyy"}}</td>\n        <td>{{ponto.hora_inicio}}</td>\n        <td>{{ponto.hora_fim}}</td>\n        <td>{{ponto.mensagem}}</td>\n      </tr>\n    </tbody>\n  </table>\n\n</div>')
+  $templateCache.put("views/listaUser/listaUser.html", '<div class="naoimprimivel">\n  <div class="modal fade" id="informacoes" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Informações</h4>\n        </div>\n        <div class="modal-body">\n\n          <label for="nome">\n            <h4>Nome</h4>\n          </label>\n          <input disabled class="form-control" name="nome" type="text" ng-model="vm.info.nome">\n          <br>\n\n          <label for="email">\n            <h4>E-mail</h4>\n          </label>\n          <input disabled class="form-control" type="text" name="email" ng-model="vm.info.email">\n          <br>\n\n          <label for="matricula">\n            <h4>Matrícula</h4>\n          </label>\n          <input disabled class="form-control" name="matricula" type="text" ng-model="vm.info.matricula">\n          <br>\n\n          <label for="mac">\n            <h4>MAC</h4>\n          </label>\n          <input disabled class="form-control" name="mac" type="text" ng-model="vm.info.mac">\n          <br>\n\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="container" style="background-color:#e3f2fd; ">\n  <div class="row">\n    <br>\n    <br>\n    <form name="vm.form" class="form-horizontal">\n      <div class="form-group">\n        <div class="col-xs-9" style="position:relative;transform: translate(20%, 0%)">\n          <input type="text" class="form-control" ng-change="vm.buscar()" ng-model="vm.busca" placeholder="Nome ou Número de Matrícula">\n          <br>\n          <label class="radio-inline">Buscar por </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'" ng-model="vm.radio" value="nome" checked=\'checked\'> Nome\n          </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'" ng-model="vm.radio" value="matricula"> Número da matrícula\n          </label>\n          <label class="radio-inline">\n            <input type="radio" name="busc" ng-change="vm.busca=\'\'" ng-model="vm.radio" value="nada"> Sem filtro\n          </label>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n<div class="container">\n  <h2>Resultado</h2>\n  <p>Informações :</p>\n  <table class="table" fixed-header table-height="200px">\n    <thead>\n      <tr class="info">\n        <th>Matrícula </th>\n        <th>Nome</th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n        <th> </th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr ng-repeat="user in vm.users | filter:vm.filtro:strict" ng-class="user.classe">\n        <span style="width: max-content">\n          <td>{{user.matricula}}</td>\n          <td>{{user.nome}}</td>\n          <td>\n            <a ui-sref="editUser({user: user})" type="button" class="btn btn-primary" style="color:white">Editar</a>\n          </td>\n          <td>\n            <a data-toggle="modal" data-target="#informacoes" href="" type="button" class="btn btn-primary" ng-click="vm.informar(user)"\n              style="color:white">Informações</a>\n          </td>\n          <td>\n            <a ng-click="vm.relatorio(user)" type="button" class="btn btn-primary" style="color:white">Relatório</a>\n          </td>\n          <td>\n            <a ng-click="vm.deletar(user.id, user.nome)" type="button" class="btn btn-danger" style="color:white">Excluir</a>\n          </td>\n        </span>\n      </tr>\n    </tbody>\n  </table>\n\n  <div ng-if="vm.eventos!=null">\n    <h2>Relatório:</h2>\n    <table class="table" fixed-header table-height="200px">\n      <thead>\n        <tr class="info">\n          <th>Nome</th>\n          <th>Data Início</th>\n          <th>Data Fim</th>\n          <th> </th>\n          <th> </th>\n        </tr>\n      </thead>\n      <tbody>\n\n        <tr ng-repeat="evento in vm.eventos" ng-class="evento.classe">\n          <td>{{evento.nome}}</td>\n          <td>{{evento.data_inicio}}</td>\n          <td>{{evento.data_fim}}</td>\n          <td>\n            <a data-toggle="modal" data-target="#pontos" ng-click="vm.listaPontos(evento)" type="button" class="btn btn-primary" style="color:white">Pontos</a>\n          </td>\n          <td> </td>\n        </tr>\n\n      </tbody>\n    </table>\n  </div>\n\n</div>\n\n<div class="naoimprimivel">\n  <div class="modal fade" id="pontos" role="dialog" aria-labelledby="myModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header naoimprimivel">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n            <span aria-hidden="true">&times;</span>\n          </button>\n          <h4 class="modal-title" id="myModalLabel">Informações</h4>\n        </div>\n        <div class="modal-body">\n\n          <div ng-if="vm.pontos!=null">\n            <h2>Pontos:</h2>\n            <table class="table" fixed-header table-height="200px">\n              <thead>\n                <tr class="info">\n                  <th>Data</th>\n                  <th>Entrada</th>\n                  <th>Saída</th>\n                  <th>Mensagem de Atraso</th>\n                </tr>\n              </thead>\n\n              <tbody>\n                <tr class="active" ng-repeat="ponto in vm.pontos">\n                  <td>{{ponto.data | date:"dd/MM/yyyy"}}</td>\n                  <td>{{ponto.hora_inicio}}</td>\n                  <td>{{ponto.hora_fim}}</td>\n                  <td>{{ponto.mensagem}}</td>\n                </tr>\n              </tbody>\n            </table>\n          </div>\n\n        </div>\n        <div class="modal-footer naoimprimivel">\n          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>')
 }]);
 
 (function () {
@@ -54298,9 +54465,9 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         .module('pdApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['LoginService', 'sessao', '$cookies', '$Respostas', '$window'];
+    LoginController.$inject = ['LoginService', 'sessao', '$cookies', '$Respostas', '$Estados', '$state'];
 
-    function LoginController(LoginService, sessao, $cookies, $Respostas, $window) {
+    function LoginController(LoginService, sessao, $cookies, $Respostas, $Estados, $state) {
 
         vm = this;
 
@@ -54331,7 +54498,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
                                 $cookies.put('sessao_pd_id', vm.sessao.id);
                                 vm.sessao.nome = data.body.nome;
                                 $cookies.put('sessao_pd_nome', vm.sessao.nome);
-                                $window.location.href = "#!/home/";
+                                $state.go($Estados.home);
                                 break;
                             case "202":
                                 vm.senha = '';
@@ -54355,7 +54522,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
         var init = function () {
             vm.sessao.id = $cookies.get('sessao_pd_id');
             if ("undefined" != typeof vm.sessao.id) {
-                $window.location.href = "#!/home/";
+                $state.go($Estados.home);
             }
         }
 
@@ -54367,7 +54534,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // source: app/assets/javascripts/views/login/login.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/login/login.html", '<div class="row">\n	<div class="col-xs-12">\n\n		<div class="container " style="position:relative;transform: translate(0%, 0%); width:30%;top:25%; background-color:	#fafafa">\n\n			<img ng-src="/assets/logotipo-nexti.png" class="img-responsive" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação">\n\n			<div class="box-parent-login">\n				<div class="well bg-white box-login">\n					<form role="form" name="vm.form">\n						<fieldset>\n\n							<div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n\n							<div class="form-group ls-login-user">\n								<label for="userLogin">Usuário</label>\n								<input class="form-control ls-login-bg-user input-lg" name="user" id="userLogin" type="text" aria-label="Usuário" placeholder="Usuário"\n								 ng-model="vm.login" required>\n							</div>\n							<div role="alert">\n								<span class="error" ng-show="vm.form.user.$dirty && vm.form.user.$error.required">\n       						Campo obrigatório</span>\n							</div>\n\n							<div class="form-group ls-login-password">\n								<label for="userPassword">Senha</label>\n								<input class="form-control ls-login-bg-password input-lg" name="senha" id="userPassword" type="password" aria-label="Senha"\n								 placeholder="Senha" ng-model="vm.senha" ng-minlength="5" required>\n							</div>\n\n							<div role="alert">\n								<span class="error" ng-show="vm.form.$dirty && vm.form.senha.$error.required">\n       						Campo obrigatório</span>\n								<span class="error" ng-show="vm.form.$dirty && vm.form.senha.$error.minlength">\n							Senha curta</span>\n							</div>\n\n							<a href="#" class="ls-login-forgot">Esqueci minha senha</a>\n\n							<div style="text-align-last: right">\n								<button class="btn btn-primary" ng-click="vm.logar()" style="background-color:#007db7">Entrar</button>\n							</div>\n\n\n						</fieldset>\n					</form>\n				</div>\n			</div>\n		</div>\n	</div>\n</div>')
+  $templateCache.put("views/login/login.html", '<div class="row">\n	<div class="col-xs-12">\n\n		<div class="container " style="position:relative;transform: translate(0%, 0%); width:30%;top:25%; background-color:	#fafafa">\n\n			<img ng-src="/assets/logotipo-nexti.png" class="img-responsive" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação">\n\n			<div class="box-parent-login">\n				<div class="well bg-white box-login">\n					<form role="form" name="vm.form">\n						<fieldset>\n\n							<div ng-if="vm.mensagem">{{vm.mensagem}}</div>\n\n							<div class="form-group ls-login-user">\n								<label for="userLogin">Usuário</label>\n								<input class="form-control ls-login-bg-user input-lg" name="user" id="userLogin" type="text" aria-label="Usuário" placeholder="Usuário"\n								 ng-model="vm.login" required>\n							</div>\n							<div role="alert">\n								<span class="error" ng-show="vm.form.user.$dirty && vm.form.user.$error.required">\n       						Campo obrigatório</span>\n							</div>\n\n							<div class="form-group ls-login-password">\n								<label for="userPassword">Senha</label>\n								<input class="form-control ls-login-bg-password input-lg" name="senha" id="userPassword" type="password" aria-label="Senha"\n								 placeholder="Senha" ng-model="vm.senha" ng-minlength="5" required>\n							</div>\n\n							<div role="alert">\n								<span class="error" ng-show="vm.form.$dirty && vm.form.senha.$error.required">\n       						Campo obrigatório</span>\n								<span class="error" ng-show="vm.form.$dirty && vm.form.senha.$error.minlength">\n							Senha curta</span>\n							</div>\n\n							<a href class="ls-login-forgot">Esqueci minha senha</a>\n\n							<div style="text-align-last: right">\n								<button class="btn btn-primary" ng-click="vm.logar()" style="background-color:#007db7">Entrar</button>\n							</div>\n\n\n						</fieldset>\n					</form>\n				</div>\n			</div>\n		</div>\n	</div>\n</div>')
 }]);
 
 (function () {
@@ -54417,7 +54584,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // source: app/assets/javascripts/views/nav/nav.html
 
 angular.module("templates").run(["$templateCache", function($templateCache) {
-  $templateCache.put("views/nav/nav.html", '<style type="text/css">\n.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {\n    color: #fff;\n    background-color:#007db7;\n    \n}\n.dropdown-menu > li > a {\n    display: block;\n    padding: 3px 20px;\n    clear: both;\n    font-weight: normal;\n    line-height: 1.42857143;\n    color: white;\n    white-space: nowrap;\n    \n}\np, ol, ul, td {\n    font-family: verdana, arial, helvetica, sans-serif;\n    font-size: 15px;\n    line-height: 18px;\n    margin: 33px;\n}\n\n</style>\n<div ng-controller="NavController as navVM">\n    <nav ng-hide="navVM.sessao.nome==undefined||navVM.sessao.nome==\'\'" class="navbar navbar-inverse navbar-fixed-top" style="background-color:#007db7;border-color:white">\n        <div class="container-fluid">\n            <div class="navbar-header">\n                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>\n        <span class="icon-bar"></span>                        \n      </button>\n                <a class="navbar-brand pull-right" href="#!/home/" style="color:white"> Ponto Dinâmico</a>\n            </div>\n            <div class="collapse navbar-collapse" id="myNavbar">\n                <ul class="nav navbar-nav">\n                    <li class="active"><a href="#!/home/" style="background-color:white;color:blue">Inicio</a></li>\n                    <li class="dropdown">\n                            <a href class="dropdown-toggle" data-toggle="dropdown" style="color:white">Cadastro <span class="caret"></span></a>\n                            <ul class="dropdown-menu" style="background-color:#007db7">\n                                <li><a href="#!/cadastrarUser/" >Usuário</a></li>\n                                <li><a href="#!/cadastrarEvento/" >Evento</a></li>\n    \n                            </ul>\n                    </li>\n                    <li class="dropdown">\n                        <a href class="dropdown-toggle" data-toggle="dropdown" style="color:white">Relatório <span class="caret"></span></a>\n                        <ul class="dropdown-menu" style="background-color:#007db7">\n                            <li><a  href="#!/listaUser/" >Usuários</a></li>\n                            <li><a href="#!/listaEvento/" >Eventos</a></li>\n\n                        </ul>\n                    </li>\n                   \n                    \n                   \n\n                </ul>\n                <ul class="nav navbar-nav navbar-right">\n                    <li ng-hide="navVM.sessao.nome==\'\'"><a ><span class="glyphicon glyphicon-user" style="color:white"></span> <span style="color: white"> {{navVM.sessao.nome}} </span></a></li>\n                    <li ng-show="navVM.sessao.nome==\'\'"><a href="#!/login/"><span class="glyphicon glyphicon-log-in"style="color: white"></span><span style="color: white"> Entrar </span></a></li>\n                    <li ng-hide="navVM.sessao.nome==\'\'"><a href ng-click="navVM.sair()"><span class="glyphicon glyphicon-log-out"style="color: white"></span><span style="color: white"> Sair </span></a></li>\n                </ul>\n            </div>\n        </div>\n    </nav>\n</div>')
+  $templateCache.put("views/nav/nav.html", '<style type="text/css">\n    .navbar-inverse .navbar-nav>.open>a,\n    .navbar-inverse .navbar-nav>.open>a:hover,\n    .navbar-inverse .navbar-nav>.open>a:focus {\n        color: #fff;\n        background-color: #007db7;\n\n    }\n\n    .dropdown-menu>li>a {\n        display: block;\n        padding: 3px 20px;\n        clear: both;\n        font-weight: normal;\n        line-height: 1.42857143;\n        color: white;\n        white-space: nowrap;\n\n    }\n\n    p,\n    ol,\n    ul,\n    td {\n        font-family: verdana, arial, helvetica, sans-serif;\n        font-size: 15px;\n        line-height: 18px;\n        margin: 33px;\n    }\n</style>\n<div ng-controller="NavController as navVM">\n    <nav ng-hide="navVM.sessao.nome==undefined||navVM.sessao.nome==\'\'" class="navbar navbar-inverse navbar-fixed-top" style="background-color:#007db7;border-color:white">\n        <div class="container-fluid">\n            <div class="navbar-header">\n                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">\n                    <span class="icon-bar"></span>\n                    <span class="icon-bar"></span>\n                    <span class="icon-bar"></span>\n                </button>\n                <a class="navbar-brand pull-right" href="#!/home" style="color:white"> Ponto Dinâmico</a>\n            </div>\n            <div class="collapse navbar-collapse" id="myNavbar">\n                <ul class="nav navbar-nav">\n                    <li class="active">\n                        <a href="#!/home" style="background-color:white;color:blue">Inicio</a>\n                    </li>\n                    <li class="dropdown">\n                        <a href class="dropdown-toggle" data-toggle="dropdown" style="color:white">Eventos\n                            <span class="caret"></span>\n                        </a>\n                        <ul class="dropdown-menu" style="background-color:#007db7">\n                            <li>\n                                <a href="#!/cadastrarEvento">Cadastrar</a>\n                            </li>\n                            <li>\n                                <a href="#!/listaEvento">Relatório</a>\n                            </li>\n\n                        </ul>\n                    </li>\n                    <li class="dropdown">\n                        <a href class="dropdown-toggle" data-toggle="dropdown" style="color:white">Usuários\n                            <span class="caret"></span>\n                        </a>\n                        <ul class="dropdown-menu" style="background-color:#007db7">\n                            <li>\n                                <a href="#!/cadastrarUser">Cadastrar</a>\n                            </li>\n                            <li>\n                                <a href="#!/listaUser">Relatório</a>\n                            </li>\n                        </ul>\n                    </li>\n\n                </ul>\n                <ul class="nav navbar-nav navbar-right">\n                    <li ng-hide="navVM.sessao.nome==\'\'">\n                        <a>\n                            <span class="glyphicon glyphicon-user" style="color:white"></span>\n                            <span style="color: white"> {{navVM.sessao.nome}} </span>\n                        </a>\n                    </li>\n                    <li ng-show="navVM.sessao.nome==\'\'">\n                        <a href="#!/login">\n                            <span class="glyphicon glyphicon-log-in" style="color: white"></span>\n                            <span style="color: white"> Entrar </span>\n                        </a>\n                    </li>\n                    <li ng-hide="navVM.sessao.nome==\'\'">\n                        <a href ng-click="navVM.sair()">\n                            <span class="glyphicon glyphicon-log-out" style="color: white"></span>\n                            <span style="color: white"> Sair </span>\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </nav>\n</div>')
 }]);
 
 // This is a manifest file that'll be compiled into application.js, which will include all the files
@@ -54432,6 +54599,7 @@ angular.module("templates").run(["$templateCache", function($templateCache) {
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+
 
 
 
