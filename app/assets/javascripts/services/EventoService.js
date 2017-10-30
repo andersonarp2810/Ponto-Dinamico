@@ -24,7 +24,9 @@
 
             url = $Rotas.editEvento;
 
-            return Requisicoes.putEvento(url, evento);
+            tipo = "evento";
+
+            return Requisicoes.put(url, evento, tipo);
 
         }
 
