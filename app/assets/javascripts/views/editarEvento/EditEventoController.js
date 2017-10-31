@@ -83,6 +83,7 @@
                 }
 
                 else { // caso não mude a imagem
+                    delete ev.imagem;
                     EventoService.editEvento(ev)
                         .then(function (data) {
                             console.log(data);
