@@ -52793,10 +52793,14 @@ angular.module('pdApp', [
         function post(url, dados, tipo) {
             console.log(url);
             resposta = $q.defer();
-            da = {};
-            da['id'] = escopo.sessao.id;
-            da[tipo] = dados;
-            //da[id] = escopo.sessao;
+            if (tipo != 'evento') {
+                da = {};
+                da[tipo] = dados;
+            } else {
+                da = dados;
+            }
+            //da['id'] = escopo.sessao.id;
+            console.log(da);
             $http({
                 method: "POST",
                 url: url,
@@ -52820,8 +52824,12 @@ angular.module('pdApp', [
         function put(url, dados, tipo) {
             console.log(url);
             resposta = $q.defer();
-            da = {};
-            da[tipo] = dados;
+            if (tipo != 'evento') {
+                da = {};
+                da[tipo] = dados;
+            } else {
+                da = dados;
+            }
             $http({
                 method: "PUT",
                 url: url + "/" + dados.id,
