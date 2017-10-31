@@ -35,8 +35,15 @@ end
 #pesquisa pelo nome
 def self.search(id)
     arr_usuarios = Array.new
+    usuarios_nomes = Array.new
+    irregulares = 0
+    regulares = 0
+    ausentes = 0
+    inscritos = 0
     if id.present?
-        usuario_eventos = Usuario.joins(:usuario_eventos).order(:nome).where("evento_id = ? and hora_inicio IS NOT NULL", "#{id}").group(:id,:nome).count
+        evento = Evento.where(id:id)
+        pontos = Usuario.joins(:usuario_eventos).order(:nome).where("evento_id = ?", "#{id}")
+        usuario_eventos = pontos.where("hora_inicio IS NOT NULL").group(:id,:nome).count
         if usuario_eventos.present?
             usuario_eventos.keys.each do |key|
                 usuario_evento = Hash.new
@@ -44,19 +51,32 @@ def self.search(id)
                 usuario_evento["presenca"] = usuario_eventos[key]
                 usuario_evento["id"] = key[0]
                 arr_usuarios.push(usuario_evento)
+                usuarios_nomes.push(key[1])
+                #retorna boolean
+                if irregularidade(id,key[0],evento[0].data_inicio)
+                    irregulares += 1 
+                    puts("irregular")
+                else
+                    puts("regular")
+                    regulares += 1
+                end
             end
         end
-        usuario_eventos_inscritos = Usuario.joins(:usuario_eventos).order(:nome).where("evento_id = ? and hora_inicio IS NULL", "#{id}").group(:id,:nome).count        
+        usuario_eventos_inscritos = pontos.where("hora_inicio IS NULL").group(:id,:nome).count
         if usuario_eventos_inscritos.present?
             usuario_eventos_inscritos.keys.each do |key|
-                usuario_eventos_inscrito = Hash.new
-                usuario_eventos_inscrito["nome"] = key[1]
-                usuario_eventos_inscrito["presenca"] = 0
-                usuario_eventos_inscrito["id"] = key[0]
-                arr_usuarios.push(usuario_eventos_inscrito)
+                if !usuarios_nomes.include? key[1]
+                    usuario_eventos_inscrito = Hash.new
+                    usuario_eventos_inscrito["nome"] = key[1]
+                    usuario_eventos_inscrito["presenca"] = 0
+                    usuario_eventos_inscrito["id"] = key[0]
+                    arr_usuarios.push(usuario_eventos_inscrito)      
+                end
             end
         end
-    return arr_usuarios            
+        inscritos = arr_usuarios.length
+        ausentes = (arr_usuarios.length-irregulares-regulares)
+    return {"users":arr_usuarios,"relato":{"ausentes":ausentes,"regulares":regulares, "irregulares":irregulares}}
    end
    return nil
 end
@@ -84,6 +104,16 @@ def self.confirma_ponto(evento,usuario_id,mensagem)
 end
 
 private
+    #verificar irregularidade do ponto
+    def self.irregularidade(evento_id,usuario_id,data_evento)
+        #irregular
+        ponto = UsuarioEvento.where("(evento_id = ? and usuario_id = ?) and (hora_fim IS NULL or mensagem IS NOT NULL) and data >= ?","#{evento_id}","#{usuario_id}","#{data_evento}")
+        if ponto.present?
+            return true
+        else
+            return false
+        end
+    end
     #realizar verificação das coordenadas
     def self.valida_coodernada(coordenada)
         #deve retornar true
