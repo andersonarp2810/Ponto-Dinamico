@@ -146,6 +146,10 @@
         </div>
         <div class="modal-body">
 
+          <div ng-show="vm.pontos==null">
+            Sem pontos realizados
+          </div>
+
           <div ng-show="vm.pontos!=null">
             <h2>Pontos: {{vm.usu_nome}}</h2>
             <table class="table" fixed-header table-height="200px">
