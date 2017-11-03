@@ -3,12 +3,48 @@
   <head>
     <title>Ponto</title>
     <%= csrf_meta_tags %>
-
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application' %>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   </head>
+   <body ng-app="pdApp" 'no-repeat center center fixed' 'background-size':'10%' style=" overflow-x: hidden ">
+ <link rel="shortcut icon" type="image/x-icon" href="/home/nexti/Documentos/git/Ponto-Dinamico/app/assets/images/favicon.ico" />
+ 
+  <span ng-include="'views/nav/nav.html'"></span>
+  <br>
+  <ui-view></ui-view>
 
-  <body>
-    <%= yield %>
-  </body>
+<%= yield %>
+ 
+  <footer style="background-color:#C0D6DF" style="position:relative;transform: translate(0%, 0%);" >
+    <div class="container-fluid" >
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <img src="/assets/logotipo-nexti.png"  class="img-responsive" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação"style="width:150px;" >
+        <small><h6> © 2017 | NExTI - Nucleo de Extensão em Tecnologia da Informação</h6></small>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <h5>
+          Contato:
+        </h5>
+        <h6><span class="glyphicon glyphicon-phone"></span> (88) 3512-3299
+        <br>
+        <br>
+        <span class="glyphicon glyphicon-envelope"></span> fap@fapce.edu.br
+        <br>
+        <br>
+        <span class="glyphicon glyphicon-map-marker"></span> Rua da Conceição, 1228 - S. Miguel
+        Juazeiro do Norte, CE
+        CEP.: 63010-465 </h6>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>  
+
+
+
+
+
 </html>
