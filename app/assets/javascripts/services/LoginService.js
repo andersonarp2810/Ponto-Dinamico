@@ -3,9 +3,9 @@
         .module('pdApp')
         .service('LoginService', LoginService);
 
-    LoginService.$inject = ['Requisicoes', 'sessao', '$cookies', '$q', '$Rotas', '$window'];
+    LoginService.$inject = ['Requisicoes', 'sessao', '$cookies', '$q', '$Rotas', '$Estados', '$state'];
 
-    function LoginService(Requisicoes, sessao, $cookies, $q, $Rotas, $window) {
+    function LoginService(Requisicoes, sessao, $cookies, $q, $Rotas, $Estados, $state) {
 
         this.apagar = apagar;
         this.checar = checar;
@@ -22,16 +22,21 @@
         function checar() {
             res = $q.defer();
             url = $Rotas.checar;
-            Requisicoes.get(url).then(function (data) {
-                console.log(data);
-                if (data.erro == '501') {
-                    apagar();
-                    $window.location.href = "#!/login/";
-                    res.reject(0);
-                } else {
-                    res.resolve(1);
+            Requisicoes.get(url).then(
+                function (data) {
+                    console.log(data);
+                    if (data.erro == '501') {
+                        apagar();
+                        $state.go($Estados.login);
+                        res.reject(0);
+                    } else {
+                        res.resolve(1);
+                    }
+                },
+                function (err) {
+                    console.error(err);
                 }
-            });
+            );
             return res.promise;
         }
 
@@ -47,15 +52,11 @@
             return Requisicoes.post(url, dados, tipo);
         }
 
-        function logout() {
-            url = $Rotas.logout;
-            tipo = "user_session";
-            dados = {
-                id: sessao.id
-            }
+        function logout(id) {
+            url = $Rotas.logout + "/" + id;
             apagar();
             console.log(sessao);
-            return Requisicoes.destroy(url, dados, tipo);
+            return Requisicoes.destroy(url);
         }
 
     };

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 #verificar autenticação
   match 'autentica', to: "user_sessions#permit", via: [:get]
 #rota para logout usuario via post
-  match 'logout', to: 'user_sessions#destroy', via: [:delete]
+  match 'logout/:id', to: 'user_sessions#destroy', via: [:delete]
 #rota para cadastrar usuario via post
   match 'cadastrarusuario', to: 'usuarios#create', via: [:post]
 #rota para login usuario via post
@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   match 'realizarponto', to: 'eventos#realizarponto', via: [:post]
 #rota get ultimo ponto
   match 'getponto/:user_id/:evento_id', to: 'usuarios#get_ponto', via: [:get]
+#rota realizar inscrição
+  match 'inscricao/:usuario_id/:evento_id', to: 'eventos#inscricao', via: [:get]
 #rota cadastrar eventos
   match 'cadastrarevento', to: 'eventos#create', via: [:post]
   #rota relatorio ponto usuario

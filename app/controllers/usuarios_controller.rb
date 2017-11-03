@@ -22,25 +22,11 @@ class UsuariosController < ApplicationController
         mensagem = {erro: "301", body: ""}
       end
     else
-      usuario = Usuario.select("id, nome, email, matricula, mac, nivel")
+      usuario = Usuario.select("id, nome, email, matricula, mac, nivel").where(nivel: 0)
       mensagem = {erro: "000", body:usuario}
     end
     render json: mensagem
   end
-
-  # GET /usuarios/1
-  # GET /usuarios/1.json
-  #def show
-  #end
-
-  # GET /usuarios/new
-  def new
-    @usuario = Usuario.new
-  end
-
-  # GET /usuarios/1/edit
- def edit
- end
 
   #POST /cadastrarusuario.json
   # POST /usuarios
@@ -51,7 +37,9 @@ class UsuariosController < ApplicationController
     @usuario.status = 1
     if @usuario.mac.blank?  
       @usuario.nivel = "usuario_adm"
-      @usuario.mac = ""
+      @usuario.status = 0
+      usuario = Usuario.select(:mac).where("nivel = 1").last
+      @usuario.mac = (usuario.mac.to_i + 1).to_s
     end
 
     if @usuario.valid?
@@ -79,11 +67,12 @@ class UsuariosController < ApplicationController
   # DELETE /usuarios/1
   # DELETE /usuarios/1.json
   def destroy
+    usuario_eventos = UsuarioEvento.where(usuario_id: @usuario.id)
+    usuario_eventos.each do |usuario_evento|
+      usuario_evento.destroy
+    end 
     @usuario.destroy
-    respond_to do |format|
-      format.html { redirect_to usuarios_url, notice: 'Usuario was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json: {erro: "000", body: ""}   
   end
 
   private

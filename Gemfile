@@ -5,6 +5,17 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+
+#gem para carregamento de ativos staticos em produção
+gem 'rails_12factor', group: :production
+#gem para imagem
+gem "rmagick"
+#gem para trabalhar com imagem no rails
+gem 'carrierwave'
+#gem para conectar ao servidor amazon
+gem 'fog-aws'
+#gem bootstrap
+gem 'bootstrap-sass', '~> 3.3.6'
 #gem angular
 gem 'angular-rails-templates'
 #gem rack-cors
@@ -54,3 +65,5 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+ruby '2.3.3'

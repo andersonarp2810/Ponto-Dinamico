@@ -3,9 +3,9 @@
 		.module('pdApp')
 		.controller("CadastroUserController", CadastroUserController);
 
-	CadastroUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$window'];
+	CadastroUserController.$inject = ['LoginService', 'UserService', 'sessao', '$Respostas', '$Estados', '$state'];
 
-	function CadastroUserController(LoginService, UserService, sessao, $Respostas, $window) {
+	function CadastroUserController(LoginService, UserService, sessao, $Respostas, $Estados, $state) {
 
 		var vm = this;
 
@@ -33,7 +33,7 @@
 								console.log(data.body);
 								vm.mensagem = "Usuário criado";
 								//limpar();
-								$window.location.href = "#!/listaUser/";
+								$state.go($Estados.userLista);
 								break;
 							default:
 								vm.mensagem = "Erro: " + $Respostas[data.erro];
@@ -56,7 +56,7 @@
 										break;
 									case "501":
 										console.log("Sessão expirada.");
-										$window.location.href = "#!/login/";
+										$state.go($Estados.login);
 										LoginService.apagar();
 										break;
 								}
@@ -76,7 +76,7 @@
 		var init = function () {
 			if (vm.sessao.nome == '') {
 				console.log("faça login");
-				$window.location.href = "#!/login/";
+				$state.go($Estados.login);
 			}
 			else {
 				LoginService.checar();

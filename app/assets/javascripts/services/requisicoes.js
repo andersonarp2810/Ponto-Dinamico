@@ -3,9 +3,9 @@
         .module('pdApp')
         .service('Requisicoes', Requisicoes);
 
-    Requisicoes.$inject = ['sessao', '$http', '$q', '$IP'];
+    Requisicoes.$inject = ['sessao', '$http', '$q'];
 
-    function Requisicoes(sessao, $http, $q, $IP) {
+    function Requisicoes(sessao, $http, $q) {
 
         var escopo = this;
         escopo.destroy = destroy;
@@ -14,16 +14,11 @@
         escopo.put = put;
         escopo.sessao = sessao;
 
-        function destroy(url, dados, tipo) {
-            rl = $IP + url;
+        function destroy(url) {
             resposta = $q.defer();
-            da = {};
-            da[tipo] = dados;
             $http({
                 method: "DELETE",
                 url: url,
-                data: da,  // um objeto
-                headers: { 'Content-Type': 'application/json' }
             }).then(
                 function sucesso(response) {
                     console.log("resolve")
@@ -41,7 +36,6 @@
 
         function get(url) {
             resposta = $q.defer();
-            url = $IP + url;
             $http({
                 method: "GET",
                 url: url
@@ -54,13 +48,16 @@
         };
 
         function post(url, dados, tipo) {
-            url = $IP + url;
-            console.log(`${url}`);
+            console.log(url);
             resposta = $q.defer();
-            da = {};
-            da['id'] = escopo.sessao.id;
-            da[tipo] = dados;
-            //da[id] = escopo.sessao;
+            if (tipo != 'evento') {
+                da = {};
+                da[tipo] = dados;
+            } else {
+                da = dados;
+            }
+            //da['id'] = escopo.sessao.id;
+            console.log(da);
             $http({
                 method: "POST",
                 url: url,
@@ -82,14 +79,17 @@
         };
 
         function put(url, dados, tipo) {
-            url = $IP + url;
-            console.log(`${url}`);
+            console.log(url);
             resposta = $q.defer();
-            da = {};
-            da[tipo] = dados;
+            if (tipo != 'evento') {
+                da = {};
+                da[tipo] = dados;
+            } else {
+                da = dados;
+            }
             $http({
                 method: "PUT",
-                url: url + "/" + da[tipo].id,
+                url: url + "/" + dados.id,
                 data: da,  // um objeto
                 headers: { 'Content-Type': 'application/json' }
             }).then(
@@ -106,6 +106,7 @@
             console.log(resposta.promise);
             return resposta.promise;
         };
+
 
     };
 })();

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170522174624) do
+ActiveRecord::Schema.define(version: 20171016212845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,13 +23,14 @@ ActiveRecord::Schema.define(version: 20170522174624) do
     t.date     "data_fim"
     t.time     "hora_inicio"
     t.time     "hora_fim"
-    t.text     "local"
+    t.text     "lugar"
     t.text     "descricao"
     t.string   "qrcode"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.float    "localizacao_long"
     t.float    "localizacao_lati"
+    t.string   "imagem"
   end
 
   create_table "usuario_eventos", force: :cascade do |t|
