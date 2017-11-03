@@ -1,15 +1,16 @@
-<div class="container" style="position:relative;transform: translate(0%, 0%); width:50%;top:0%;background-color:#fafafa">
+<div class="container" style="position:relative;transform: translate(0%, 5%); width:52%;background-color:#fafafa">
   <img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(35%, 0%)">
+  <center>	<h2 style="color:black">Cadastre seu evento<small><br><div style="color:black">(Preencha os campos abaixo)</div></small> </h2></center><br>
   <form name="vm.form">
     <div ng-if="vm.mensagem">{{vm.mensagem}}</div>
       <div>
-    <label for="nome"> <h4>Nome</h4></label>
-    <input class="form-control" name="nome" type="text" ng-model="vm.nome" required><br>
-    <div role="alert">
-      <span class="error" ng-show="vm.form.nome.$dirty && vm.form.nome.$error.required">
-        (Campo obrigatório)</span>
-    </div>
-</div>
+         <label for="nome"> <h4>Nome</h4></label>
+         <input class="form-control" name="nome" type="text" ng-model="vm.nome" required><br>
+        <div role="alert">
+          <span class="error" ng-show="vm.form.nome.$dirty && vm.form.nome.$error.required">
+            (Campo obrigatório)</span>
+        </div>
+      </div>
 <div>  
   <label for="tipo"> <h4>Tipo</h4> </label>
   <input class="form-control" type="text" name="tipo" ng-model="vm.tipo" required><br>
@@ -106,3 +107,4 @@
   </form>
   <br><br>
 </div>
+<br><br> <br><br>
