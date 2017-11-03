@@ -1,4 +1,4 @@
-=begin
+
 CarrierWave.configure do |config|
     config.ignore_integrity_errors = false
     config.ignore_processing_errors = false
@@ -35,4 +35,3 @@ CarrierWave.configure do |config|
       # config.s3_access_policy = false                          # Generate http:// urls. Defaults to :authenticated_read (https://)
       # config.fog_host         = "#{ENV['S3_ASSET_URL']}/#{ENV['S3_BUCKET_NAME']}"      
   end
-=end
