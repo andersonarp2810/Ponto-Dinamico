@@ -71,7 +71,7 @@
   <center>
     <h2>Lista de usuários</h2>
   </center>
-  <table class="table" fixed-header table-height="100px">
+  <table class="table" fixed-header table-height="200px">
     <thead>
       <tr class="info">
         <th>Matrícula </th>
@@ -104,11 +104,11 @@
       </tr>
     </tbody>
   </table>
-  <center>
-    <h2>Relatório por usuários</h2>
-  </center>
 
   <div ng-if="vm.eventos!=null">
+    <center>
+      <h2>Relatório por usuários</h2>
+    </center>
     <h2>Relatório: {{vm.usu_nome}}</h2>
     <table class="table" fixed-header table-height="200px">
       <thead>
@@ -154,9 +154,9 @@
             Sem pontos realizados
           </div>
 
-          <div ng-show="vm.pontos!=null">
+          <div ng-show="vm.pontos!=null" class="container">
             <h2>Pontos: {{vm.usu_nome}}</h2>
-            <table class="table" fixed-header table-height="200px">
+            <table id="points" class="table" fixed-header table-height="200px">
               <thead>
                 <tr class="info">
                   <th>Data</th>
@@ -189,4 +189,15 @@
     </div>
   </div>
 </div>
-<br><br><br><br><br><br><br><br><br><br><br><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>

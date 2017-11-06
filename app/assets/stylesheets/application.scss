@@ -94,3 +94,26 @@ tbody>tr:first-child{
   }
 
   /* mapa */
+
+
+  #points{
+    width: max-content!important;
+    thead{
+      width: 100%!important;
+      tr{
+        th{
+          width: 25%!important;
+          text-align: center;
+        }
+      }
+    }
+    tbody{
+      width: 100%!important;
+      tr{
+        width: 100%!important;
+        td{
+          width: 25%!important;
+        }
+      }
+    }
+  }
