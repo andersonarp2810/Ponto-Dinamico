@@ -129,6 +129,7 @@
                                     }
                                 });
                                 $stateParams.id_user = null;
+                                $stateParams.id_evento = null;
                                 vm.listaPontos(alvo);
                             }
 

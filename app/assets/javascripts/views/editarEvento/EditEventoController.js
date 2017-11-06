@@ -83,6 +83,7 @@
                 }
 
                 else { // caso não mude a imagem
+                    //delete ev.imagem; //faz o amazon apagar a imagem mas o rails nao se liga
                     EventoService.editEvento(ev)
                         .then(function (data) {
                             console.log(data);

@@ -54,13 +54,13 @@
           <br>
           <label class="radio-inline">Buscar por </label>
           <label class="radio-inline">
-            <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="nome" checked='checked'> Nome
+            <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="nada" checked="checked"> Mostrar todos
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="nome"> Nome
           </label>
           <label class="radio-inline">
             <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="matricula"> Número da matrícula
-          </label>
-          <label class="radio-inline">
-            <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="nada"> Sem filtro
           </label>
         </div>
       </div>
@@ -105,7 +105,7 @@
   </table>
 
   <div ng-if="vm.eventos!=null">
-    <h2>Relatório:</h2>
+    <h2>Relatório: {{vm.usu_nome}}</h2>
     <table class="table" fixed-header table-height="200px">
       <thead>
         <tr class="info">
@@ -146,8 +146,8 @@
         </div>
         <div class="modal-body">
 
-          <div ng-if="vm.pontos!=null">
-            <h2>Pontos:</h2>
+          <div ng-show="vm.pontos!=null">
+            <h2>Pontos: {{vm.usu_nome}}</h2>
             <table class="table" fixed-header table-height="200px">
               <thead>
                 <tr class="info">
@@ -160,10 +160,14 @@
 
               <tbody>
                 <tr class="active" ng-repeat="ponto in vm.pontos">
-                  <td>{{ponto.data | date:"dd/MM/yyyy"}}</td>
-                  <td>{{ponto.hora_inicio}}</td>
-                  <td>{{ponto.hora_fim}}</td>
-                  <td>{{ponto.mensagem}}</td>
+                  <td ng-show="ponto.data!=undefined && ponto.data!=null"> {{ponto.data | date:"dd/MM/yyyy"}}</td>
+                  <td ng-show="ponto.data==undefined && ponto.data==null"> </td>
+                  <td ng-show="ponto.hora_inicio!=undefined && ponto.hora_inicio!=null"> {{ponto.hora_inicio}}</td>
+                  <td ng-show="ponto.hora_inicio==undefined && ponto.hora_inicio==null"> </td>
+                  <td ng-show="ponto.hora_fim!=undefined && ponto.hora_fim!=null"> {{ponto.hora_fim}}</td>
+                  <td ng-show="ponto.hora_fim==undefined && ponto.hora_fim==null"> </td>
+                  <td ng-show="ponto.mensagem!=undefined && ponto.mensagem!=null"> {{ponto.mensagem}}</td>
+                  <td ng-show="ponto.mensagem==undefined && ponto.mensagem==null"> </td>
                 </tr>
               </tbody>
             </table>

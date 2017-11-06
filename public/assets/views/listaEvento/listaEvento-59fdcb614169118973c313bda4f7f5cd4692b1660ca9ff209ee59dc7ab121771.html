@@ -65,12 +65,14 @@
           <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.info.qrcode}}">
           <br>
 
-          <label for="imagem">
-            <h4>Imagem</h4>
-          </label>
-          <br>
-          <img class="img-responsive" ng-src="{{vm.info.imagem.url}}">
-          <br>
+          <span ng-hide="vm.info.imagem.url==null">
+            <label for="imagem">
+              <h4>Imagem</h4>
+            </label>
+            <br>
+            <img class="img-responsive" ng-src="{{vm.info.imagem.url}}">
+            <br>
+          </span>
 
         </div>
         <div class="modal-footer naoimprimivel">
@@ -93,13 +95,13 @@
           <br>
           <label class="radio-inline">Buscar por </label>
           <label class="radio-inline">
-            <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="nome" checked='checked'> Nome do evento
+            <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="nada" checked="checked"> Mostrar todos
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="nome"> Nome do evento
           </label>
           <label class="radio-inline">
             <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="data"> Data
-          </label>
-          <label class="radio-inline">
-            <input type="radio" name="busc" ng-change="vm.busca=''" ng-model="vm.radio" value="nada"> Sem filtro
           </label>
         </div>
       </div>
@@ -109,7 +111,7 @@
 <div class="container">
   <h2>Resultado</h2>
   <p>Informações :</p>
-  <table class="table" fixed-header table-height="100px">
+  <table class="table" fixed-header table-height="200px">
     <thead>
       <tr class="info">
         <th>Data de início</th>
@@ -142,42 +144,53 @@
     </tbody>
   </table>
   <div ng-if="vm.users!=null">
-    <h2>Detalhes</h2>
+    <h2>Detalhes: {{vm.detalhado}}</h2>
 
-    <table class="table">
+    <table class="table" fixed-header table-height="200px">
       <thead>
         <tr class="info">
           <th>
-            Inscritos: {{vm.users.length}}
+            Inscritos:
           </th>
           <th>
-            Regulares: {{vm.relato.regulares}}
+            Regulares:
           </th>
           <th>
-            Irregulares: {{vm.relato.irregulares}}
+            Irregulares:
           </th>
           <th>
-            Ausentes: {{vm.relato.ausentes}}
+            Ausentes:
           </th>
         </tr>
-      </thead>
-    </table>
-
-    <table class="table" fixed-header table-height="100px">
-      <thead>
+        <tr class="active">
+          <th>
+            {{vm.users.length}}
+          </th>
+          <th>
+            {{vm.relato.regulares}}
+          </th>
+          <th>
+            {{vm.relato.irregulares}}
+          </th>
+          <th>
+            {{vm.relato.ausentes}}
+          </th>
+        </tr>
         <tr class="info">
           <th>Nome:</th>
           <th>Presenças:</th>
+          <th> </th>
           <th> </th>
         </tr>
       </thead>
       <tbody>
         <tr class="active" ng-repeat="user in vm.users">
-          <td>{{user.nome}}</td>
-          <td>{{user.presenca}}</td>
+          <td> {{user.nome}}</td>
+          <td> {{user.presenca}}</td>
           <td>
             <a ui-sref="listaUser({id_user: user.id, id_evento: vm.user_evento})" type="button" class="btn btn-primary" style="color:white">Abrir pontos</a>
           </td>
+          <td> </td>
         </tr>
       </tbody>
     </table>

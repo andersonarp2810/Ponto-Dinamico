@@ -1,12 +1,10 @@
-<div class="container " style="position:relative;transform: translate(0%, 0%); width:50%;top:5%; background-color:	#fafafa">
+<div class="container " style="position:relative;transform: translate(-2%, 8%); width:50%; background-color:	#fafafa">
 	<img ng-src="/assets/logotipo-nexti.png" alt="NExTI - Nucleo de Extensão em Tecnologia da Informação" style="position:relative;transform: translate(40%, 0%)">
 	<div class="form-group form-group-sm">
 		<form name="vm.form">
-			<div style="text-align: center; font-family: inherit;">
-				<h2 style="color:black">Cadastre-se<small><br><div style="color:black">(Preencha os campos abaixo)</div></small> </h2>
-			</div>
+			<center><h2 style="color:black">Cadastre-se<small><br><div style="color:black">(Preencha os campos abaixo)</div></small> </h2></center><br>
 			<div class="form-group form-group-sm">
-				<label class="col-sm-6 control-label" for="formGroupInputSmall">Digite Nome</label>
+				<label for="formGroupInputSmall"><h4>Nome</h4></label>
 				<input class="form-control" type="text" name="user" placeholder="Nome Completo" ng-model="vm.name" required><br>
 			</div>
 			<div role="alert">
@@ -14,7 +12,7 @@
        			(Campo obrigatório)</span>
 			</div>
 			<div class="form-group form-group-sm">
-				<label class="col-sm-8 control-label" for="formGroupInputSmall">Escolha uma senha</label>
+				<label  for="formGroupInputSmall"><h4>Senha</h4></label>
 				<input class="form-control" type="password" name="senha" placeholder="Senha" ng-model="vm.senha" ng-minlength="5" required><br>
 			</div>
 			<div role="alert">
@@ -24,7 +22,7 @@
 					A senha deve conter no mínimo 5 caracteres</span>
 			</div>
 			<div class="form-group form-group-sm">
-				<label class="col-sm-6 control-label" for="formGroupInputSmall">Confirmar senha</label>
+				<label  for="formGroupInputSmall"><h4>Confirmar senha</h4></label>
 				<input class="form-control" type="password" name="confirma" placeholder="Confirmar Senha" ng-model="vm.confirmaSenha" ng-minlength="6"
 				 required ng-pattern="{{vm.senha}}"><br>
 			</div>
@@ -35,7 +33,7 @@
 					As senhas não correspondem</span>
 			</div>
 			<div class="form-group form-group-sm">
-				<label class="col-sm-10 control-label" for="formGroupInputSmall">Número da matrícula</label>
+				<label  for="formGroupInputSmall"><h4>Número da matrícula</h4></label>
 				<input class="form-control" name="matricula" type="text" placeholder="Matricula" ng-model="vm.matricula" required><br>
 			</div>
 			<div role="alert">
@@ -43,7 +41,7 @@
        			(Campo obrigatório)</span>
 			</div>
 			<div class="form-group form-group-sm">
-				<label class="col-sm-5 control-label" for="formGroupInputSmall">E-mail</label>
+				<label  for="formGroupInputSmall"><h4>E-mail</h4></label>
 				<input class="form-control" name="imei" type="email" placeholder="E-mail" ng-model="vm.email" required><br>
 			</div>
 			<div role="alert">
@@ -52,9 +50,14 @@
 				<span class="error" ng-show="vm.form.imei.$dirty && vm.form.imei.$invalid">
 				    Insira um e-mail válido.</span>
 			</div>
+			<div style="text-align-last: right">
+				<button class="btn btn-primary" ng-disabled="vm.form.$invalid" ng-click="vm.cadastrarUsuario()">Cadastrar-se</button>
+			</div>
 		</form>
-		<div style="text-align-last: right">
-			<button class="btn btn-primary" ng-disabled="vm.form.$invalid" ng-click="vm.cadastrarUsuario()">Cadastrar-se</button>
-		</div>
+		
 	</div>
 </div>
+<br>
+<br>
+<br>
+<br>

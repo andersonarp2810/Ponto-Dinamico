@@ -65,12 +65,14 @@
           <img ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{vm.info.qrcode}}">
           <br>
 
-          <label for="imagem">
-            <h4>Imagem</h4>
-          </label>
-          <br>
-          <img class="img-responsive" ng-src="{{vm.info.imagem.url}}">
-          <br>
+          <span ng-hide="vm.info.imagem.url==null">
+            <label for="imagem">
+              <h4>Imagem</h4>
+            </label>
+            <br>
+            <img class="img-responsive" ng-src="{{vm.info.imagem.url}}">
+            <br>
+          </span>
 
         </div>
         <div class="modal-footer naoimprimivel">
@@ -106,13 +108,13 @@
     </form>
   </div>
 </div>
-<div class="container">
-  <h2>Resultado</h2>
-  <p>Informações :</p>
-  <table class="table" fixed-header table-height="200px">
-    <thead>
-      <tr class="info">
-        <th>Data de início</th>
+<div class="container" >
+ <center> <h2>Lista de eventos</h2> </center>
+  
+  <table class="table" fixed-header table-height="55px">
+    <thead >
+      <tr class="info"  >
+      <th>Data</th>
         <th>Nome do evento</th>
         <th> </th>
         <th> </th>
@@ -194,3 +196,4 @@
     </table>
   </div>
 </div>
+<br><br><br><br><br><br><br><br><br><br><br><br>

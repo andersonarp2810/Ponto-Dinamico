@@ -12,7 +12,6 @@
         escopo.get = get;
         escopo.post = post;
         escopo.put = put;
-        escopo.putEvento = putEvento;
         escopo.sessao = sessao;
 
         function destroy(url) {
@@ -51,10 +50,14 @@
         function post(url, dados, tipo) {
             console.log(url);
             resposta = $q.defer();
-            da = {};
-            da['id'] = escopo.sessao.id;
-            da[tipo] = dados;
-            //da[id] = escopo.sessao;
+            if (tipo != 'evento') {
+                da = {};
+                da[tipo] = dados;
+            } else {
+                da = dados;
+            }
+            //da['id'] = escopo.sessao.id;
+            console.log(da);
             $http({
                 method: "POST",
                 url: url,
@@ -78,11 +81,15 @@
         function put(url, dados, tipo) {
             console.log(url);
             resposta = $q.defer();
-            da = {};
-            da[tipo] = dados;
+            if (tipo != 'evento') {
+                da = {};
+                da[tipo] = dados;
+            } else {
+                da = dados;
+            }
             $http({
                 method: "PUT",
-                url: url + "/" + da[tipo].id,
+                url: url + "/" + dados.id,
                 data: da,  // um objeto
                 headers: { 'Content-Type': 'application/json' }
             }).then(
@@ -100,28 +107,6 @@
             return resposta.promise;
         };
 
-        function putEvento(url, dados) {
-            console.log(url);
-            resposta = $q.defer();
-            $http({
-                method: "PUT",
-                url: url + "/" + da[tipo].id,
-                data: dados,  // um objeto
-                headers: { 'Content-Type': 'application/json' }
-            }).then(
-                function sucesso(response) {
-                    console.log("resolve")
-                    resposta.resolve(response.data);
-                }, function falha(erro) {
-                    response = { erro: erro.data, status: erro.status };
-                    console.log("reject")
-                    resposta.reject(response);
-                }
-                );
-            console.log('resposta.promise');
-            console.log(resposta.promise);
-            return resposta.promise;
-        };
 
     };
 })();
